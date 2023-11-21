@@ -1,0 +1,26 @@
+@font-face {
+    font-family: GameFont;
+    src: url("Grenze-SemiBold.ttf");
+}
+@font-face {
+    font-family: Chau Philomene One;
+    src: url("ChauPhilomeneOne.ttf");
+}
+@font-face {
+    font-family: Inria Sans;
+    src: url("InriaSans-Regular.ttf");
+}
+@font-face {
+    font-family: Nord;
+    src: url("Nord.ttf");
+}
+
+
+
+
+.IIV::-webkit-media-controls-play-button,
+video::-webkit-media-controls-start-playback-button {
+    opacity: 0;
+    pointer-events: none;
+    width: 5px;
+}
