@@ -38,6 +38,8 @@ if (true) {
         Scene_Base.prototype.update.call(this);
         this.needsLoading++
         if (this.needsLoading == 10) {
+            this.loadAllGameImages();
+            this.backBar.opacity = 255;
             SceneManager.goto(Scene_Title)
         }
         if (this.allFiles == this.loadedFiles) {
@@ -98,8 +100,8 @@ if (true) {
             //IAVRA.I18N.language = $dataKamigami.gameOptions.language
             //Graphics._switchFullScreen();
             //$dataKamigami.needsRoom = true;
-            SceneManager.goto(Scene_Campaign_PreDuel);
-
+            //SceneManager.goto(Scene_CampaignMap);
+            //console.log("Teste")
             //$dataKamigami.owned_booster_packs[1] = 20
 
         }

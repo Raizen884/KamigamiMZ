@@ -3,7 +3,8 @@
 
 
 
-Scene_Boot.prototype.start = function () {
+
+Scene_Boot.prototype.start = function() {
     Scene_Base.prototype.start.call(this);
     SoundManager.preloadImportantSounds();
     if (DataManager.isBattleTest()) {
@@ -12,15 +13,23 @@ Scene_Boot.prototype.start = function () {
     } else if (DataManager.isEventTest()) {
         DataManager.setupEventTest();
         SceneManager.goto(Scene_Map);
-    } else {
+    } else if (DataManager.isTitleSkip()) {
         this.checkPlayerLocation();
         DataManager.setupNewGame();
         SceneManager.goto(Scene_Loading);
-        Window_TitleCommand.initCommandPosition();
+    } else {
+        this.startNormalGame();
     }
+    this.resizeScreen();
     this.updateDocumentTitle();
 };
 
+Scene_Boot.prototype.startNormalGame = function() {
+    this.checkPlayerLocation();
+    DataManager.setupNewGame();
+    SceneManager.goto(Scene_Loading);
+    Window_TitleCommand.initCommandPosition();
+};
 //-----------------------------------------------------------------------------
 // Scene_Title
 //
@@ -41,7 +50,7 @@ Scene_Loading.prototype.update = function () {
         this.backBar.opacity = 255;
     }
     if (this.allFiles == this.loadedFiles) {
-       // SceneManager.goto(Scene_Title)
+       SceneManager.goto(Scene_Title)
     }
     this.loadingBar.scale.x = this.loadedFiles / this.allFiles
 

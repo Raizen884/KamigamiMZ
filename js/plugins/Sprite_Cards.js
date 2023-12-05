@@ -210,9 +210,9 @@ Sprite_Card.prototype.isFullButtonHovered = function () {
 };
 
 Sprite_Clickable.prototype.isButtonHovered = function () {
-    var x = this.canvasToLocalX(TouchInput.hover_x);
-    var y = this.canvasToLocalY(TouchInput.hover_y);
-    return x >= 0 && y >= 0 && x < this.width && y < this.height;
+    //var x = this.canvasToLocalX(TouchInput.hover_x);
+    //var y = this.canvasToLocalY(TouchInput.hover_y);
+    //return x >= 0 && y >= 0 && x < this.width && y < this.height;
 };
 
 
