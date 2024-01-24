@@ -290,12 +290,12 @@ Scene_Kamigami_Duel.prototype.update = function () {
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Duel.prototype.animateChatLoop = function () {
     //TouchInput.wheelY
-    this._passBtn2.opacity = this._passBtn.isButtonTouched() ? this._passBtn2.opacity + 20 : this._passBtn2.opacity - 20
-    this._giveUpBtn2.opacity = this._giveUpBtn.isButtonTouched() ? this._giveUpBtn2.opacity + 20 : this._giveUpBtn2.opacity - 20
-    this.chatShow2.opacity = this.chatShow.isButtonTouched() ? this.chatShow2.opacity + 20 : this.chatShow2.opacity - 20
+    this._passBtn2.opacity = this._passBtn.isBeingTouched() ? this._passBtn2.opacity + 20 : this._passBtn2.opacity - 20
+    this._giveUpBtn2.opacity = this._giveUpBtn.isBeingTouched() ? this._giveUpBtn2.opacity + 20 : this._giveUpBtn2.opacity - 20
+    this.chatShow2.opacity = this.chatShow.isBeingTouched() ? this.chatShow2.opacity + 20 : this.chatShow2.opacity - 20
 
     if (TouchInput.isPressed()) {
-        if (this.scrollBar.isButtonTouched()) {
+        if (this.scrollBar.isBeingTouched()) {
             this.moveScrollBar = true
         }
     }
@@ -311,7 +311,7 @@ Scene_Kamigami_Duel.prototype.animateChatLoop = function () {
         this.onGiveUp = true
     if (this.chatHidden) {
         this.hideChatBox()
-        if (TouchInput.isTriggered() && this.chatShow.isButtonTouched() && this.phase >= 4) {
+        if (TouchInput.isTriggered() && this.chatShow.isBeingTouched() && this.phase >= 4) {
             this.chatHidden = false
             $dataKamigami.chatHidden = false
             this.chatUnreadMessages.style.fill = "#3D3D3D"
@@ -328,13 +328,13 @@ Scene_Kamigami_Duel.prototype.animateChatLoop = function () {
     }
 
     if (TouchInput.isTriggered()) {
-        if (this.chatSendButton.isButtonTouched() && chatInput.text.length > 0) {
+        if (this.chatSendButton.isBeingTouched() && chatInput.text.length > 0) {
             this.updateChatBox(`\n${this.player1Name}: `, chatInput.text)
             return
         }
-        if (this.chatSpriteView.isButtonTouched())
+        if (this.chatSpriteView.isBeingTouched())
             chatInput.select()
-        if (!this.chatHidden && this.chatHide.isButtonTouched()) {
+        if (!this.chatHidden && this.chatHide.isBeingTouched()) {
             this.chatHidden = true
             $dataKamigami.chatHidden = true
             this.chatShow.opacity = 255
@@ -436,7 +436,7 @@ Scene_Kamigami_Duel.prototype.updateGiveUpMenu = function () {
         return;
     }
 
-    if (this._messageGiveUpYes.isButtonTouched()) {
+    if (this._messageGiveUpYes.isBeingTouched()) {
         this._messageGiveUpYes.opacity += 20
         if (TouchInput.isTriggered()) {
             let id = this.boardState.findPlayerGod(0)
@@ -449,7 +449,7 @@ Scene_Kamigami_Duel.prototype.updateGiveUpMenu = function () {
             this._messageGiveUpYes.opacity -= 20
     }
 
-    if (this._messageGiveUpNo.isButtonTouched()) {
+    if (this._messageGiveUpNo.isBeingTouched()) {
         this._messageGiveUpNo.opacity += 20
         if (TouchInput.isTriggered()) {
             this.closeGiveUpMenu = true;

@@ -472,7 +472,7 @@ Scene_Kamigami_Booster.prototype.updateButtonsHover = function () {
 // Function : updateButtons
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Booster.prototype.updateButtonsClick = function () {
-    if (this.returnButton.isButtonTouched()) {
+    if (this.returnButton.isBeingTouched()) {
         AudioManager.playSe({ name: "success", pan: 0, pitch: 95, volume: 100 });
         this.nextScene = 0
         this.countFrame = 0

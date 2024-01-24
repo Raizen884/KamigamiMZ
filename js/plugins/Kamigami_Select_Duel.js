@@ -363,7 +363,7 @@ Scene_Kamigami_Select_Duel.prototype.openingScene = function () {
 // Function : updateButtonsClick
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Select_Duel.prototype.updateButtonsClick = function () {
-    if (this.returnText.isButtonTouched()) {
+    if (this.returnText.isBeingTouched()) {
         AudioManager.playSe({ name: "success", pan: 0, pitch: 95, volume: 100 });
         this.nextScene = 0
         this.countFrame = 0
@@ -504,7 +504,7 @@ Scene_Kamigami_Select_Duel.prototype.updateDificultyChange = function () {
         if (n > $dataKamigami.maxDifficulty) {
             break
         }
-        if (this.difficultyButtons[n].isButtonTouched() && TouchInput.isPressed()) {
+        if (this.difficultyButtons[n].isBeingTouched() && TouchInput.isPressed()) {
             this.difficulty = n;
         }
         if (this.difficulty == n) {
@@ -658,7 +658,7 @@ Scene_Kamigami_Select_Duel.prototype.moveDuelists = function () {
 
 
 Scene_Kamigami_Select_Duel.prototype.updateScrollBar = function (scrollBar, cardOptions) {
-    if (TouchInput.isPressed() && scrollBar.isButtonTouched()) {
+    if (TouchInput.isPressed() && scrollBar.isBeingTouched()) {
         this.moveScrollBar = true
     }
     if (this.moveScrollBar) {

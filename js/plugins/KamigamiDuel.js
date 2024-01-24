@@ -852,14 +852,14 @@ Scene_Kamigami_Duel.prototype.check_board_card_trigger = function () {
         this.attackImages.opacity = 0;
     }
     if (TouchInput.isTriggered()) {
-        if (this._gyplayer1.isButtonTouched()) {
+        if (this._gyplayer1.isBeingTouched()) {
             this.graveyardLimit = 960
             this.player1_graveyard_show = this.player1_graveyard
             this.resetGraveyardPosition()
             this.phase = 11
             this.count_frames = 0;
             this.gyShowing = 1
-        } else if (this._gyplayer2.isButtonTouched()) {
+        } else if (this._gyplayer2.isBeingTouched()) {
             this.graveyardLimit = 960
             this.player1_graveyard_show = this.player2_graveyard
             this.resetGraveyardPosition()
@@ -1848,7 +1848,7 @@ Scene_Kamigami_Duel.prototype.fixZOrder = function (gyCard, player) {
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Duel.prototype.get_card_touch_graveyard = function () {
     for (var i = 0; i < this.player1_graveyard_show.length; i++)
-        if (this.player1_graveyard_show[i][1].isButtonTouched())
+        if (this.player1_graveyard_show[i][1].isBeingTouched())
             return i;
     return -1;
 };

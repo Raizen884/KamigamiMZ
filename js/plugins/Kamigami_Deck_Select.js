@@ -356,7 +356,7 @@ Scene_Kamigami_Deck_Select.prototype.updateDeletion = function () {
 
 Scene_Kamigami_Deck_Select.prototype.checkButtonOpacity = function () {
     this.deckButtons.forEach(button => {
-        if (button.isButtonTouched()) {
+        if (button.isBeingTouched()) {
             button.opacity += 10;
         } else {
             if (button.opacity > 100) {
@@ -364,7 +364,7 @@ Scene_Kamigami_Deck_Select.prototype.checkButtonOpacity = function () {
             }
         }
     });
-    if (this.btnReturn.isButtonTouched()) {
+    if (this.btnReturn.isBeingTouched()) {
         this.btnReturn.opacity += 10;
     } else {
         if (this.btnReturn.opacity > 100) {
@@ -376,7 +376,7 @@ Scene_Kamigami_Deck_Select.prototype.checkButtonOpacity = function () {
 
 Scene_Kamigami_Deck_Select.prototype.checkButtonClick = function () {
     this.infoText.text = "";
-    if (this.deckButtons[0].isButtonTouched()) {
+    if (this.deckButtons[0].isBeingTouched()) {
         if ($dataKamigami.decks[$dataKamigami.selectedDeck][1].length == 41) {
             let oldDeck = $dataKamigami.chosenDeck;
             $dataKamigami.chosenDeck = $dataKamigami.selectedDeck;
@@ -394,12 +394,12 @@ Scene_Kamigami_Deck_Select.prototype.checkButtonClick = function () {
         }
 
     }
-    if (this.deckButtons[1].isButtonTouched()) {
+    if (this.deckButtons[1].isBeingTouched()) {
         this.phase = 2;
         this.countFrames = 0;
         AudioManager.playSe({ name: "button", pan: 0, pitch: 100, volume: 250 });
     }
-    if (this.deckButtons[2].isButtonTouched()) {
+    if (this.deckButtons[2].isBeingTouched()) {
         if ($dataKamigami.chosenDeck != $dataKamigami.selectedDeck) {
             this.infoText.text = IAVRA.I18N.localize("#{DuelVocab.MenuText.deckselect3}")
             this.holdingDeletion = true;
@@ -411,7 +411,7 @@ Scene_Kamigami_Deck_Select.prototype.checkButtonClick = function () {
 
 
     }
-    if (this.btnReturn.isButtonTouched()) {
+    if (this.btnReturn.isBeingTouched()) {
         AudioManager.playSe({ name: "success", pan: 0, pitch: 100, volume: 250 });
         this.phase = 3;
         this.countFrames = 0;

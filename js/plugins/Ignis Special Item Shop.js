@@ -574,15 +574,15 @@ Scene_Ignis_Shop.prototype.update_booster_movement = function () {
 //-----------------------------------------------------------------------------
 Scene_Ignis_Shop.prototype.update_cursor_movement = function () {
     var btn_hover = 0;
-    if (this.textReturn.isButtonHovered() || this.textReturn.isButtonTouched())
+    if (this.textReturn.isButtonHovered() || this.textReturn.isBeingTouched())
         btn_hover = 1;
-    if (this.textPacks.isButtonHovered() || this.textPacks.isButtonTouched())
+    if (this.textPacks.isButtonHovered() || this.textPacks.isBeingTouched())
         btn_hover = 2;
-    if (this.textBuy.isButtonHovered() || this.textBuy.isButtonTouched())
+    if (this.textBuy.isButtonHovered() || this.textBuy.isBeingTouched())
         btn_hover = 3;
-    if (this._arrowLeft.isButtonHovered() || this._arrowLeft.isButtonTouched())
+    if (this._arrowLeft.isButtonHovered() || this._arrowLeft.isBeingTouched())
         btn_hover = 4;
-    if (this._arrowRight.isButtonHovered() || this._arrowRight.isButtonTouched())
+    if (this._arrowRight.isButtonHovered() || this._arrowRight.isBeingTouched())
         btn_hover = 5;
 
     this.remove_all_buttons(btn_hover);

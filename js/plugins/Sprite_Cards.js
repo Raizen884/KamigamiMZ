@@ -33,7 +33,7 @@ Sprite_Card.prototype.startAnimation = function (animation, mirror, delay, rate 
     this._animationSprites.push(this._lastAnimation);
 };
 
-Sprite_Animation.prototype.setup = function (target, animation, mirror, delay, rate = 2) {
+Sprite_Animation.prototype.setupMV = function (target, animation, mirror, delay, rate = 2) {
     this._target = target;
     this._animation = animation;
     this._mirror = mirror;
@@ -46,7 +46,23 @@ Sprite_Animation.prototype.setup = function (target, animation, mirror, delay, r
         this.createSprites();
     }
 };
-
+Sprite_Animation.prototype.setup = function(
+    targets, animation, mirror, delay, previous
+) {
+    this._targets = targets;
+    this._animation = animation;
+    this._mirror = mirror;
+    this._delay = delay;
+    this._previous = previous;
+    this._effect = EffectManager.load(animation.effectName);
+    this._playing = true;
+    const timings = animation.soundTimings.concat(animation.flashTimings);
+    for (const timing of timings) {
+        if (timing.frame > this._maxTimingFrames) {
+            this._maxTimingFrames = timing.frame;
+        }
+    }
+};
 
 Sprite_Card.prototype.startAnimation3d = function (animation, mirror, delay) {
     var sprite = new Sprite_Animation();
@@ -89,11 +105,11 @@ Sprite_Card.prototype.callClickHandler = function () {
 
 Sprite_Card.prototype.processTouch = function () {
     if (this.isActive()) {
-        if (TouchInput.isTriggered() && this.isButtonTouched()) {
+        if (TouchInput.isTriggered() && this.isBeingTouched()) {
             this._touching = true;
         }
         if (this._touching) {
-            if (TouchInput.isReleased() || !this.isButtonTouched()) {
+            if (TouchInput.isReleased() || !this.isBeingTouched()) {
                 this._touching = false;
                 if (TouchInput.isReleased()) {
                     this.callClickHandler();
@@ -136,7 +152,7 @@ Sprite_Card.prototype.is3dMiniButtonTouched = function () {
 
 
 Sprite_Card.prototype.isTriggered = function () {
-    if (TouchInput.isTriggered() && this.isButtonTouched())
+    if (TouchInput.isTriggered() && this.isBeingTouched())
         return true;
 };
 
@@ -151,11 +167,12 @@ Sprite_Card.prototype.isActive = function () {
     return true;
 };
 
-Sprite_Card.prototype.isButtonTouched = function () {
+Sprite_Card.prototype.isBeingTouched = function () {
     var x = this.canvasToLocalX(TouchInput.x + this.width / 2);
     var y = this.canvasToLocalY(TouchInput.y + this.height / 2);
     return x >= 0 && y >= 0 && x < this.width && y < this.height;
 };
+
 
 Sprite_Card.prototype.canvasToLocalX = function (x) {
     var node = this;
@@ -213,6 +230,7 @@ Sprite_Clickable.prototype.isButtonHovered = function () {
     //var x = this.canvasToLocalX(TouchInput.hover_x);
     //var y = this.canvasToLocalY(TouchInput.hover_y);
     //return x >= 0 && y >= 0 && x < this.width && y < this.height;
+    return false;
 };
 
 

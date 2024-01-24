@@ -265,13 +265,13 @@ Sprite_Options_Menu.prototype.updateOptionCursorPositionSE = function () {
 // Function : updateMenu
 //-----------------------------------------------------------------------------
 Sprite_Options_Menu.prototype.updateMenu = function () {
-    if (TouchInput.isPressed() && this._optionBarCursor.isButtonTouched() && !this._optionCursorToggled) {
+    if (TouchInput.isPressed() && this._optionBarCursor.isBeingTouched() && !this._optionCursorToggled) {
         this._optionCursorToggled = true
     }
-    if (TouchInput.isPressed() && this._optionBarCursorMusic.isButtonTouched() && !this._optionCursorToggledMusic) {
+    if (TouchInput.isPressed() && this._optionBarCursorMusic.isBeingTouched() && !this._optionCursorToggledMusic) {
         this._optionCursorToggledMusic = true
     }
-    if (TouchInput.isPressed() && this._optionBarCursorSE.isButtonTouched() && !this._optionCursorToggledSE) {
+    if (TouchInput.isPressed() && this._optionBarCursorSE.isBeingTouched() && !this._optionCursorToggledSE) {
         this._optionCursorToggledSE = true
     }
     if (this._optionCursorToggled) {
@@ -295,14 +295,14 @@ Sprite_Options_Menu.prototype.updateMenu = function () {
 
     if ($dataKamigami.gameOptions.tutorial) {
         this.updateTutorialButton()
-        if (TouchInput.isTriggered() && this._tutorialPlay.isButtonTouched()) {
+        if (TouchInput.isTriggered() && this._tutorialPlay.isBeingTouched()) {
             AudioManager.playSe({ name: "success", pan: 0, pitch: 95, volume: 100 });
             loadDeck("Tutorial")
         }
     }
     if (TouchInput.isTriggered()) {
         for (let n = 0; n < 4; n++) {
-            if (this._optionsButtonsOff[n].isButtonTouched()) {
+            if (this._optionsButtonsOff[n].isBeingTouched()) {
                 switch (n) {
                     case 0:
                         if (!$dataKamigami.gameOptions.cardEffects) {
@@ -348,7 +348,7 @@ Sprite_Options_Menu.prototype.updateMenu = function () {
 // Function : updateTutorialButton
 //-----------------------------------------------------------------------------
 Sprite_Options_Menu.prototype.updateTutorialButton = function () {
-    if (this._tutorialPlay.isButtonTouched()) {
+    if (this._tutorialPlay.isBeingTouched()) {
         this._tutorialPlay.opacity += 10
     } else {
         if (this._tutorialPlay.opacity > 150)

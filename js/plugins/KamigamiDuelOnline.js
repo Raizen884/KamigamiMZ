@@ -594,7 +594,7 @@ Scene_Kamigami_Duel_Online.prototype.update = function () {
 // Function : checkHoverCancelButton
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Duel_Online.prototype.checkHoverCancelButton = function () {
-    if (this._cancelButton.isButtonTouched()) {
+    if (this._cancelButton.isBeingTouched()) {
         this._cancelButtonLight.opacity += 20
         if (TouchInput.isTriggered()) {
             SceneManager.pop();

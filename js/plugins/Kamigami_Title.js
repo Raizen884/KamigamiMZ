@@ -204,7 +204,8 @@ Scene_Main_Menu.prototype.create_gods = function () {
 // Function : createlogo
 //-----------------------------------------------------------------------------
 Scene_Main_Menu.prototype.createlogo = function () {
-    this._logo1 = new Sprite(ImageManager.loadTitle1("logo1"));
+    this._logo1 = new Sprite_Card();
+    this._logo1.bitmap = ImageManager.loadTitle1("logo1");
     this.addChild(this._logo1);
     this._logo2 = new Sprite(ImageManager.loadTitle1("logo2"));
     this.addChild(this._logo2);
@@ -841,17 +842,17 @@ Scene_Main_Menu.prototype.updateOptions = function () {
         return;
     }
     var btn_hover = 0;
-    if (this._textCampaign.isButtonHovered() || this._textCampaign.isButtonTouched())
+    if (this._textCampaign.isButtonHovered() || this._textCampaign.isBeingTouched())
         btn_hover = 1;
-    if (this._textDuel.isButtonHovered() || this._textDuel.isButtonTouched())
+    if (this._textDuel.isButtonHovered() || this._textDuel.isBeingTouched())
         btn_hover = 2;
-    if (this._textDeck.isButtonHovered() || this._textDeck.isButtonTouched())
+    if (this._textDeck.isButtonHovered() || this._textDeck.isBeingTouched())
         btn_hover = 3;
-    if (this._textBooster.isButtonHovered() || this._textBooster.isButtonTouched())
+    if (this._textBooster.isButtonHovered() || this._textBooster.isBeingTouched())
         btn_hover = 4;
-    if (this._textStore.isButtonHovered() || this._textStore.isButtonTouched())
+    if (this._textStore.isButtonHovered() || this._textStore.isBeingTouched())
         btn_hover = 5;
-    if (this._textExit.isButtonHovered() || this._textExit.isButtonTouched())
+    if (this._textExit.isButtonHovered() || this._textExit.isBeingTouched())
         btn_hover = 6;
     switch (btn_hover) {
         case 0:
@@ -1220,8 +1221,8 @@ Scene_Main_Menu.prototype.closeMenu = function () {
     }
     if (this.kamigami_frame_count > 80)
         this.tl3.play();
-    if (this.kamigami_frame_count > 120)
-
+    if (this.kamigami_frame_count == 120)
+        console.log(this.btn_hover)
         if (this.btn_hover == 1)
             SceneManager.push(Scene_Map)
         else if (this.duelDecision) {
@@ -1338,13 +1339,13 @@ Scene_Main_Menu.prototype.updateOptionsDuel = function () {
         this._godsText.x = this._godsInfo.x + 60
     }
     var btn_hover = 0;
-    if (this._textExit.isButtonHovered() || this._textExit.isButtonTouched())
+    if (this._textExit.isButtonHovered() || this._textExit.isBeingTouched())
         btn_hover = 1;
-    if (this._textOnline.isButtonHovered() || this._textOnline.isButtonTouched())
+    if (this._textOnline.isButtonHovered() || this._textOnline.isBeingTouched())
         btn_hover = 2;
-    if (this._textOffline.isButtonHovered() || this._textOffline.isButtonTouched())
+    if (this._textOffline.isButtonHovered() || this._textOffline.isBeingTouched())
         btn_hover = 3;
-    if (this._textReturn.isButtonHovered() || this._textReturn.isButtonTouched())
+    if (this._textReturn.isButtonHovered() || this._textReturn.isBeingTouched())
         btn_hover = 4;
     switch (btn_hover) {
         case 0:
@@ -1512,6 +1513,7 @@ Graphics._paintUpperCanvas = function () {
 //-----------------------------------------------------------------------------
 Scene_Title.prototype.create = function () {
     Scene_Base.prototype.create.call(this);
+    
     //this.loadAllGameImages();
     this.createVariables();
     this.createBackground();
@@ -1548,8 +1550,9 @@ Scene_Title.prototype.createVariables = function () {
 Scene_Title.prototype.createBackground = function () {
     this.container = new PIXI.Container();
     this._background = new Sprite(ImageManager.loadTitle1("Title_bg"));
-    this.container.addChild(this._background);
+    //this.container.addChild(this._background);
     this._background.opacity = 0;
+    this._spriteset._baseSprite.addChild(this._background);
 };
 
 //-----------------------------------------------------------------------------
@@ -1557,7 +1560,8 @@ Scene_Title.prototype.createBackground = function () {
 //-----------------------------------------------------------------------------
 Scene_Title.prototype.createlogo = function () {
     this._logo1 = new Sprite(ImageManager.loadTitle1("logo1"));
-    this.container.addChild(this._logo1);
+    //this.container.addChild(this._logo1);
+    this._spriteset._baseSprite.addChild(this._logo1);
     this._logo2 = new Sprite(ImageManager.loadTitle1("logo2"));
     this.container.addChild(this._logo2);
     this._logo1.anchor.x = 0.5;

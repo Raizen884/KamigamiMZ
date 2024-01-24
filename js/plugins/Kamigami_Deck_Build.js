@@ -549,7 +549,7 @@ Scene_Kamigami_Deck_Build.prototype.updatecardOptionsPosition = function (cardOp
 
 };
 Scene_Kamigami_Deck_Build.prototype.updateScrollBar = function (scrollBar, cardOptions) {
-    if (TouchInput.isPressed() && scrollBar.isButtonTouched()) {
+    if (TouchInput.isPressed() && scrollBar.isBeingTouched()) {
         this.moveScrollBar = true
     }
     if (this.moveScrollBar) {
@@ -572,14 +572,14 @@ Scene_Kamigami_Deck_Build.prototype.applyFilter = function () {
 };
 
 Scene_Kamigami_Deck_Build.prototype.checkButtonOpacity = function () {
-    if (this.btnEdit.isButtonTouched()) {
+    if (this.btnEdit.isBeingTouched()) {
         this.btnEdit.opacity += 10;
     } else {
         if (this.btnEdit.opacity > 100) {
             this.btnEdit.opacity -= 10;
         }
     };
-    if (this.btnReturn.isButtonTouched()) {
+    if (this.btnReturn.isBeingTouched()) {
         this.btnReturn.opacity += 10;
     } else {
         if (this.btnReturn.opacity > 100) {
@@ -596,7 +596,7 @@ Scene_Kamigami_Deck_Build.prototype.checkButtonClick = function () {
         } else if (n == 2) {
             num = 4
         }
-        if (this.deityButtonsOn[n].isButtonTouched()) {
+        if (this.deityButtonsOn[n].isBeingTouched()) {
             AudioManager.playSe({ name: "button", pan: 0, pitch: 100, volume: 250 });
             if (this.deityButtonsOff[n].opacity == 255) {
                 this.deityButtonsOff[n].opacity = 0
@@ -611,7 +611,7 @@ Scene_Kamigami_Deck_Build.prototype.checkButtonClick = function () {
         }
     }
     for (let n = 0; n < 3; n++) {
-        if (this.rankButtonsOn[n].isButtonTouched()) {
+        if (this.rankButtonsOn[n].isBeingTouched()) {
             AudioManager.playSe({ name: "button", pan: 0, pitch: 100, volume: 250 });
             if (this.rankButtonsOff[n].opacity == 255) {
                 this.rankButtonsOff[n].opacity = 0
@@ -625,7 +625,7 @@ Scene_Kamigami_Deck_Build.prototype.checkButtonClick = function () {
         }
     }
     for (let n = 0; n < 5; n++) {
-        if (this.civilizationButtonsOn[n].isButtonTouched()) {
+        if (this.civilizationButtonsOn[n].isBeingTouched()) {
             AudioManager.playSe({ name: "button", pan: 0, pitch: 100, volume: 250 });
             if (this.civilizationButtonsOff[n].opacity == 255) {
                 this.civilizationButtonsOff[n].opacity = 0
@@ -638,7 +638,7 @@ Scene_Kamigami_Deck_Build.prototype.checkButtonClick = function () {
 
         }
     }
-    if (this.btnReturn.isButtonTouched()) {
+    if (this.btnReturn.isBeingTouched()) {
         this.updateDeckCards();
         if ($dataKamigami.chosenDeck == $dataKamigami.selectedDeck && $dataKamigami.decks[$dataKamigami.selectedDeck][1].length != 41) {
             AudioManager.playSe({ name: "Cancel1", pan: 0, pitch: 100, volume: 100 });
@@ -650,7 +650,7 @@ Scene_Kamigami_Deck_Build.prototype.checkButtonClick = function () {
         }
     }
 
-    if (this.btnEdit.isButtonTouched()) {
+    if (this.btnEdit.isBeingTouched()) {
         AudioManager.playSe({ name: "button", pan: 0, pitch: 100, volume: 250 });
         chatInput.select()
         chatInput.text = this.deckName.text;

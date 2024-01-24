@@ -609,7 +609,7 @@ Window_Message.prototype.updateInput = function () {
 
 Window_Message.prototype.checkButtonTrigger = function () {
     if ($dataKamigami.gameOptions.deck) {
-        if (this.btnDeck.isButtonTouched()) {
+        if (this.btnDeck.isBeingTouched()) {
             this.btnChoice = 0
             this.countFrames = 0
             AudioManager.playSe({ name: "success", pan: 0, pitch: 95, volume: 100 });
@@ -617,7 +617,7 @@ Window_Message.prototype.checkButtonTrigger = function () {
         }
     }
     if ($dataKamigami.gameOptions.firstScene) {
-        if (this.btnReturn.isButtonTouched()) {
+        if (this.btnReturn.isBeingTouched()) {
             this.btnChoice = 1
             this.countFrames = 0
             AudioManager.playSe({ name: "success", pan: 0, pitch: 95, volume: 100 });
@@ -813,7 +813,7 @@ Window_ChoiceList.prototype.update = function () {
     _rai_Window_ChoiceList_update.call(this, ...arguments)
     let index = -1
     for (let n = 0; n < $gameMessage.choices().length; n++) {
-        if (this.positiveChoices[n].isButtonTouched()) {
+        if (this.positiveChoices[n].isBeingTouched()) {
             this.positiveChoices[n].opacity += 20
             this.negativeChoices[n].opacity -= 20
             index = n

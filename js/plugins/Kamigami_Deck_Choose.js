@@ -474,7 +474,7 @@ Scene_Kamigami_Deck_Choose.prototype.placeChooseDeck = function () {
         }
     }
     for (let index = 0; index < 3; index++) {
-        if (this.buttons[index].isButtonTouched()) {
+        if (this.buttons[index].isBeingTouched()) {
             if (this.bigGods[index].opacity == 0) {
                 AudioManager.playSe({ name: "menu_select", pan: 0, pitch: 95, volume: 100 });
             }
@@ -605,7 +605,7 @@ Scene_Kamigami_Deck_Choose.prototype.positionAllMiniCards = function () {
 };
 
 Scene_Kamigami_Deck_Choose.prototype.updateButtonHovers = function () {
-    if (this.returnButton.isButtonTouched()) {
+    if (this.returnButton.isBeingTouched()) {
         if (this.returnButtonLight.opacity == 0) {
             AudioManager.playSe({ name: "menu_select", pan: 0, pitch: 95, volume: 100 });
         }
@@ -619,7 +619,7 @@ Scene_Kamigami_Deck_Choose.prototype.updateButtonHovers = function () {
     } else {
         this.returnButtonLight.opacity -= 15
     }
-    if (this.chooseButton.isButtonTouched()) {
+    if (this.chooseButton.isBeingTouched()) {
         if (this.chooseButtonLight.opacity == 0) {
             AudioManager.playSe({ name: "menu_select", pan: 0, pitch: 95, volume: 100 });
         }

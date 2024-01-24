@@ -822,9 +822,9 @@ Scene_Kamigami_Lobby.prototype.moveStartAvatar = function () {
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Lobby.prototype.mainUpdate = function () {
     if (TouchInput.isPressed()) {
-        if (this.barDeck.isButtonTouched()) {
+        if (this.barDeck.isBeingTouched()) {
             this.moveDeckList = true
-        } else if (this.barFriends.isButtonTouched()) {
+        } else if (this.barFriends.isBeingTouched()) {
             this.moveFriendList = true
         }
     } else {
@@ -842,7 +842,7 @@ Scene_Kamigami_Lobby.prototype.mainUpdate = function () {
 // Function : checkButtonHover
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Lobby.prototype.checkAvatarHover = function () {
-    if (this._avatarGlow.isButtonTouched()) {
+    if (this._avatarGlow.isBeingTouched()) {
         this._avatarGlow.opacity += 20
     } else {
         this._avatarGlow.opacity -= 20
@@ -855,7 +855,7 @@ Scene_Kamigami_Lobby.prototype.checkAvatarHover = function () {
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Lobby.prototype.checkButtonHover = function () {
     for (let n = 0; n < 4; n++) {
-        if (this.txtButtons[n].isButtonTouched()) {
+        if (this.txtButtons[n].isBeingTouched()) {
             this.txtLights[n].opacity += 20
         } else {
             this.txtLights[n].opacity -= 20
@@ -909,7 +909,7 @@ Scene_Kamigami_Lobby.prototype.checkFriendList = function () {
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Lobby.prototype.checkButtonClick = function () {
     for (let index = 0; index < this.txtButtons.length; index++) {
-        if (this.txtButtons[index].isButtonTouched()) {
+        if (this.txtButtons[index].isBeingTouched()) {
             AudioManager.playSe({ name: "success", pan: 0, pitch: 95, volume: 100 });
             this.nextScene = index;
             this.phase = 3;
@@ -923,7 +923,7 @@ Scene_Kamigami_Lobby.prototype.checkButtonClick = function () {
         }
     }
 
-    if (this._avatarGlow.isButtonTouched()) {
+    if (this._avatarGlow.isBeingTouched()) {
         this.phase = 5;
         this.countFrames = 0;
     }
@@ -1241,7 +1241,7 @@ Scene_Kamigami_Lobby.prototype.updateDirectScene = function () {
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Lobby.prototype.checkDirectButtonHover = function () {
     for (let n = 0; n < 3; n++) {
-        if (this.txtButtonsDirect[n].isButtonTouched()) {
+        if (this.txtButtonsDirect[n].isBeingTouched()) {
             this.txtLightsDirect[n].opacity += 20
         } else {
             this.txtLightsDirect[n].opacity -= 20
@@ -1255,7 +1255,7 @@ Scene_Kamigami_Lobby.prototype.checkDirectButtonHover = function () {
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Lobby.prototype.checkDirectButtonClick = function () {
     for (let n = 0; n < 3; n++) {
-        if (this.txtButtonsDirect[n].isButtonTouched()) {
+        if (this.txtButtonsDirect[n].isBeingTouched()) {
             AudioManager.playSe({ name: "success", pan: 0, pitch: 95, volume: 100 });
             this.directNextScene = n;
             this.phase = 10;
@@ -1352,7 +1352,7 @@ Scene_Kamigami_Lobby.prototype.returnMainLobby = function () {
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Lobby.prototype.checkChatTrigger = function () {
     if (TouchInput.isTriggered()) {
-        if (this.chatSpriteView.isButtonTouched()) {
+        if (this.chatSpriteView.isBeingTouched()) {
             this.chatInput.select();
         }
     }

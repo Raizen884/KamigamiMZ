@@ -1710,7 +1710,7 @@ SpriteGod.prototype.updateButtonOff = function () {
         if (element.alpha < 1)
             element.alpha += 0.05
     });
-    if (this._buttonCheckInfoOff.isButtonTouched()) {
+    if (this._buttonCheckInfoOff.isBeingTouched()) {
         this._buttonCheckInfoOff.opacity += 20
         if (TouchInput.isTriggered()) {
             this._buttonChoice = true
@@ -1735,7 +1735,7 @@ SpriteGod.prototype.updateButtonOn = function () {
         if (element.alpha > 0)
             element.alpha -= 0.05
     });
-    if (this._buttonCheckInfoOn.isButtonTouched()) {
+    if (this._buttonCheckInfoOn.isBeingTouched()) {
         this._buttonCheckInfoOn.opacity += 20
         if (TouchInput.isTriggered()) {
             this._buttonChoice = false

@@ -48,12 +48,18 @@ if (true) {
         this.loadingBar.scale.x = this.loadedFiles / this.allFiles
 
     }
-
+    Spriteset_Base.prototype.findTargetSprite = function(target) {
+        return target;
+    };
     //-----------------------------------------------------------------------------
     // Function : create
     //-----------------------------------------------------------------------------
     Scene_Title.prototype.create = function () {
         Scene_Base.prototype.create.call(this);
+        this._spriteset = new Spriteset_Base();
+        this._spriteset._effectsContainer = this._spriteset._baseSprite;
+        this.addChild(this._spriteset);
+       // this._spriteset.addChild(this._spriteset._baseSprite);
         //Graphics._switchFullScreen();
         //this.loadAllGameImages();
         this.createVariables();
@@ -100,7 +106,7 @@ if (true) {
             //IAVRA.I18N.language = $dataKamigami.gameOptions.language
             //Graphics._switchFullScreen();
             //$dataKamigami.needsRoom = true;
-            //SceneManager.goto(Scene_CampaignMap);
+            SceneManager.goto(Scene_Main_Menu);
             //console.log("Teste")
             //$dataKamigami.owned_booster_packs[1] = 20
 
