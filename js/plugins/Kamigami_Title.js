@@ -1,3 +1,14 @@
+const _rai_SceneBoot_loadGameFonts = Scene_Boot.prototype.loadGameFonts
+
+Scene_Boot.prototype.loadGameFonts = function() {
+    _rai_SceneBoot_loadGameFonts.call(this, ...arguments)
+    FontManager.load("GameFont", "Grenze-SemiBold.ttf");
+    FontManager.load("Chau Philomene One", "ChauPhilomeneOne.ttf");
+    FontManager.load("GRENZE ExtraBold", "Grenze-SemiBold.ttf");
+    FontManager.load("Inria Sans", "InriaSans-Regular.ttf");
+    FontManager.load("Nord", "Nord.ttf");
+};
+
 //-----------------------------------------------------------------------------
 // Scene_Main Menu
 //
@@ -1222,7 +1233,6 @@ Scene_Main_Menu.prototype.closeMenu = function () {
     if (this.kamigami_frame_count > 80)
         this.tl3.play();
     if (this.kamigami_frame_count == 120)
-        console.log(this.btn_hover)
         if (this.btn_hover == 1)
             SceneManager.push(Scene_Map)
         else if (this.duelDecision) {
@@ -1233,8 +1243,10 @@ Scene_Main_Menu.prototype.closeMenu = function () {
         }
         else if (this.btn_hover == 3)
             SceneManager.push(Scene_Kamigami_Deck_Select)
-        else if (this.btn_hover == 4)
+        else if (this.btn_hover == 4) {
             SceneManager.push(Scene_Kamigami_Booster)
+        }
+            
         else if (this.btn_hover == 5)
             SceneManager.push(Scene_Ignis_Shop)
 

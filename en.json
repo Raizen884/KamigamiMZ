@@ -238,7 +238,11 @@
 			"lobbyDirect1": "CREATE",
 			"lobbyDirect1sub": "Creates a room.",
 			"lobbyDirect2": "JOIN",
-			"lobbyDirect2sub": "Joins a room."
+			"lobbyDirect2sub": "Joins a room.",
+			"selectPlayer1": "SELECT",
+			"selectPlayer1sub": "Choose this character!",
+			"selectPlayer2": "SWITCH",
+			"selectPlayer2sub": "switches to the other player!"
 		},
 		"MenuText": {
 			"options1": "PLAY TUTORIAL",
@@ -337,7 +341,8 @@
 			"lobbyPrizes2": "new card frames!",
 			"lobbyPrizes3": "new boards!",
 			"lobbyPrizes4": "new ?????",
-			"lobbyJoin": "Choose a room to join, if no room is created you will return to the lobby"
+			"lobbyJoin": "Choose a room to join, if no room is created you will return to the lobby",
+			"selectPlayer": "Hello adventurer! \nIt is time to choose who you are in the god's realm! \nFirst of all, what is your name?"
 		},
 		"SkillsDescription": {
 			"movement": "Move to this spot?\nIt will cost: |X| devotion",

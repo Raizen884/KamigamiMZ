@@ -1772,7 +1772,7 @@ SpriteStaticGod.prototype.update = function (cameraX = SceneManager._scene.speci
 SpriteStaticGod.prototype.destroy = function (options) {
     SpriteGod.prototype.destroy.call(this, options);
     this.imageLayerBack.destroy()
-    this.backSprite.destroy()
+    //this.backSprite.destroy()
     this._big_card_front.destroy()
     this.frontSprite.destroy()
     this.imageLayerCard.destroy()

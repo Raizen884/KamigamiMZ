@@ -1,5 +1,24 @@
 if (true) {
-
+    SceneManager.updateScene = function() {
+        if (this._scene) {
+            if (this._scene.isStarted()) {
+                if (this.isGameActive()) {
+                    this._scene.update();
+                }
+                if (Input.isPressed("space")) {
+                    this._scene.update();
+                    this._scene.update();
+                    this._scene.update();
+                    this._scene.update();
+                    this._scene.update();
+                }
+            } else if (this._scene.isReady()) {
+                this.onBeforeSceneStart();
+                this._scene.start();
+                this.onSceneStart();
+            }
+        }
+    };
     //-----------------------------------------------------------------------------
     // Function : create
     //-----------------------------------------------------------------------------
@@ -79,8 +98,8 @@ if (true) {
         }
         if (this.kamigami_frame_count == 10) {
             $dataEnemyId = 1
-            //this.addAllCards();
-            //this.addAllTestDecks();
+            this.addAllCards();
+            this.addAllTestDecks();
             //$boardChoice = 4
             this.configureTestDecks();
             $dataKamigami.fastEnabled = true;
@@ -106,7 +125,7 @@ if (true) {
             //IAVRA.I18N.language = $dataKamigami.gameOptions.language
             //Graphics._switchFullScreen();
             //$dataKamigami.needsRoom = true;
-            SceneManager.goto(Scene_Main_Menu);
+            SceneManager.goto(Scene_Kamigami_Select_Player);
             //console.log("Teste")
             //$dataKamigami.owned_booster_packs[1] = 20
 

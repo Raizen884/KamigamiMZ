@@ -484,16 +484,26 @@ Sprite_AttackCard.prototype.rotateImage = function (imgPos) {
 
 }
 
-Graphics._createGameFontLoader = function () {
-    this._createFontLoader('GameFont');
-    this._createFontLoader('Chau Philomene One');
-    this._createFontLoader('GRENZE ExtraBold');
-    this._createFontLoader('Inria Sans');
-    this._createFontLoader('Nord');
+
+
+SceneManager.changeScene = function() {
+    if (this.isSceneChanging() && !this.isCurrentSceneBusy()) {
+        if (this._scene) {
+            this._scene.terminate();
+            this.onSceneTerminate();
+        }
+        this._scene = this._nextScene;
+        this._nextScene = null;
+        if (this._scene) {
+            this._scene.create();
+            this.onSceneCreate();
+            this._cantPush = false;
+        }
+        if (this._exiting) {
+            this.terminate();
+        }
+    }
 };
-
-
-
 
 SceneManager.goto = function (sceneClass) {
     this._cantPush = true;
@@ -521,6 +531,8 @@ SceneManager.push = function (sceneClass) {
     this._stack.push(this._scene.constructor);
     this.goto(sceneClass);
 };
+
+
 
 Sprite_Animation.prototype.setupRate = function () {
     this._rate = 2;

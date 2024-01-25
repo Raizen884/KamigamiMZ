@@ -48,5 +48,6 @@ var $plugins =
 {"name":"KamigamiWeather","status":true,"description":"","parameters":{}},
 {"name":"Kamigami_Extra_Sprites","status":true,"description":"","parameters":{}},
 {"name":"Kamigami_Campaign","status":true,"description":"","parameters":{}},
-{"name":"Kamigami_Campaign_PreDuel","status":true,"description":"","parameters":{}}
+{"name":"Kamigami_Campaign_PreDuel","status":true,"description":"","parameters":{}},
+{"name":"KamigamiSelectPlayer","status":true,"description":"","parameters":{}}
 ];
