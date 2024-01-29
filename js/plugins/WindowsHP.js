@@ -247,7 +247,7 @@ Scene_Base.prototype.createWindowLayerDuel = function () {
     var x = (Graphics.width - width) / 2;
     var y = (Graphics.height - height) / 2;
     this._windowLayer = new WindowLayer();
-    this._windowLayer.move(x, y, width, height);
+    //this._windowLayer.move(x, y, width, height);
     this.cardContainer.addChildZ(this._windowLayer, 2);
 };
 

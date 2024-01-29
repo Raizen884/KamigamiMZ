@@ -114,7 +114,7 @@ if (true) {
             //this._animationCount++
             //this.addAllTestDecks(); 
             //this.addBrazilTestDecks();
-            $dataKamigami.chosenDeck = 4
+            //$dataKamigami.chosenDeck = 4
             //$dataKamigami.hasChosenDeck = true
             //let text =  new PIXI.Text(greenworks.getSteamId().steamId, { fontFamily: 'Chau Philomene One', fontSize: 60, fill: 0xc22424, align: 'left', stroke: "#000000", strokeThickness: 3 });
             //this.addChild(text)
@@ -125,7 +125,7 @@ if (true) {
             //IAVRA.I18N.language = $dataKamigami.gameOptions.language
             //Graphics._switchFullScreen();
             //$dataKamigami.needsRoom = true;
-            SceneManager.goto(Scene_Kamigami_Select_Player);
+            SceneManager.goto(Scene_Kamigami_Duel);
             //console.log("Teste")
             //$dataKamigami.owned_booster_packs[1] = 20
 
@@ -155,7 +155,7 @@ if (true) {
 
 
     Scene_Title.prototype.configureTestDecks = function () {
-        $dataKamigami.chosenDeck = 15;
+        $dataKamigami.chosenDeck = 0;
         $dataKamigami.decks[0] = ["TestDeck", []]
         for (let n = 0; n < 20; n++) {
             $dataKamigami.decks[0][1].push(140)
@@ -165,7 +165,7 @@ if (true) {
             //$dataKamigami.decks[0][1].push(119)
             $dataKamigami.decks[0][1].push(148)
         }
-        $dataKamigami.decks[0][1].push(123)
+        $dataKamigami.decks[0][1].push(152)
     };
     Scene_Title.prototype.addAllTestDecks = function () {
         let decks = JSON.parse(PluginManager.parameters('KamigamiDeck')['Enemy Creation']);

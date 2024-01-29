@@ -76,8 +76,7 @@ Scene_Kamigami_PreDuel.prototype.createExtraBackGround = function () {
 
 
 SceneManager.snapForBackgroundFix = function () {
-    this._backgroundBitmap = this.snap();
-    this._backgroundBitmap.blur();
+    SceneManager.snapForBackground();
 };
 
 Scene_Kamigami_PreDuel.prototype.createThirdBG = function () {

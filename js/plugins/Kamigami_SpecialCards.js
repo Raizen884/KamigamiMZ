@@ -1773,12 +1773,12 @@ SpriteStaticGod.prototype.destroy = function (options) {
     SpriteGod.prototype.destroy.call(this, options);
     this.imageLayerBack.destroy()
     //this.backSprite.destroy()
-    this._big_card_front.destroy()
-    this.frontSprite.destroy()
-    this.imageLayerCard.destroy()
-    this.imageBaseLayer.destroy()
+    //this._big_card_front.destroy()
+    //this.frontSprite.destroy()
+    //this.imageLayerCard.destroy()
+    //this.imageBaseLayer.destroy()
     for (let n = 0; n < this.imageValues.length; n++) {
-        this.imageValues[n].destroy()
+        //this.imageValues[n].destroy()
     }
 }
 

@@ -27,7 +27,7 @@ const scriptUrls = [
     "js/libs/TweenMax.js",
     //"js/libs/TimelineMax.js",
     "js/libs/filter-shockwave.cjs.js",
-    //"js/libs/filter-shockwave.esm.js",	
+    "js/libs/filter-shockwave.esm.js",	
     "js/libs/pixi-layers.js",	
     "js/libs/pixi-chatbox.js"
 ];

@@ -1267,7 +1267,7 @@ Scene_Kamigami_Duel.prototype.performEffectCard = function () {
         this.effectText.y = 700
         this._center_sprite.x = 960
         this._center_sprite.y = 540
-        this._center_sprite.startAnimation($dataAnimations[132], false, 0);
+        //this._center_sprite.startAnimation($dataAnimations[132], false, 0);
     } else if (this._big_card_front.euler.y > 0) {
         this._big_card_front.euler.y -= 0.2
         if (this._big_card_front.euler.y <= 0) {
