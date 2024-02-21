@@ -252,6 +252,7 @@ Scene_Kamigami_Deck_Build.prototype.createAllCardOptionsDeck = function () {
 Scene_Kamigami_Deck_Build.prototype.createAllCardOptions = function () {
     this.cardOptions = new SpriteCardOptions();
     this.addChild(this.cardOptions)
+    this.addChild(this.cardOptions.mask)
     this.cardOptions.x = 1400
 };
 
@@ -931,7 +932,7 @@ SpriteCardOptions.prototype.createMask = function () {
     //this.maskInside.anchor.x = this.maskInside.anchor.y = 0.5;
     this.mask.drawRect(-50, 0, 550, 700);
     this.mask.endFill();
-};
+}
 //-----------------------------------------------------------------------------
 // Function : update
 //-----------------------------------------------------------------------------

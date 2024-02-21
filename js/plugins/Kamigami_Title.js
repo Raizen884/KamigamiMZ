@@ -7,6 +7,8 @@ Scene_Boot.prototype.loadGameFonts = function() {
     FontManager.load("GRENZE ExtraBold", "Grenze-SemiBold.ttf");
     FontManager.load("Inria Sans", "InriaSans-Regular.ttf");
     FontManager.load("Nord", "Nord.ttf");
+    FontManager.load("Overpass", "Overpass-Medium.ttf");
+    FontManager.load("Karantina", "Karantina-Regular.ttf");
 };
 
 //-----------------------------------------------------------------------------

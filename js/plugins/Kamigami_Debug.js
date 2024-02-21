@@ -125,7 +125,8 @@ if (true) {
             //IAVRA.I18N.language = $dataKamigami.gameOptions.language
             //Graphics._switchFullScreen();
             //$dataKamigami.needsRoom = true;
-            SceneManager.goto(Scene_Kamigami_Duel);
+            SceneManager.goto(Scene_Kamigami_Deck_Build);
+            //SceneManager.goto(Scene_Kamigami_Duel);
             //console.log("Teste")
             //$dataKamigami.owned_booster_packs[1] = 20
 
@@ -158,14 +159,14 @@ if (true) {
         $dataKamigami.chosenDeck = 0;
         $dataKamigami.decks[0] = ["TestDeck", []]
         for (let n = 0; n < 20; n++) {
-            $dataKamigami.decks[0][1].push(140)
+            $dataKamigami.decks[0][1].push(133)
         }
         for (let n = 0; n < 20; n++) {
 
             //$dataKamigami.decks[0][1].push(119)
-            $dataKamigami.decks[0][1].push(148)
+            $dataKamigami.decks[0][1].push(135)
         }
-        $dataKamigami.decks[0][1].push(152)
+        $dataKamigami.decks[0][1].push(2)
     };
     Scene_Title.prototype.addAllTestDecks = function () {
         let decks = JSON.parse(PluginManager.parameters('KamigamiDeck')['Enemy Creation']);

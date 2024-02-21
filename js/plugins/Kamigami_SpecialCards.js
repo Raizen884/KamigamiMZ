@@ -44,11 +44,8 @@ Scene_Kamigami_Duel.prototype.createSpecialCard3d = function () {
 function SpriteGod(godName) {
     this.initialize.apply(this, arguments);
 }
-
 SpriteGod.prototype = Object.create(Sprite_Card.prototype);
 SpriteGod.prototype.constructor = SpriteGod;
-
-
 
 //-----------------------------------------------------------------------------
 // Function : SpriteGod
@@ -57,12 +54,10 @@ SpriteGod.prototype.initialize = function () {
     Sprite_Card.prototype.initialize.call(this);
     this.maskInside = new PIXI.Graphics();
     this.maskInside.beginFill();
-    this.maskInside.x = Graphics.width / 2;
-    this.maskInside.y = Graphics.height / 2
-    //this.maskInside.anchor.x = this.maskInside.anchor.y = 0.5;
-    this.maskInside.drawRect(-190, -250, 380, 500);
+    this.maskInside.convertTo3d();
+    this.maskInside.drawPolygon(-190, -220, 0, -250, 190, -220, 190, 250, -190, 250)
+    //this.maskInside.drawRect(-180, -250, 380, 500);
     this.maskInside.endFill();
-
     this.loadBackLayer(this.maskInside)
     this.backSprite = new Sprite();
     this.addChild(this.backSprite)
@@ -71,40 +66,20 @@ SpriteGod.prototype.initialize = function () {
     this.frontSprite = new Sprite();
     this.addChild(this.frontSprite)
     this.frontSprite.mask = this.maskInside;
-
     this.loadCardLayer()
-    this.loadRankLayer()
+    
     this.children.forEach(child => {
         child.convertTo3d();
     });
-
     this.maskInside.convertTo3d()
-
     this.countFrames = 0;
     this.motionType = 0;
     this.setWidthHeight()
     this.artist = new Sprite()
-
     this.createInfo();
+    
 };
-//-----------------------------------------------------------------------------
-// Function : loadRankLayer
-//-----------------------------------------------------------------------------
-SpriteGod.prototype.loadRankLayer = function () {
 
-    this.rankText = new PIXI.Text("RANK:", { fontFamily: 'Chau Philomene One', fontSize: 24, fill: 0x5A352D, align: 'left' });
-    this.addChild(this.rankText)
-
-    this.rankText.y = 170
-    this.rankText.x = 80
-    this.rankSprite = new Sprite();
-    this.rankText.alpha = 0;
-    //this.rankSprite.bitmap = ImageManager.loadSpecialCards("rankS")
-    this.rankSprite.anchor.x = this.rankSprite.anchor.y = 0.5
-    this.rankSprite.y = 180
-    this.rankSprite.x = 155
-    this.addChild(this.rankSprite)
-};
 
 //-----------------------------------------------------------------------------
 // Function : closeAllImages
@@ -117,16 +92,12 @@ SpriteGod.prototype.setWidthHeight = function () {
 // Function : closeAllImages
 //-----------------------------------------------------------------------------
 SpriteGod.prototype.closeAllImages = function () {
-    //this.bitmap = ImageManager.loadSpecialCards("");
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards("");
     this.imageLayerCard.bitmap = ImageManager.loadSpecialCards("");
     this.imageBaseLayer.bitmap = ImageManager.loadSpecialCards("");
     this._big_card_front.bitmap = ImageManager.loadSpecialCards("");
-    this.rankSprite.bitmap = ImageManager.loadSpecialCards("");
     this._big_card_front.opacity = 255;
-    this.rankText.alpha = 0;
     this.frontSprite.opacity = 0;
-
     if (this.godLayers)
         for (let n = 0; n < this.godLayers.length; n++) {
             this.godLayers[n].bitmap = ImageManager.loadSpecialCards("");
@@ -135,26 +106,22 @@ SpriteGod.prototype.closeAllImages = function () {
     this.backSprite.opacity = 0;
     if (this.emitter) {
         this.emitter.stop()
-        //this.emitter.dispose()
         this.emitter2.stop()
         this.emitter = null;
         this.emitter2 = null;
     }
-
     this.imageValues.forEach(element => {
         element.opacity = 0;
     });
-
 };
 //-----------------------------------------------------------------------------
 // Function : loadCardValues
 //-----------------------------------------------------------------------------
 SpriteGod.prototype.loadCardValues = function (id) {
+    let numSize = [23, 16, 21, 21, 26, 20, 23, 22, 23, 23]
     let costDevotion = Game_Kamigami.convertedCardList[id].costDevotion
     let addDevotion = Game_Kamigami.convertedCardList[id].addDevotion
     let cardType = Game_Kamigami.convertedCardList[id].cardType
-
-
     if (cardType == 2) {
         this.imageValues[3].x = 130
         this.imageValues[3].y = -326
@@ -162,38 +129,39 @@ SpriteGod.prototype.loadCardValues = function (id) {
         this.removeChild(this.imageValues[3])
         this.addChild(this.imageValues[3])
     } else if (cardType == 0) {
-        this.imageValues[3].x = -203
-        this.imageValues[3].y = -326
+        this.imageValues[3].x = 144
+        this.imageValues[3].y = -292
         this.imageValues[3].opacity = 255;
         this.removeChild(this.imageValues[3])
         this.addChild(this.imageValues[3])
     }
-
     if (cardType != 2) {
-        this.imageValues[2].bitmap = ImageManager.loadSpecialCards("cardNum_" + (addDevotion % 10))
+        this.imageValues[2].bitmap = ImageManager.loadSpecialCards("card_numbers_small")
+        this.setSmallNumberFrame(this.imageValues[2], addDevotion % 10)
         this.imageValues[2].opacity = 255;
-        this.imageValues[2].x = 175
-        this.imageValues[2].y = -311
+        this.imageValues[2].x = -170
+        this.imageValues[2].y = -278
         this.removeChild(this.imageValues[2])
         this.addChild(this.imageValues[2])
         if (addDevotion <= 9) {
             this.imageValues[2].x -= 10
         }
     }
-
     if (costDevotion > 9) {
-        this.imageValues[0].bitmap = ImageManager.loadSpecialCards("cardNum_" + Math.floor(costDevotion / 10))
+        this.imageValues[0].bitmap = ImageManager.loadSpecialCards("card_numbers_small")
+        this.setSmallNumberFrame(this.imageValues[0], Math.floor(costDevotion / 10))
         this.imageValues[0].opacity = 255;
         this.removeChild(this.imageValues[0])
         this.addChild(this.imageValues[0])
-        this.imageValues[0].x = -169
-        this.imageValues[0].y = -311
+        this.imageValues[0].x = 178
+        this.imageValues[0].y = -278
     }
     if (cardType != 0) {
-        this.imageValues[1].bitmap = ImageManager.loadSpecialCards("cardNum_" + (costDevotion % 10))
+        this.imageValues[1].bitmap = ImageManager.loadSpecialCards("card_numbers_small")
+        this.setSmallNumberFrame(this.imageValues[1], costDevotion % 10)
         this.imageValues[1].opacity = 255;
-        this.imageValues[1].x = -169
-        this.imageValues[1].y = -311
+        this.imageValues[1].x = 178
+        this.imageValues[1].y = -278
         this.removeChild(this.imageValues[1])
         this.addChild(this.imageValues[1])
         if (costDevotion <= 9) {
@@ -201,7 +169,6 @@ SpriteGod.prototype.loadCardValues = function (id) {
         }
     }
 };
-
 
 //-----------------------------------------------------------------------------
 // Function : configureGod
@@ -217,9 +184,13 @@ SpriteGod.prototype.configureGod = function (godName, id = -1, noAnimation = fal
     if (!$dataKamigami.gameOptions.cardEffects) {
         noAnimation = true
     }
-    if (this.text && this.text.bitmap) {
-        this.text.bitmap = null
+    if (this.text) {
+        this.text.text = ""
     }
+    if (this.textHeader && this.textHeader.bitmap) {
+        this.textHeader.bitmap = null
+    }
+
     if (this.artist.bitmap) {
         this.removeChild(this.artist)
         this.artist.bitmap.clear()
@@ -230,9 +201,9 @@ SpriteGod.prototype.configureGod = function (godName, id = -1, noAnimation = fal
     this.closeAllImages();
     this.godLayers = []
     if (id >= 0) {
-        this.rankText.alpha = 1;
+        //this.rankText.alpha = 1;
         let rank = ["rankS", "rankA", "rankB"]
-        this.rankSprite.bitmap = ImageManager.loadSpecialCards(rank[Math.floor(id / 150)])
+        //this.rankSprite.bitmap = ImageManager.loadSpecialCards(rank[Math.floor(id / 150)])
     }
 
     if ((!specialCards.includes(godName) || id >= 150) || noAnimation || this.staticCard) {
@@ -305,6 +276,8 @@ SpriteGod.prototype.configureGod = function (godName, id = -1, noAnimation = fal
         this.removeChild(this.imageValues[n])
         this.addChild(this.imageValues[n])
     }
+    SceneManager._scene.removeChild(this.maskInside)
+    SceneManager._scene.addChild(this.maskInside)
     this.countFrames = 0;
     this.writeCardText(id)
     this.writeArtistName(id)
@@ -324,7 +297,6 @@ SpriteGod.prototype.loadGodBasicLayers = function (godName, id) {
                 } else {
                     this.imageBaseLayer.bitmap = ImageManager.loadKamigami("big_template_goddess")
                 }
-
                 break;
             case 1:
                 if (card.isDeity) {
@@ -332,7 +304,6 @@ SpriteGod.prototype.loadGodBasicLayers = function (godName, id) {
                 } else {
                     this.imageBaseLayer.bitmap = ImageManager.loadKamigami("big_template_creature")
                 }
-
                 break;
             case 2:
                 this.imageBaseLayer.bitmap = ImageManager.loadKamigami("big_template_miracle")
@@ -341,9 +312,7 @@ SpriteGod.prototype.loadGodBasicLayers = function (godName, id) {
                 this.imageBaseLayer.bitmap = ImageManager.loadKamigami("big_template_monument")
                 break;
         }
-
     }
-
     this.imageLayerCard.bitmap = ImageManager.loadKamigami(godName)
 }
 
@@ -357,17 +326,12 @@ SpriteGod.prototype.setCard = function () {
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
     this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god2")
-
     this.loadGodLayerExtras(this.maskInside, "Set_god")
     this.loadGodLayerExtras(this.maskInside, "Set_god1")
     this.removeChild(this.frontSprite)
     this.addChild(this.frontSprite)
     this.removeChild(this.imageLayerCard)
     this.addChild(this.imageLayerCard)
-    this.removeChild(this.rankText)
-    this.addChild(this.rankText)
-    this.removeChild(this.rankSprite)
-    this.addChild(this.rankSprite)
     this.createParticlesFront(godName);
     this.createParticlesBack(godName);
     this._displacement.bitmap = ImageManager.loadDisplacement("Heart");
@@ -385,23 +349,14 @@ SpriteGod.prototype.hadesCard = function () {
     this.backSprite.opacity = 255;
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
     this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_god")
-
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_layer3")
-
     this.loadGodLayerExtras(this.maskInside, "hades_god")
-
     this.removeChild(this.frontSprite)
     this.addChild(this.frontSprite)
     this.removeChild(this.imageLayerCard)
     this.addChild(this.imageLayerCard)
-    this.removeChild(this.rankText)
-    this.addChild(this.rankText)
-    this.removeChild(this.rankSprite)
-    this.addChild(this.rankSprite)
     this.createParticlesFront(godName);
     this.createParticlesBack(godName);
-
-
     this._displacement.bitmap = ImageManager.loadDisplacement("Heart");
     this._displacement.scale.set(1);
     this._displacement.anchor.set(0.5);
@@ -428,10 +383,6 @@ SpriteGod.prototype.helCard = function () {
     this.loadGodLayerExtras(this.maskInside, "Hel_god1")
     this.removeChild(this.imageLayerCard)
     this.addChild(this.imageLayerCard)
-    this.removeChild(this.rankText)
-    this.addChild(this.rankText)
-    this.removeChild(this.rankSprite)
-    this.addChild(this.rankSprite)
     this.createParticlesFront(godName);
     this.createParticlesBack(godName);
     this._displacement.bitmap = ImageManager.loadDisplacement("map7");
@@ -440,8 +391,6 @@ SpriteGod.prototype.helCard = function () {
     this.tl.gotoAndPlay(0)
     this._displacement.scale.set(1);
     this._displacement.anchor.set(0.5);
-
-
     this.container.filters = [this.displacementFilter];
 };
 
@@ -461,7 +410,6 @@ SpriteGod.prototype.lokiCard = function () {
     this._displacement.scale.set(1);
     this._displacement.anchor.set(0.5);
     this.tl.timeScale(0.1);
-
     this.displacementFilterShockBG = new ShockwaveFilter();
     //this.addChild(this._backSprite);
     this.container.filters = [this.displacementFilterShockBG];
@@ -510,7 +458,6 @@ SpriteGod.prototype.raCard = function () {
     this.container.filters = [this.displacementFilter];
     this.tl.timeScale(0.1)
     this.tl.gotoAndPlay(0)
-
 };
 
 //-----------------------------------------------------------------------------
@@ -520,7 +467,6 @@ SpriteGod.prototype.thorCard = function () {
     let godName = "Thor"
     this.frontSprite.opacity = 100;
     this.backSprite.opacity = 55;
-
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
     this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god2")
@@ -531,13 +477,8 @@ SpriteGod.prototype.thorCard = function () {
     this.addChild(this.frontSprite)
     this.removeChild(this.imageLayerCard)
     this.addChild(this.imageLayerCard)
-    this.removeChild(this.rankText)
-    this.addChild(this.rankText)
-    this.removeChild(this.rankSprite)
-    this.addChild(this.rankSprite)
     this.createParticlesFront(godName);
     this.createParticlesBack(godName);
-
     this._displacement.bitmap = ImageManager.loadDisplacement("map15");
     this._displacement.scale.set(6);
     this._displacement.anchor.set(0.5);
@@ -556,10 +497,7 @@ SpriteGod.prototype.isisCard = function () {
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
     this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_layer4")
-
-
     this.loadGodLayerExtras(this.maskInside, "Isis_god")
-
     let n = this.godLayers.length
     this.godLayers.push(new Sprite())
     this.godLayers[n].bitmap = ImageManager.loadSpecialCards("Isis_layer3")
@@ -567,18 +505,12 @@ SpriteGod.prototype.isisCard = function () {
     this.godLayers[n].anchor.y = 0.5;
     this.godLayers[n].mask = this.maskInside
     this.addChild(this.godLayers[n])
-
     this.removeChild(this.frontSprite)
     this.addChild(this.frontSprite)
     this.removeChild(this.imageLayerCard)
     this.addChild(this.imageLayerCard)
-    this.removeChild(this.rankText)
-    this.addChild(this.rankText)
-    this.removeChild(this.rankSprite)
-    this.addChild(this.rankSprite)
     this.createParticlesFront(godName);
     this.createParticlesBack(godName);
-
     this._displacement.bitmap = ImageManager.loadDisplacement("map15");
     this._displacement.scale.set(8);
     this._displacement.anchor.set(0.5);
@@ -618,9 +550,7 @@ SpriteGod.prototype.zeusCard = function () {
     this.backSprite.opacity = 255;
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
     this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
-
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god4")
-
     this.loadGodLayerExtras(this.maskInside, "Zeus_god3")
     this.loadGodLayerExtras(this.maskInside, "Zeus_god2")
     this.loadGodLayerExtras(this.maskInside, "Zeus_god1")
@@ -628,10 +558,6 @@ SpriteGod.prototype.zeusCard = function () {
     this.addChild(this.frontSprite)
     this.removeChild(this.imageLayerCard)
     this.addChild(this.imageLayerCard)
-    this.removeChild(this.rankText)
-    this.addChild(this.rankText)
-    this.removeChild(this.rankSprite)
-    this.addChild(this.rankSprite)
     this.createParticlesFront(godName);
     this.createParticlesBack(godName);
     this._displacement.bitmap = ImageManager.loadDisplacement("map15");
@@ -661,7 +587,6 @@ SpriteGod.prototype.amaterasuCard = function () {
     this.container.filters = [this.displacementFilter];
     this.tl.timeScale(0.1)
     this.tl.gotoAndPlay(0)
-
 };
 
 //-----------------------------------------------------------------------------
@@ -676,7 +601,6 @@ SpriteGod.prototype.izanamiCard = function () {
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god")
     this.createParticlesFront(godName);
     this.createParticlesBack(godName);
-
 };
 
 //-----------------------------------------------------------------------------
@@ -697,7 +621,6 @@ SpriteGod.prototype.poseidonCard = function () {
     this.container.filters = [this.displacementFilter];
     this.tl.timeScale(0.1)
     this.tl.gotoAndPlay(0)
-
 };
 
 //-----------------------------------------------------------------------------
@@ -710,18 +633,12 @@ SpriteGod.prototype.izanagiCard = function () {
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
     this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god2")
-
     this.loadGodLayerExtras(this.maskInside, "Izanagi_god")
     this.loadGodLayerExtras(this.maskInside, "Izanagi_god1")
     this.removeChild(this.frontSprite)
     this.addChild(this.frontSprite)
     this.removeChild(this.imageLayerCard)
     this.addChild(this.imageLayerCard)
-    this.removeChild(this.rankText)
-    this.addChild(this.rankText)
-    this.removeChild(this.rankSprite)
-    this.addChild(this.rankSprite)
-
     this.createParticlesFront(godName);
     this.createParticlesBack(godName);
     this._displacement.bitmap = ImageManager.loadDisplacement("12");
@@ -820,7 +737,6 @@ SpriteGod.prototype.createParticlesFront = function (godName) {
         default:
             break;
     }
-
 };
 
 //-----------------------------------------------------------------------------
@@ -902,12 +818,9 @@ SpriteGod.prototype.createParticlesBack = function (godName) {
             this.emitter2.y = 85;
             this.emitter2.x = -70;
             break;
-
         default:
             break;
     }
-
-
 };
 
 //-----------------------------------------------------------------------------
@@ -917,10 +830,8 @@ SpriteGod.prototype.changeEuler = function (cameraX, cameraY) {
     //this._buttonCheckNeed = true
     let x = cameraX - TouchInput.x
     let y = TouchInput.y - cameraY
-
     this.euler.y = x / 3000
     this.euler.x = y / 1920
-
     this.maskInside.euler.y = this.euler.y
     //this.maskInside.euler.x = this.euler.x
 };
@@ -947,17 +858,14 @@ SpriteGod.prototype.changeEulerSmooth = function (cameraX, cameraY) {
     this.euler.x += eulerChange[1]
 
     this.maskInside.euler.y = this.euler.y
-    //this.maskInside.euler.x = this.euler.x
 };
-
-
-
 
 //-----------------------------------------------------------------------------
 // Function : SpriteGod
 //-----------------------------------------------------------------------------
 SpriteGod.prototype.update = function (cameraX = SceneManager._scene.specialCardCamera.x, cameraY = SceneManager._scene.specialCardCamera.y) {
     Sprite_Card.prototype.update.call(this);
+
     this.countFrames++;
     if (this.countFrames > 1200) {
         this.countFrames -= 1200
@@ -966,7 +874,6 @@ SpriteGod.prototype.update = function (cameraX = SceneManager._scene.specialCard
     this.maskInside.y = cameraY;
     this._displacement.y = Math.sin(this.countFrames * Math.PI / 600) * 300
     this._displacement.x = Math.cos(this.countFrames * Math.PI / 600) * 300
-
     if (this.oldId < 120)
         this.updateGodMovement();
     this.updateCheckButton();
@@ -1009,7 +916,6 @@ SpriteGod.prototype.updateGodMovement = function () {
     if (this.godName == "big_isis") {
         this.playSpecialIsisCard();
     }
-
 };
 //-----------------------------------------------------------------------------
 // Function : playSpecialHelCard
@@ -1034,7 +940,6 @@ SpriteGod.prototype.playSpecialHelCard = function () {
     }
 }
 
-
 //-----------------------------------------------------------------------------
 // Function : playSpecialIsisCard
 //-----------------------------------------------------------------------------
@@ -1054,7 +959,6 @@ SpriteGod.prototype.playSpecialHadesCard = function () {
         this._big_card_front.opacity += 5
     }
 };
-
 
 //-----------------------------------------------------------------------------
 // Function : playSpecialZeusCard
@@ -1140,7 +1044,6 @@ SpriteGod.prototype.playShockwaveGod = function () {
         switch (this.motionType) {
             case 0:
                 this.displacementFilterShockBG.time += 0.03 * Math.random();
-
                 if (this.displacementFilterShockBG.time > 1) {
                     this.motionType = 1
                 }
@@ -1155,7 +1058,6 @@ SpriteGod.prototype.playShockwaveGod = function () {
                 break;
         }
 };
-
 
 //-----------------------------------------------------------------------------
 // Function : moveBackDisplacement
@@ -1199,17 +1101,14 @@ SpriteGod.prototype.moveGodScaleLayer = function (sprite, sprite2 = false) {
     }
 };
 
-
 //-----------------------------------------------------------------------------
 // Function : loadBackLayer
 //-----------------------------------------------------------------------------
 SpriteGod.prototype.loadBackLayer = function (mask) {
     this.containerBack = new PIXI.Container();
     this.imageLayerBack = new Sprite()
-
     this.imageLayerBack.mask = mask;
     this.imageLayerBack.anchor.x = this.imageLayerBack.anchor.y = 0.5;
-
     this.containerBack.addChild(this.imageLayerBack)
     this._displacementBack = new Sprite();
     this._displacementBack.bitmap = ImageManager.loadDisplacement("1");
@@ -1223,12 +1122,12 @@ SpriteGod.prototype.loadBackLayer = function (mask) {
     this.displacementFilterBack.scale.y = 1;
     this.tlBack = new TimelineMax({ paused: true });
     this.tlBack.to(this.displacementFilterBack.scale, 8, { x: 0, y: -80, ease: Expo.easeInOut });
-    //this.tl.to(this.camera, 0, { autoAlpha: 1, ease: Expo.easeInOut }, "+=1");
     this.tlBack.timeScale(50);
     this.tlBack.play();
     this.addMotionBack = true;
     this.addChild(this.containerBack)
 }
+
 //-----------------------------------------------------------------------------
 // Function : loadCardLayer
 //-----------------------------------------------------------------------------
@@ -1251,16 +1150,17 @@ SpriteGod.prototype.loadCardLayer = function () {
         this.imageValues[n] = new Sprite()
         this.addChild(this.imageValues[n])
         this.imageValues[n].opacity = 0;
-        this.imageValues[n].scale.x = this.imageValues[n].scale.y = 0.85
         switch (n) {
             case 0:
                 this.imageValues[n].anchor.x = 1
                 break;
-            case 1:
-                this.imageValues[n].anchor.x = 0
+            case 13:
+            case 12:
+            case 2:
+                this.imageValues[n].anchor.x = 0.5
                 break;
             default:
-                this.imageValues[n].anchor.x = 0.5
+                this.imageValues[n].anchor.x = 0
                 break;
         }
     }
@@ -1269,8 +1169,6 @@ SpriteGod.prototype.loadCardLayer = function () {
     this.addChild(this.imageValues[3])
     this.imageValues[3].opacity = 0
 }
-
-
 
 //-----------------------------------------------------------------------------
 // Function : loadGodLayer
@@ -1290,7 +1188,6 @@ SpriteGod.prototype.loadGodLayerExtras = function (mask, bitmap) {
 SpriteGod.prototype.loadGodLayer = function (mask) {
     this.container = new PIXI.Container();
     this._big_card_front = new Sprite()
-
     this.addChild(this.container)
     this._big_card_front.anchor.x = 0.5;
     this._big_card_front.anchor.y = 0.5;
@@ -1323,14 +1220,14 @@ SpriteGod.prototype.writeArtistName = function (id) {
     this.artist.bitmap.fontSize = 16
     this.artist.bitmap.textColor = "#FFFFFF"
     this.artist.bitmap.outlineWidth = 3
+    this.artist.rotation = -Math.PI / 2
     this.artist.convertTo3d()
     let artist = Game_Kamigami.convertedCardList[id].artist
     this.artist.bitmap.drawText(artist, 0, 0, 100, 30, 'left')
     this.addChild(this.artist)
-    this.artist.x = - 100
-    this.artist.y = 46
+    this.artist.x = 135
+    this.artist.y = -25
 }
-
 
 //-----------------------------------------------------------------------------
 // Function : writeCardText
@@ -1345,29 +1242,36 @@ SpriteGod.prototype.writeCardText = function (id) {
         this.removeChild(this.text)
         this.text.destroy()
     }
-    this.text = new Sprite()
-    this.text.bitmap = new Bitmap(400, 600)
-    this.text.bitmap.fontFace = "Inria Sans"
-    this.text.bitmap._baseTexture.scaleMode = PIXI.SCALE_MODES.LINEAR;
-    this.text.bitmap.fontSize = 22
-    this.text.bitmap.textColor = "#75463F"
-    this.text.bitmap.outlineWidth = 0
-    this.text.anchor.x = this.text.anchor.y = 0.5
-    this.text.y = 0
+    if (this.textHeader) {
+        this.removeChild(this.textHeader)
+        this.textHeader.destroy()
+    }
+    this.text = new PIXI.Text(text[1], { fontFamily: 'Overpass', fontSize: 20, fill: 0x262130, align: 'center', wordWrap: true, wordWrapWidth: 290, lineHeight: 24 });
+    this.text.anchor.x = 0.5
+    this.text.y = 180
     this.text.convertTo3d()
-    let y = 210
-    text.forEach(element => {
-        this.text.bitmap.drawText(element, 0, y, 400, 600, 'center')
-        y += 25
-    });
+    this.textHeader = new Sprite();
+    this.textHeader.convertTo3d()
+    let y = 170
+    this.textHeader.anchor.x = this.textHeader.anchor.y = 0.5
+    this.textHeader.bitmap = new Bitmap(400, 600)
+    this.textHeader.y = 0
+    this.textHeader.bitmap.fontFace = "Overpass"
+    this.textHeader.bitmap.fontSize = 22
+    this.textHeader.bitmap.textColor = "#262130"
+    this.textHeader.bitmap.outlineWidth = 0
+    this.textHeader.bitmap.drawText(text[0], 0, y, 400, 600, 'center')
 
+    this.textHeader.bitmap._baseTexture.scaleMode = PIXI.SCALE_MODES.LINEAR;
     this.addChild(this.text)
+    this.addChild(this.textHeader)
 }
 
 //-----------------------------------------------------------------------------
 // Function : loadCardRealValues
 //-----------------------------------------------------------------------------
 SpriteGod.prototype.loadCardRealValues = function (id) {
+
     if (id == -1) {
         return
     }
@@ -1385,48 +1289,53 @@ SpriteGod.prototype.loadCardRealValues = function (id) {
 //-----------------------------------------------------------------------------
 SpriteGod.prototype.loadCardCivilization = function (card) {
     this.imageValues[13].opacity = 255
-    this.imageValues[13].y = -265
-    switch (card.specialType) {
-        case 0:
-            this.imageValues[13].bitmap = ImageManager.loadKamigami("symbol_greek")
-            break;
-        case 1:
-            this.imageValues[13].bitmap = ImageManager.loadKamigami("symbol_egypt")
-            break;
-        case 2:
-            this.imageValues[13].bitmap = ImageManager.loadKamigami("symbol_norse")
-            break;
-        case 3:
-            this.imageValues[13].bitmap = ImageManager.loadKamigami("symbol_japanese")
-            break;
-        case 4:
-            this.imageValues[13].bitmap = ImageManager.loadKamigami("symbol_brazilian")
-            break;
-    }
+    this.imageValues[13].y = 100
+    this.imageValues[13].bitmap = ImageManager.loadSpecialCards("card_icons_civ")
+    this.imageValues[13].setFrame(card.specialType * 35, 0, 35, 35)
+}
+//-----------------------------------------------------------------------------
+// Function : setSmallNumberFrame
+//-----------------------------------------------------------------------------
+SpriteGod.prototype.setSmallNumberFrame = function (sprite, number) {
+    let numPositions = [0, 23, 39, 60, 81, 107, 127, 150, 172, 195]
+    let numSize = [23, 16, 21, 21, 26, 20, 23, 22, 23, 23]
+    sprite.setFrame(numPositions[number], 0, numSize[number], 40);
 
 }
+//-----------------------------------------------------------------------------
+// Function : setLargeNumberFrame
+//-----------------------------------------------------------------------------
+SpriteGod.prototype.setLargeNumberFrame = function (sprite, number) {
+    let numPositions = [0, 30, 51, 78, 105, 140, 168, 199, 229, 260]
+    let numSize = [30, 21, 27, 27, 35, 28, 31, 30, 31, 30]
+    sprite.setFrame(numPositions[number], 0, numSize[number], 54);
 
-
+}
 //-----------------------------------------------------------------------------
 // Function : loadAttackCost
 //-----------------------------------------------------------------------------
 SpriteGod.prototype.loadAttackCost = function (card) {
+    let numSize = [23, 16, 21, 21, 26, 20, 23, 22, 23, 23]
+    this.imageValues[4].y = -5
+    this.imageValues[5].y = -5
     if (Math.floor(card.attackCost / 10) > 0) {
-        this.imageValues[4].bitmap = ImageManager.loadSpecialCards("cardNum_" + Math.floor(card.attackCost / 10))
+        this.imageValues[4].bitmap = ImageManager.loadSpecialCards("card_numbers_small")
+        this.setSmallNumberFrame(this.imageValues[4], Math.floor(card.attackCost / 10))
         this.imageValues[4].opacity = 255
-        this.imageValues[4].x = -180
+        this.imageValues[4].x = -195
     } else {
         this.imageValues[4].opacity = 0
     }
     if (card.attackCost == 0) {
         this.imageValues[5].opacity = 0
     } else {
-        this.imageValues[5].bitmap = ImageManager.loadSpecialCards("cardNum_" + card.attackCost % 10)
+        this.imageValues[5].bitmap = ImageManager.loadSpecialCards("card_numbers_small")
+        this.setSmallNumberFrame(this.imageValues[5], card.attackCost % 10)
         this.imageValues[5].opacity = 255
-        this.imageValues[5].x = -155
+        this.imageValues[5].x = -195 + numSize[Math.floor(card.attackCost / 10)]
     }
     if (card.attackCost < 10) {
-        this.imageValues[5].x = -165
+        this.imageValues[5].x = -188
     }
 }
 
@@ -1434,47 +1343,53 @@ SpriteGod.prototype.loadAttackCost = function (card) {
 // Function : loadMovementCost
 //-----------------------------------------------------------------------------
 SpriteGod.prototype.loadMovementCost = function (card) {
+    let numSize = [23, 16, 21, 21, 26, 20, 23, 22, 23, 23]
+    this.imageValues[6].y = -5
+    this.imageValues[7].y = -5
     if (Math.floor(card.moveCost / 10) > 0) {
-        this.imageValues[6].bitmap = ImageManager.loadSpecialCards("cardNum_" + Math.floor(card.moveCost / 10))
+        this.imageValues[6].bitmap = ImageManager.loadSpecialCards("card_numbers_small")
+        this.setSmallNumberFrame(this.imageValues[6], Math.floor(card.moveCost / 10))
         this.imageValues[6].opacity = 255
-        this.imageValues[6].x = 154
+        this.imageValues[6].x = 163
     } else {
         this.imageValues[6].opacity = 0
     }
     if (card.moveCost == 0) {
         this.imageValues[7].opacity = 0
     } else {
-        this.imageValues[7].bitmap = ImageManager.loadSpecialCards("cardNum_" + card.moveCost % 10)
+        this.imageValues[7].bitmap = ImageManager.loadSpecialCards("card_numbers_small")
+        this.setSmallNumberFrame(this.imageValues[7], card.moveCost % 10)
         this.imageValues[7].opacity = 255
-        this.imageValues[7].x = 179
+        this.imageValues[7].x = 163 + numSize[Math.floor(card.moveCost / 10)]
     }
     if (card.moveCost < 10) {
-        this.imageValues[7].x = 165
+        this.imageValues[7].x = 168
     }
 }
 //-----------------------------------------------------------------------------
 // Function : loadAttackValues
 //-----------------------------------------------------------------------------
 SpriteGod.prototype.loadAttackValues = function (card) {
-    this.imageValues[8].y = this.imageValues[9].y = 82
+    let numSize = [30, 21, 27, 27, 35, 28, 31, 30, 31, 30]
+    this.imageValues[8].y = this.imageValues[9].y = 72
     if (Math.floor(card.attack / 10) > 0) {
-        this.imageValues[8].bitmap = ImageManager.loadSpecialCards("cardNum_" + Math.floor(card.attack / 10))
+        this.imageValues[8].bitmap = ImageManager.loadSpecialCards("card_numbers_big")
+        this.setLargeNumberFrame(this.imageValues[8], Math.floor(card.attack / 10))
         this.imageValues[8].opacity = 255
-        this.imageValues[8].x = -167
-        this.imageValues[8].scale.x = this.imageValues[8].scale.y = 1
+        this.imageValues[8].x = -187
     } else {
         this.imageValues[8].opacity = 0
     }
     if (card.attack == 0 && card.cardType != 1) {
         this.imageValues[9].opacity = 0
     } else {
-        this.imageValues[9].bitmap = ImageManager.loadSpecialCards("cardNum_" + card.attack % 10)
+        this.imageValues[9].bitmap = ImageManager.loadSpecialCards("card_numbers_big")
+        this.setLargeNumberFrame(this.imageValues[9], card.attack % 10)
         this.imageValues[9].opacity = 255
-        this.imageValues[9].x = -140
-        this.imageValues[9].scale.x = this.imageValues[9].scale.y = 1
+        this.imageValues[9].x = -187 + numSize[Math.floor(card.attack / 10)]
     }
     if (card.attack < 10) {
-        this.imageValues[9].x = -155
+        this.imageValues[9].x = -182
     }
 }
 
@@ -1482,20 +1397,21 @@ SpriteGod.prototype.loadAttackValues = function (card) {
 // Function : loadAttackValues
 //-----------------------------------------------------------------------------
 SpriteGod.prototype.loadTotalHPValues = function (card) {
+    let numSize = [30, 21, 27, 27, 35, 28, 31, 30, 31, 30]
     if (card.cardType == 2) {
         this.imageValues[10].opacity = 0
         this.imageValues[11].opacity = 0
         return
     }
-    this.imageValues[10].y = this.imageValues[11].y = 82
-    this.imageValues[10].bitmap = ImageManager.loadSpecialCards("cardNum_" + Math.floor(card.mhp / 10))
+    this.imageValues[10].y = this.imageValues[11].y = 72
+    this.imageValues[10].bitmap = ImageManager.loadSpecialCards("card_numbers_big")
+    this.setLargeNumberFrame(this.imageValues[10], Math.floor(card.mhp / 10))
     this.imageValues[10].opacity = 255
-    this.imageValues[10].x = 140
-    this.imageValues[10].scale.x = this.imageValues[10].scale.y = 1
-    this.imageValues[11].bitmap = ImageManager.loadSpecialCards("cardNum_" + card.mhp % 10)
+    this.imageValues[10].x = 136
+    this.imageValues[11].bitmap = ImageManager.loadSpecialCards("card_numbers_big")
+    this.setLargeNumberFrame(this.imageValues[11], card.mhp % 10)
     this.imageValues[11].opacity = 255
-    this.imageValues[11].x = 167
-    this.imageValues[11].scale.x = this.imageValues[11].scale.y = 1
+    this.imageValues[11].x = 136 + numSize[Math.floor(card.mhp / 10)]
 
 }
 //-----------------------------------------------------------------------------
@@ -1503,13 +1419,11 @@ SpriteGod.prototype.loadTotalHPValues = function (card) {
 //-----------------------------------------------------------------------------
 SpriteGod.prototype.loadCardName = function (card) {
     this.imageValues[12].bitmap = new Bitmap(300, 100)
-
     this.imageValues[12].bitmap.fontSize = 50;
     this.imageValues[12].bitmap.outlineWidth = 0;
-    this.imageValues[12].bitmap.fontFace = "Nord";
-    this.imageValues[12].bitmap.textColor = "#774840"
-
-    this.imageValues[12].y = -345
+    this.imageValues[12].bitmap.fontFace = "Karantina";
+    this.imageValues[12].bitmap.textColor = "#47374A"
+    this.imageValues[12].y = -348
     this.imageValues[12].bitmap.drawText(card.name.toUpperCase(), 0, 0, 300, 100, 'center')
     this.imageValues[12].opacity = 255
 }
@@ -1525,8 +1439,8 @@ SpriteGod.prototype.createInfo = function () {
     this.createCheckInfoButtons();
     this.createInfoBars();
     this.createInfoText();
-
 }
+
 //-----------------------------------------------------------------------------
 // Function : reloadInfoText
 //-----------------------------------------------------------------------------
@@ -1539,7 +1453,6 @@ SpriteGod.prototype.reloadInfoText = function () {
             this.addChild(this.infoText[n])
         }
     }
-
 }
 
 //-----------------------------------------------------------------------------
@@ -1558,7 +1471,6 @@ SpriteGod.prototype.createInfoText = function () {
             strokeThickness: 3
         });
         this.addChild(this.infoText[n])
-
         switch (n) {
             case 0:
                 this.infoText[n].x = -90
@@ -1584,12 +1496,10 @@ SpriteGod.prototype.createInfoText = function () {
                 this.infoText[n].x = 250
                 this.infoText[n].y = 77
                 break;
-
         }
         this.infoText[n].alpha = 0
     }
 }
-
 
 //-----------------------------------------------------------------------------
 // Function : createInfoBars
@@ -1602,7 +1512,6 @@ SpriteGod.prototype.createInfoBars = function () {
     this._infoBar.y = -325
 }
 
-
 //-----------------------------------------------------------------------------
 // Function : createCheckInfoButtons
 //-----------------------------------------------------------------------------
@@ -1613,7 +1522,6 @@ SpriteGod.prototype.createCheckInfoButtons = function () {
     this._buttonCheckInfoOn.opacity = 0
     this._buttonCheckInfoOn.anchor.x = this._buttonCheckInfoOn.anchor.y = 0.5
     this._buttonCheckInfoOn.y = 400
-
     this._buttonCheckInfoOff = new Sprite_Card();
     this._buttonCheckInfoOff.bitmap = ImageManager.loadSpecialCards("checkInfo_2")
     this.addChild(this._buttonCheckInfoOff)
@@ -1621,6 +1529,7 @@ SpriteGod.prototype.createCheckInfoButtons = function () {
     this._buttonCheckInfoOff.anchor.x = this._buttonCheckInfoOff.anchor.y = 0.5
     this._buttonCheckInfoOff.y = 400
 }
+
 //-----------------------------------------------------------------------------
 // Function : updateCheckButton
 //-----------------------------------------------------------------------------
@@ -1639,7 +1548,6 @@ SpriteGod.prototype.updateCheckButton = function () {
     } else {
         this.updateButtonOff()
     }
-
 }
 
 //-----------------------------------------------------------------------------
@@ -1657,7 +1565,6 @@ SpriteGod.prototype.updateBarInfoPosition = function () {
         this._infoBar.scale.x = 1
         this._infoBar.x = -160
     }
-
     if (oldSide != this.leftSide) {
         this.updateAllTextPositions()
     }
@@ -1750,8 +1657,6 @@ SpriteGod.prototype.updateButtonOn = function () {
     }
 }
 
-
-
 //-----------------------------------------------------------------------------
 // Sprite_Cards
 //
@@ -1792,16 +1697,12 @@ SpriteStaticGod.prototype.initialize = function () {
     this.backSprite = new Sprite();
     this.addChild(this.backSprite)
     this._big_card_front = new Sprite()
-
     this._big_card_front.anchor.x = 0.5;
     this._big_card_front.anchor.y = 0.5;
     this.addChild(this._big_card_front)
-
     this.frontSprite = new Sprite();
     this.addChild(this.frontSprite)
-
     this.loadCardLayer()
-    this.loadRankLayer()
     this.setWidthHeight()
     this.artist = new Sprite()
 };
@@ -1829,11 +1730,8 @@ SpriteStaticGod.prototype.changeEulerSmooth = function (cameraX, cameraY) {
     this.euler.x += eulerChange[1]
 };
 
-
-
-
 exportAllImages = function () {
-    let renderer = Graphics._renderer;
+    let renderer = Graphics.app.renderer;
     let fs = require('fs');
     let url
     let b64
@@ -1847,10 +1745,9 @@ exportAllImages = function () {
         b64 = url.replace(/^data:image\/[a-z]+;base64,/, "");
         fs.writeFileSync('C:/Games/cards/deity/' + name + '.png', b64, 'base64');
     }
-
 }
 exportSpecificCardId = function (cardId) {
-    let renderer = Graphics._renderer;
+    let renderer = Graphics.app.renderer;
     let fs = require('fs');
     let url
     let b64
@@ -1860,11 +1757,10 @@ exportSpecificCardId = function (cardId) {
     url = renderer.extract.canvas(spr).toDataURL('png', 100);
     b64 = url.replace(/^data:image\/[a-z]+;base64,/, "");
     fs.writeFileSync('C:/Games/cards/deity/' + name + '.png', b64, 'base64');
-
 }
 
 exportSpecificCardName = function (cardName) {
-    let renderer = Graphics._renderer;
+    let renderer = Graphics.app.renderer;
     let fs = require('fs');
     let url
     let b64
@@ -1878,5 +1774,4 @@ exportSpecificCardName = function (cardName) {
         b64 = url.replace(/^data:image\/[a-z]+;base64,/, "");
         fs.writeFileSync('C:/Games/cards/deity/' + name + '.png', b64, 'base64');
     }
-
 }
