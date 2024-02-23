@@ -67,7 +67,7 @@ SpriteGod.prototype.initialize = function () {
     this.addChild(this.frontSprite)
     this.frontSprite.mask = this.maskInside;
     this.loadCardLayer()
-    
+
     this.children.forEach(child => {
         child.convertTo3d();
     });
@@ -77,7 +77,7 @@ SpriteGod.prototype.initialize = function () {
     this.setWidthHeight()
     this.artist = new Sprite()
     this.createInfo();
-    
+
 };
 
 
@@ -207,6 +207,7 @@ SpriteGod.prototype.configureGod = function (godName, id = -1, noAnimation = fal
     }
 
     if ((!specialCards.includes(godName) || id >= 150) || noAnimation || this.staticCard) {
+        this.reorderCardLayer();
         this.loadGodBasicLayers(godName, id)
         if (id != -1) {
             this.loadCardValues(id)
@@ -1169,7 +1170,19 @@ SpriteGod.prototype.loadCardLayer = function () {
     this.addChild(this.imageValues[3])
     this.imageValues[3].opacity = 0
 }
-
+//-----------------------------------------------------------------------------
+// Function : loadCardLayer
+//-----------------------------------------------------------------------------
+SpriteGod.prototype.reorderCardLayer = function () {
+    this.removeChild(this.imageLayerCard)
+    this.addChild(this.imageLayerCard)
+    this.removeChild(this.imageBaseLayer)
+    this.addChild(this.imageBaseLayer)
+    for (let n = 0; n < 14; n++) {
+        this.removeChild(this.imageValues[n])
+        this.addChild(this.imageValues[n])
+    }
+}
 //-----------------------------------------------------------------------------
 // Function : loadGodLayer
 //-----------------------------------------------------------------------------
@@ -1246,23 +1259,27 @@ SpriteGod.prototype.writeCardText = function (id) {
         this.removeChild(this.textHeader)
         this.textHeader.destroy()
     }
-    this.text = new PIXI.Text(text[1], { fontFamily: 'Overpass', fontSize: 20, fill: 0x262130, align: 'center', wordWrap: true, wordWrapWidth: 290, lineHeight: 24 });
+    let baseText = text.length > 1 ? text[1] : text[0]
+    this.text = new PIXI.Text(baseText, { fontFamily: 'Overpass', fontSize: 20, fill: 0x262130, align: 'center', wordWrap: true, wordWrapWidth: 290, lineHeight: 24 });
     this.text.anchor.x = 0.5
-    this.text.y = 180
+    this.text.y = 120 + text.length * 30
     this.text.convertTo3d()
     this.textHeader = new Sprite();
-    this.textHeader.convertTo3d()
-    let y = 170
-    this.textHeader.anchor.x = this.textHeader.anchor.y = 0.5
-    this.textHeader.bitmap = new Bitmap(400, 600)
-    this.textHeader.y = 0
-    this.textHeader.bitmap.fontFace = "Overpass"
-    this.textHeader.bitmap.fontSize = 22
-    this.textHeader.bitmap.textColor = "#262130"
-    this.textHeader.bitmap.outlineWidth = 0
-    this.textHeader.bitmap.drawText(text[0], 0, y, 400, 600, 'center')
+    if (text.length > 1) {
+        this.textHeader.convertTo3d()
+        let y = 170
+        this.textHeader.anchor.x = this.textHeader.anchor.y = 0.5
+        this.textHeader.bitmap = new Bitmap(400, 600)
+        this.textHeader.y = 0
+        this.textHeader.bitmap.fontFace = "Overpass"
+        this.textHeader.bitmap.fontSize = 22
+        this.textHeader.bitmap.textColor = "#262130"
+        this.textHeader.bitmap.outlineWidth = 0
+        this.textHeader.bitmap.drawText(text[0], 0, y, 400, 600, 'center')
+    
+        this.textHeader.bitmap._baseTexture.scaleMode = PIXI.SCALE_MODES.LINEAR;
+    }
 
-    this.textHeader.bitmap._baseTexture.scaleMode = PIXI.SCALE_MODES.LINEAR;
     this.addChild(this.text)
     this.addChild(this.textHeader)
 }

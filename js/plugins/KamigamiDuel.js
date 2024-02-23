@@ -106,11 +106,16 @@ Scene_Kamigami_Duel.prototype.initialize = function () {
     $dataKamigami.isOnline = false;
     this.startAllMethods();
 };
-
+Scene_Kamigami_Duel.prototype.createSpritebase = function () {
+    this._spriteset = new Spriteset_Base();
+    this._spriteset._effectsContainer = this._spriteset._baseSprite;
+    this.addChild(this._spriteset);
+}
 //-----------------------------------------------------------------------------
 // Function : initialize - initiates the graphics
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Duel.prototype.startAllMethods = function () {
+    
     AudioManager.stopSe();
     AudioManager.stopBgs();
     this.initialize_classes();
@@ -153,6 +158,7 @@ Scene_Kamigami_Duel.prototype.startAllMethods = function () {
     this.createGiveUpDialog()
     this.startOnlineTimer();
     this.createDevotionContainer();
+    this.createSpritebase();
 };
 
 //-----------------------------------------------------------------------------
@@ -444,12 +450,14 @@ Scene_Kamigami_Duel.prototype.create_devotion = function () {
     this._devotion_player1.y = 562;
     this._devotion_player1.bitmap.fontSize = 70;
     this._devotion_player1.bitmap.outlineWidth = 10;
+    this._devotion_player1.bitmap.fontFace = "GRENZE ExtraBold"
     this._devotion_player1.bitmap.drawText("0", 0, 0, 200, 80, 'center');
     this.cardContainer.addChildZ(this._devotion_player1, 0);
     this._devotion_player2 = new Sprite(new Bitmap(200, 80));
     this._devotion_player2.x = 245;
     this._devotion_player2.y = 424;
     this._devotion_player2.bitmap.fontSize = 70;
+    this._devotion_player2.bitmap.fontFace = "GRENZE ExtraBold"
     this._devotion_player2.bitmap.outlineWidth = 10;
     this._devotion_player2.bitmap.drawText("0", 0, 0, 200, 80, 'center');
     this.cardContainer.addChildZ(this._devotion_player2, 0);

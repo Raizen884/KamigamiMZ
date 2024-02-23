@@ -26,13 +26,17 @@ Sprite_Card.prototype.update = function () {
 };
 
 Sprite_Card.prototype.startAnimation = function (animation, mirror, delay, rate = 2) {
+    SceneManager._scene._spriteset.createAnimationSprite([this], animation, mirror, delay, rate)
+    //
+};
+
+Sprite_Card.prototype.startAnimationMZ = function (animation, mirror, delay, rate = 2) {
     this._lastAnimation = new Sprite_Animation();
     this._lastAnimation.setup(this._effectTarget, animation, mirror, delay, rate);
     this.parent.addChild(this._lastAnimation);
     this._lastAnimation.y = 70;
     this._animationSprites.push(this._lastAnimation);
 };
-
 Sprite_Animation.prototype.setupMV = function (target, animation, mirror, delay, rate = 2) {
     this._target = target;
     this._animation = animation;
@@ -64,10 +68,10 @@ Sprite_Animation.prototype.setup = function(
     }
 };
 
-Sprite_Card.prototype.startAnimation3d = function (animation, mirror, delay) {
+Sprite_Card.prototype.startAnimation3d = function (animation, mirror, delay, rate = 2) {
     var sprite = new Sprite_Animation();
 
-    sprite.setup(this._effectTarget, animation, mirror, delay);
+    sprite.setup(this._effectTarget, animation, mirror, delay, rate);
     this.parent.parent.addChild(sprite);
     sprite.y = 70;
     this._animationSprites.push(sprite);
@@ -337,8 +341,6 @@ class SContainer extends PIXI.Container {
     }
 }
 
-
-
 //-----------------------------------------------------------------------------
 // Sprite_Cards
 //
@@ -370,8 +372,6 @@ Sprite_MoveCard.prototype.createArrows = function () {
 
 };
 
-
-
 Sprite_MoveCard.prototype.update = function () {
     Sprite.prototype.update.call(this);
 };
@@ -380,7 +380,6 @@ Sprite_MoveCard.prototype.updateArrowImage = function (arrow) {
     arrow.opacity = 255 - Math.abs(50 - pos) * 5
     arrow.scale.y = arrow.scale.x = 1 - Math.abs((50 - pos) / 50)
 };
-
 
 Sprite_MoveCard.prototype.moveArrowAnimation = function () {
     for (let n = 0; n < 3; n++) {
@@ -402,10 +401,7 @@ Sprite_MoveCard.prototype.rotateImage = function (imgPos) {
         this.opacity = 0;
         this.rotation = imgPos * Math.PI / 2
     }
-
 }
-
-
 
 
 //-----------------------------------------------------------------------------

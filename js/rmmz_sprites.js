@@ -1453,7 +1453,7 @@ Sprite_Animation.prototype.onAfterRender = function(renderer) {
 // The sprite for displaying an old format animation.
 
 function Sprite_AnimationMV() {
-    this.initialize(...arguments);
+    this.initialize( ...arguments);
 }
 
 Sprite_AnimationMV.prototype = Object.create(Sprite.prototype);
@@ -1469,7 +1469,7 @@ Sprite_AnimationMV.prototype.initMembers = function() {
     this._animation = null;
     this._mirror = false;
     this._delay = 0;
-    this._rate = 4;
+    this._rate = 2;
     this._duration = 0;
     this._flashColor = [0, 0, 0, 0];
     this._flashDuration = 0;
@@ -1486,14 +1486,14 @@ Sprite_AnimationMV.prototype.initMembers = function() {
 
 // prettier-ignore
 Sprite_AnimationMV.prototype.setup = function(
-    targets, animation, mirror, delay
+    targets, animation, mirror, delay, previous, rate = 2
 ) {
     this._targets = targets;
     this._animation = animation;
     this._mirror = mirror;
     this._delay = delay;
     if (this._animation) {
-        this.setupRate();
+        this.setupRate(rate);
         this.setupDuration();
         this.loadBitmaps();
         this.createCellSprites();
@@ -1501,8 +1501,8 @@ Sprite_AnimationMV.prototype.setup = function(
     }
 };
 
-Sprite_AnimationMV.prototype.setupRate = function() {
-    this._rate = 4;
+Sprite_AnimationMV.prototype.setupRate = function(rate) {
+    this._rate = rate;
 };
 
 Sprite_AnimationMV.prototype.setupDuration = function() {
@@ -3165,7 +3165,7 @@ Spriteset_Base.prototype.update = function() {
 Spriteset_Base.prototype.createBaseSprite = function() {
     this._baseSprite = new Sprite();
     this._blackScreen = new ScreenSprite();
-    this._blackScreen.opacity = 255;
+    this._blackScreen.opacity = 0;
     this.addChild(this._baseSprite);
     this._baseSprite.addChild(this._blackScreen);
 };
@@ -3254,17 +3254,17 @@ Spriteset_Base.prototype.createAnimation = function(request) {
     const nextDelay = this.animationNextDelay();
     if (this.isAnimationForEach(animation)) {
         for (const target of targets) {
-            this.createAnimationSprite([target], animation, mirror, delay);
+            this.createAnimationSprite([target], animation, mirror, delay, 2);
             delay += nextDelay;
         }
     } else {
-        this.createAnimationSprite(targets, animation, mirror, delay);
+        this.createAnimationSprite(targets, animation, mirror, delay, 2);
     }
 };
 
 // prettier-ignore
 Spriteset_Base.prototype.createAnimationSprite = function(
-    targets, animation, mirror, delay
+    targets, animation, mirror, delay, rate = 2
 ) {
     const mv = this.isMVAnimation(animation);
     const sprite = new (mv ? Sprite_AnimationMV : Sprite_Animation)();
@@ -3275,7 +3275,7 @@ Spriteset_Base.prototype.createAnimationSprite = function(
         mirror = !mirror;
     }
     sprite.targetObjects = targets;
-    sprite.setup(targetSprites, animation, mirror, delay, previous);
+    sprite.setup(targetSprites, animation, mirror, delay, previous, rate);
     this._effectsContainer.addChild(sprite);
     this._animationSprites.push(sprite);
 };

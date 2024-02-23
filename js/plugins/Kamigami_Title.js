@@ -2,7 +2,10 @@ const _rai_SceneBoot_loadGameFonts = Scene_Boot.prototype.loadGameFonts
 
 Scene_Boot.prototype.loadGameFonts = function() {
     _rai_SceneBoot_loadGameFonts.call(this, ...arguments)
-    FontManager.load("GameFont", "Grenze-SemiBold.ttf");
+    FontManager.load("rmmz-mainfont", "ChauPhilomeneOne.ttf");
+    FontManager.load("rmmz-numberfont", "ChauPhilomeneOne.ttf");
+    FontManager.load("GameFont", "ChauPhilomeneOne.ttf");
+    
     FontManager.load("Chau Philomene One", "ChauPhilomeneOne.ttf");
     FontManager.load("GRENZE ExtraBold", "Grenze-SemiBold.ttf");
     FontManager.load("Inria Sans", "InriaSans-Regular.ttf");

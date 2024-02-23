@@ -125,8 +125,9 @@ if (true) {
             //IAVRA.I18N.language = $dataKamigami.gameOptions.language
             //Graphics._switchFullScreen();
             //$dataKamigami.needsRoom = true;
-            SceneManager.goto(Scene_Kamigami_Deck_Build);
+            //SceneManager.goto(Scene_Kamigami_Deck_Build);
             //SceneManager.goto(Scene_Kamigami_Duel);
+            SceneManager.goto(Scene_Map);
             //console.log("Teste")
             //$dataKamigami.owned_booster_packs[1] = 20
 

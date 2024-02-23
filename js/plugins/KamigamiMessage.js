@@ -2,10 +2,11 @@
 Scene_Map.prototype.createMessageWindow = function () {
 
     this._messageWindow = new Window_Message(this.back_window, this.back_window_name, this._big_face);
+
     this.addWindow(this._messageWindow);
-    this._messageWindow.subWindows().forEach(function (window) {
-        this.addWindow(window);
-    }, this);
+   // this._messageWindow.subWindows().forEach(function (window) {
+        //this.addWindow(window);
+   // }, this);
 };
 
 Scene_Map.prototype.create_back_sprite = function () {
@@ -34,6 +35,7 @@ Scene_Map.prototype.create_back_face = function () {
     this.addChild(this._big_face);
 }
 
+
 Scene_Map.prototype.createDisplayObjects = function () {
     this.createSpriteset();
     this.createMapNameWindow();
@@ -42,21 +44,15 @@ Scene_Map.prototype.createDisplayObjects = function () {
     this.create_back_sprite();
     this.createWindowLayer();
     this.createAllWindows();
+    this.createButtons();
 
 };
 
+Scene_Map.prototype.createMapNameWindow = function() {
+    const rect = this.mapNameWindowRect();
+    this._mapNameWindow = new Window_MapName(rect);
 
-//-----------------------------------------------------------------------------
-// Window_Message
-//
-// The window for displaying text messages.
-
-function Window_Message() {
-    this.initialize.apply(this, arguments);
-}
-
-Window_Message.prototype = Object.create(Window_Base.prototype);
-Window_Message.prototype.constructor = Window_Message;
+};
 
 Window_Message.prototype.initialize = function (back_window, back_name, big_face) {
     this._big_face = big_face;
@@ -66,7 +62,7 @@ Window_Message.prototype.initialize = function (back_window, back_name, big_face
     var x = (Graphics.boxWidth - width) / 2;
     this.back_window = back_window;
     this.back_window_name = back_name;
-    Window_Base.prototype.initialize.call(this, 0, 0, width, height);
+    Window_Base.prototype.initialize.call(this, new Rectangle(0, 0, width, height));
     this.fastForward = false
     this.openness = 0;
     this.initMembers();
@@ -138,7 +134,7 @@ Window_Message.prototype.createButtons = function () {
 }
 
 Window_Message.prototype.initMembers = function () {
-    this._imageReservationId = Utils.generateRuntimeId();
+    //this._imageReservationId = Utils.generateRuntimeId();
     this._background = 0;
     this._positionType = 2;
     this._waitCount = 0;
@@ -146,6 +142,11 @@ Window_Message.prototype.initMembers = function () {
     this._textState = null;
     this.clearFlags();
     this.hasTriggered = false
+    this._goldWindow = null;
+    this._nameBoxWindow = null;
+    this._choiceListWindow = null;
+    this._numberInputWindow = null;
+    this._eventItemWindow = null;
 };
 
 Window_Message.prototype.subWindows = function () {
@@ -154,7 +155,7 @@ Window_Message.prototype.subWindows = function () {
 };
 
 Window_Message.prototype.createSubWindows = function () {
-    this._goldWindow = new Window_Gold(0, 0);
+    this._goldWindow = new Window_Gold(new Rectangle(0, 0, 0, 0));
     this._goldWindow.x = Graphics.boxWidth - this._goldWindow.width;
     this._goldWindow.openness = 0;
     this._choiceWindow = new Window_ChoiceList(this);
@@ -337,6 +338,7 @@ Window_Message.prototype.create_name_window = function () {
     this._name_text.bitmap = new Bitmap(400, 60);
     this.addChild(this._name_text);
     this._name_text.bitmap.outlineWidth = 0;
+    this._name_text.bitmap.fontFace = "GRENZE ExtraBold"
     this._name_text.bitmap.fontSize = 60;
     this.current_name = $gameMessage.faceName();
     if (this.current_name == "You" && greenworks) {
@@ -367,12 +369,6 @@ Window_Message.prototype.updateBackground = function () {
     this.setBackgroundType(this._background);
 };
 
-Window_Message.prototype.terminateMessage = function () {
-    this.close();
-    this._goldWindow.close();
-    $gameMessage.clear();
-};
-
 Window_Message.prototype.updateWait = function () {
     if (this._waitCount > 0) {
         this._waitCount--;
@@ -396,62 +392,6 @@ Window_Message.prototype.updateLoading = function () {
     }
 };
 
-
-Window_Message.prototype.isAnySubWindowActive = function () {
-    return (this._choiceWindow.active ||
-        this._numberWindow.active ||
-        this._itemWindow.active);
-};
-
-Window_Message.prototype.updateMessage = function () {
-    if (this._textState) {
-        while (!this.isEndOfText(this._textState)) {
-            if (this.needsNewPage(this._textState)) {
-                this.newPage(this._textState);
-            }
-            this.updateShowFast();
-            this.processCharacter(this._textState);
-            if (!this._showFast && !this._lineShowFast) {
-                break;
-            }
-            if (this.pause || this._waitCount > 0) {
-                break;
-            }
-        }
-        if (this.isEndOfText(this._textState)) {
-            this.onEndOfText();
-        }
-        return true;
-    } else {
-        return false;
-    }
-};
-
-Window_Message.prototype.onEndOfText = function () {
-    if (!this.startInput()) {
-        if (!this._pauseSkip) {
-            this.startPause();
-        } else {
-            this.terminateMessage();
-        }
-    }
-    this._textState = null;
-};
-
-Window_Message.prototype.startInput = function () {
-    if ($gameMessage.isChoice()) {
-        this._choiceWindow.start();
-        return true;
-    } else if ($gameMessage.isNumberInput()) {
-        this._numberWindow.start();
-        return true;
-    } else if ($gameMessage.isItemChoice()) {
-        this._itemWindow.start();
-        return true;
-    } else {
-        return false;
-    }
-};
 
 Window_Message.prototype.isTriggered = function () {
     return (Input.isRepeated('ok') || Input.isRepeated('cancel') ||
@@ -486,7 +426,7 @@ Window_Message.prototype.newPage = function (textState) {
 };
 
 Window_Message.prototype.loadMessageFace = function () {
-    this._faceBitmap = ImageManager.reserveFace($gameMessage.faceName(), 0, this._imageReservationId);
+    this._faceBitmap = ImageManager.loadFace($gameMessage.faceName(), 0, this._imageReservationId);
 };
 
 Window_Message.prototype.drawMessageFace = function () {
@@ -506,9 +446,8 @@ Window_Message.prototype.processNewLine = function (textState) {
     }
 };
 
-Window_Message.prototype.processNewPage = function (textState) {
-    Window_Base.prototype.processNewPage.call(this, textState);
-    if (textState.text[textState.index] === '\n') {
+Window_Message.prototype.processNewPage = function(textState) {
+    if (textState.text[textState.index] === "\n") {
         textState.index++;
     }
     textState.y = this.contents.height;
@@ -524,34 +463,6 @@ Window_Message.prototype.needsNewPage = function (textState) {
         textState.y + textState.height > this.contents.height);
 };
 
-Window_Message.prototype.processEscapeCharacter = function (code, textState) {
-    switch (code) {
-        case '$':
-            this._goldWindow.open();
-            break;
-        case '.':
-            this.startWait(15);
-            break;
-        case '|':
-            this.startWait(60);
-            break;
-        case '!':
-            this.startPause();
-            break;
-        case '>':
-            this._lineShowFast = true;
-            break;
-        case '<':
-            this._lineShowFast = false;
-            break;
-        case '^':
-            this._pauseSkip = true;
-            break;
-        default:
-            Window_Base.prototype.processEscapeCharacter.call(this, code, textState);
-            break;
-    }
-};
 
 Window_Message.prototype.startWait = function (count) {
     this._waitCount = count;
@@ -581,12 +492,9 @@ Window_Base.prototype.standardFontSize = function () {
     return 48;
 };
 
-Window_Message.prototype.updateInput = function () {
+
+Window_Message.prototype.updateInput = function() {
     if (this.isAnySubWindowActive()) {
-        return true;
-    }
-    if (this.hasTriggered) {
-        this.updateExit();
         return true;
     }
     if (this.pause) {
@@ -596,7 +504,6 @@ Window_Message.prototype.updateInput = function () {
                 return true;
             }
             Input.update();
-            AudioManager.playSe({ name: "Message", pan: 0, pitch: 100, volume: 100 });
             this.pause = false;
             if (!this._textState) {
                 this.terminateMessage();
@@ -606,6 +513,7 @@ Window_Message.prototype.updateInput = function () {
     }
     return false;
 };
+
 
 Window_Message.prototype.checkButtonTrigger = function () {
     if ($dataKamigami.gameOptions.deck) {
@@ -704,7 +612,7 @@ Sprite_Fast_Forward.prototype.update = function () {
 Window_ChoiceList.prototype.initialize = function (messageWindow) {
     this._messageWindow = messageWindow;
 
-    Window_Command.prototype.initialize.call(this, 0, 0);
+    Window_Command.prototype.initialize.call(this, new Rectangle(0, 0, 200, 200));
     this.openness = 0;
     this.deactivate();
     this._background = 0;
@@ -858,30 +766,6 @@ var VividXP = VividXP || {};
         _Window_Message_initMembers.call(this);
     };
 
-    Window_Message.prototype.updateMessage = function() {
-        if (this._textState && !this._processWordWrapBreak) {
-            while (!this.isEndOfText(this._textState)) {
-                if (this.needsNewPage(this._textState)) {
-                    this.newPage(this._textState);
-                }
-                this.updateShowFast();
-                this.processCharacter(this._textState);
-                if (!this._showFast && !this._lineShowFast) {
-                    break;
-                }
-                if (this.pause || this._waitCount > 0) {
-                    break;
-                }
-            }
-            if (this.isEndOfText(this._textState)) {
-                this.onEndOfText();
-            }
-            return true;
-        } else {
-            return false;
-        }
-    };
-
 
     /***
      * getWordBoundaries
@@ -938,7 +822,30 @@ var VividXP = VividXP || {};
         }
         
     };
+    Window_Message.prototype.startMessage = function() {
+        const text = $gameMessage.allText();
+        const textState = this.createTextState(text, 0, 0, 0);
+        textState.x = this.newLineX(textState);
+        textState.startX = textState.x;
+        this._textState = textState;
 
+        this.contents.outlineWidth = 0;
+
+        this.newPage(this._textState);
+        this.updatePlacement();
+        this.updateBackground();
+        this.open();
+        //this._nameBoxWindow.start();
+        this.opacity = 0;
+        this.contentsOpacity = 170;
+        if (this.current_name != $gameMessage.faceName()) {
+            if (this._name_text)
+                this._name_text.bitmap.clear();
+            this.create_big_face();
+            this.create_name_window();
+    
+        }
+    };
     Window_Message.prototype.newPage = function(textState) {
         this.contents.clear();
         if (!this._processWordWrapBreak) {

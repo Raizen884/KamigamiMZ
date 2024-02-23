@@ -88,7 +88,7 @@ Scene_Loading.prototype.createLogoImage = function () {
     this.logoDS = new Sprite();
     this.logoDS.bitmap = ImageManager.loadTitle1("DSLogo")
     this.logoDS.anchor.x = this.logoDS.anchor.y = 0.5
-    this.logoDS.x = Graphics.width /2;
+    this.logoDS.x = 960;
     this.logoDS.y = 200;
     this.addChild(this.logoDS)
 }
