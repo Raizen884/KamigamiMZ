@@ -1,11 +1,11 @@
 const _rai_SceneBoot_loadGameFonts = Scene_Boot.prototype.loadGameFonts
 
-Scene_Boot.prototype.loadGameFonts = function() {
+Scene_Boot.prototype.loadGameFonts = function () {
     _rai_SceneBoot_loadGameFonts.call(this, ...arguments)
-    FontManager.load("rmmz-mainfont", "ChauPhilomeneOne.ttf");
-    FontManager.load("rmmz-numberfont", "ChauPhilomeneOne.ttf");
-    FontManager.load("GameFont", "ChauPhilomeneOne.ttf");
-    
+    FontManager.load("rmmz-mainfont", "Grenze-SemiBold.ttf");
+    FontManager.load("rmmz-numberfont", "Grenze-SemiBold.ttf");
+    FontManager.load("GameFont", "Grenze-SemiBold.ttf");
+
     FontManager.load("Chau Philomene One", "ChauPhilomeneOne.ttf");
     FontManager.load("GRENZE ExtraBold", "Grenze-SemiBold.ttf");
     FontManager.load("Inria Sans", "InriaSans-Regular.ttf");
@@ -1238,8 +1238,13 @@ Scene_Main_Menu.prototype.closeMenu = function () {
     if (this.kamigami_frame_count > 80)
         this.tl3.play();
     if (this.kamigami_frame_count == 120)
-        if (this.btn_hover == 1)
-            SceneManager.push(Scene_Map)
+        if (this.btn_hover == 1) {
+            if (!$gameSwitches.value(1))
+                SceneManager.push(Scene_Kamigami_Select_Player)
+            else
+                SceneManager.push(Scene_CampaignMap)
+        }
+
         else if (this.duelDecision) {
             if (this.btn_hover == 2)
                 SceneManager.push(Scene_Kamigami_Lobby)
@@ -1251,7 +1256,7 @@ Scene_Main_Menu.prototype.closeMenu = function () {
         else if (this.btn_hover == 4) {
             SceneManager.push(Scene_Kamigami_Booster)
         }
-            
+
         else if (this.btn_hover == 5)
             SceneManager.push(Scene_Ignis_Shop)
 
@@ -1530,7 +1535,7 @@ Graphics._paintUpperCanvas = function () {
 //-----------------------------------------------------------------------------
 Scene_Title.prototype.create = function () {
     Scene_Base.prototype.create.call(this);
-    
+
     //this.loadAllGameImages();
     this.createVariables();
     this.createBackground();
@@ -1567,9 +1572,9 @@ Scene_Title.prototype.createVariables = function () {
 Scene_Title.prototype.createBackground = function () {
     this.container = new PIXI.Container();
     this._background = new Sprite(ImageManager.loadTitle1("Title_bg"));
-    //this.container.addChild(this._background);
+    this.container.addChild(this._background);
     this._background.opacity = 0;
-    this._spriteset._baseSprite.addChild(this._background);
+    //this._spriteset._baseSprite.addChild(this._background);
 };
 
 //-----------------------------------------------------------------------------
@@ -1577,8 +1582,8 @@ Scene_Title.prototype.createBackground = function () {
 //-----------------------------------------------------------------------------
 Scene_Title.prototype.createlogo = function () {
     this._logo1 = new Sprite(ImageManager.loadTitle1("logo1"));
-    //this.container.addChild(this._logo1);
-    this._spriteset._baseSprite.addChild(this._logo1);
+    this.container.addChild(this._logo1);
+    //this._spriteset._baseSprite.addChild(this._logo1);
     this._logo2 = new Sprite(ImageManager.loadTitle1("logo2"));
     this.container.addChild(this._logo2);
     this._logo1.anchor.x = 0.5;

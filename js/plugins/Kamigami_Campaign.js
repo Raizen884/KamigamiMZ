@@ -22,6 +22,8 @@ Scene_CampaignMap.prototype.constructor = Scene_CampaignMap;
 Scene_CampaignMap.prototype.initialize = function () {
     Scene_Base.prototype.initialize.call(this);
     this.createVariables();
+    this.createBackGods();
+    this.createMapButtons();
     this.createSprites();
     this.createMouseSprites();
     this.createFade();
@@ -32,7 +34,41 @@ Scene_CampaignMap.prototype.initialize = function () {
     this.create
 
 };
+Scene_CampaignMap.prototype.createBackGods = function () {
+    this._backGods = new Sprite();
+    this._backGods.bitmap = ImageManager.loadCampaign("back_Greek")
+    this._backGods.x = 1728
+    this.addChild(this._backGods)
+}
 
+
+Scene_CampaignMap.prototype.createMapButtons = function () {
+    this._backOptions = new Array(3)
+    for (let index = 0; index < 3; index++) {
+        this._backOptions[index] = new Sprite();
+        this._backOptions[index].bitmap = ImageManager.loadTitle1("title_deck_bg")
+        this.addChild(this._backOptions[index])
+        this._backOptions[index].x = 1600
+        this._backOptions[index].y = index * 320 + 100
+    }
+    this._backOptionsText = new Array(3)
+    for (let index = 0; index < this._backOptionsText.length; index++) {
+        this._backOptionsText[index] = new Sprite_Kami_Button(0, `campaignDuelMenu${index + 1}`, 5, 40);
+        this.addChild(this._backOptionsText[index])
+        this._backOptionsText[index].x = 1728
+        this._backOptionsText[index].y = index * 320 + 100
+    }
+
+    this._backOptionsLight = new Array(3)
+    for (let index = 0; index < this._backOptionsLight.length; index++) {
+        this._backOptionsLight[index] = new Sprite_Kami_ButtonLight(0, `campaignDuelMenu${index + 1}`, 5, 0x00FFF6, 40);
+        this.addChild(this._backOptionsLight[index])
+        this._backOptionsLight[index].x = 1728
+        this._backOptionsLight[index].y = index * 320 + 100
+        this._backOptionsLight[index].opacity = 0;
+    }
+
+};
 Scene_CampaignMap.prototype.createVariables = function () {
     this.phase = 2;
     this.godName = "";
@@ -149,7 +185,7 @@ Scene_CampaignMap.prototype.update = function () {
     switch (this.phase) {
         case 2:
             this.updateButtons();
-
+            this.updateButtonsHover();
             break;
         case 3:
             this.updateChallengerEntering();
@@ -160,9 +196,50 @@ Scene_CampaignMap.prototype.update = function () {
         case 5:
             this.updateChallengerReturn()
             break
+        case 6:
+            this.updateScene();
+            break;
     }
 
 };
+//-----------------------------------------------------------------------------
+// Function : updateScene
+//-----------------------------------------------------------------------------
+Scene_CampaignMap.prototype.updateScene = function () {
+    switch (this.btnChoice) {
+        case 0:
+            SceneManager.goto(Scene_Main_Menu)
+            break;
+        case 1:
+            SceneManager.push(Scene_Kamigami_Deck_Select)
+            break;
+        case 2:
+            SceneManager.push(Scene_Ignis_Shop)
+            break;
+    }
+}
+//-----------------------------------------------------------------------------
+// Function : updateButtonsHover
+//-----------------------------------------------------------------------------
+Scene_CampaignMap.prototype.updateButtonsHover = function () {
+    if (this._mainMap.isMapZoomed()) return;
+    let choice = -1;
+    for (let i = 0; i < 3; i++) {
+        if (this._backOptionsText[i].isBeingTouched()) {
+            this._backOptionsLight[i].opacity += 20;
+            if (this._backOptionsLight[i].opacity == 20) {
+                AudioManager.playSe({ name: "menu_select", pan: 0, pitch: 100, volume: 100 });
+            }
+            choice = i;
+        } else {
+            this._backOptionsLight[i].opacity -= 20;
+        }
+    }
+    if (TouchInput.isTriggered() && choice != -1) {
+        this.btnChoice = choice;
+        this.phase = 6;
+    }
+}
 
 Scene_CampaignMap.prototype.updateButtons = function () {
     if (TouchInput.isTriggered()) {
@@ -226,7 +303,7 @@ Scene_CampaignMap.prototype.updateChallengerButtons = function () {
         this.phase = 5;
         this.countFrames = -1;
     }
-    if (this.cancelTextLight.isButtonHovered()) {
+    if (this.cancelTextLight.isBeingTouched()) {
         this.cancelTextLight.opacity += 20
         if (TouchInput.isTriggered()) {
             this.phase = 5;
@@ -235,7 +312,7 @@ Scene_CampaignMap.prototype.updateChallengerButtons = function () {
     } else {
         this.cancelTextLight.opacity -= 20
     }
-    if (this.duelTextLight.isButtonHovered()) {
+    if (this.duelTextLight.isBeingTouched()) {
         this.duelTextLight.opacity += 20
     } else {
         this.duelTextLight.opacity -= 20
@@ -354,7 +431,7 @@ SpriteCampaign.prototype.createDeityButtons = function () {
 SpriteCampaign.prototype.checkButtonTrigger = function () {
 
     for (let n = 0; n < this.deityButtons.length; n++) {
-        if (this.deityButtons[n].isButtonHovered()) {
+        if (this.deityButtons[n].isBeingTouched()) {
             return this.deityButtons[n].getName();
         }
     }
@@ -468,7 +545,7 @@ SpriteCampaignButton.prototype.initialize = function (civilizationType, lockType
     this.x = x;
     this.y = y;
     this.requirements = requirements
-    this.anchor.x = this.anchor.y = 0.5
+    //this.anchor.x = this.anchor.y = 0.5
     this.createSprites(civilizationType, lockType)
     this.bitmap = new Bitmap(62, 62)
     this.name = name
@@ -518,7 +595,7 @@ SpriteCampaignButton.prototype.createSprites = function (civilizationType, lockT
 //-----------------------------------------------------------------------------
 SpriteCampaignButton.prototype.update = function () {
     Sprite_Clickable.prototype.update.call(this);
-    if (this.isButtonHovered()) {
+    if (this.isBeingTouched()) {
         this.opacity += 10
     } else {
         if (this.opacity > 150)

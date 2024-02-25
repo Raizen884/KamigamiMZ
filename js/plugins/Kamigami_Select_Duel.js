@@ -370,7 +370,7 @@ Scene_Kamigami_Select_Duel.prototype.updateButtonsClick = function () {
         this.phase = 3
     }
 
-    if (this.duelText.isButtonHovered()) {
+    if (this.duelText.isBeingTouched()) {
         let duelId = this.duelistChoices.duelistOptions[this.duelistSelected].duelId;
         if (!$dataKamigami.duelInfo[duelId].enabled) {
             AudioManager.playSe({ name: "beep", pan: 0, pitch: 100, volume: 100 });
@@ -476,7 +476,7 @@ Scene_Kamigami_Select_Duel.prototype.updateScene = function () {
 // Function : updateButtonsHover
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Select_Duel.prototype.updateButtonsHover = function () {
-    if (this.returnText.isButtonHovered()) {
+    if (this.returnText.isBeingTouched()) {
         this.returnTextLight.opacity += 20;
         if (this.returnTextLight.opacity == 20) {
             AudioManager.playSe({ name: "menu_select", pan: 0, pitch: 100, volume: 100 });
@@ -485,7 +485,7 @@ Scene_Kamigami_Select_Duel.prototype.updateButtonsHover = function () {
         this.returnTextLight.opacity -= 20;
     }
 
-    if (this.duelText.isButtonHovered()) {
+    if (this.duelText.isBeingTouched()) {
         this.duelTextLight.opacity += 20;
         if (this.duelTextLight.opacity == 20) {
             AudioManager.playSe({ name: "menu_select", pan: 0, pitch: 100, volume: 100 });

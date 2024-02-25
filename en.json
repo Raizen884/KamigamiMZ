@@ -242,7 +242,13 @@
 			"selectPlayer1": "SELECT",
 			"selectPlayer1sub": "Choose this character!",
 			"selectPlayer2": "SWITCH",
-			"selectPlayer2sub": "switches to the other player!"
+			"selectPlayer2sub": "switches to the other player!",
+			"campaignDuelMenu1": "RETURN",
+			"campaignDuelMenu1sub": "to main menu.",
+			"campaignDuelMenu2": "DECK",
+			"campaignDuelMenu2sub": "change cards.",
+			"campaignDuelMenu3": "SHOP",
+			"campaignDuelMenu3sub": "buy cards."
 		},
 		"MenuText": {
 			"options1": "PLAY TUTORIAL",
@@ -391,7 +397,20 @@
 		},
 		"Campaign": {
 			"mouseText1": "Left click to zoom the map!",
-			"mouseText2": "Right click to unzoom the map!"
+			"mouseText2": "Right click to unzoom the map!",
+			"prologue01": "Yeah! I won the Kamigami card tournament. I am simply the best!\n There is nothing that would spoil this day.",
+			"prologue02": "Wait, is that the ultra rare rank S foil Zeus card just laying on \nthe street?",
+			"prologue03": "This day can't get any better!",
+			"prologue04": "What is that noise?",
+			"prologue05": "Where am I?",
+			"prologue06": "Sorry to say, but you just got hit by a truck...",
+			"prologue07": "I'm... Dead? I can't believe I died in such a dumb way! \nIs this some type of purgatory?",
+			"prologue08": "You aren't dead, yet. I am keeping you alive for I am Coaraci \nthe sun goddess and I need your help.",
+			"prologue09": "You see, the gods are being controlled by an evil force. \nThe only way to free them is by beating them in a duel! \nYou are the best player we have.",
+			"prologue10": "And if I don't help, you just let me die?",
+			"prologue11": "See! You are smart also. No time to lose! Choose your \ndeck and your mission will start now!",
+			"prologue12": "That is a cliche way to start an Isekai, but I don't think I have any choice.",
+			"prologue13": "Nice choice! Now you will have access to the god's realm, a place only the sacred can enter! \nYou will face many difficulties, but I believe you will be able to overcome them!"
 		}
 	}
 }

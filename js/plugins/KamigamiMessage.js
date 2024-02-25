@@ -4,9 +4,9 @@ Scene_Map.prototype.createMessageWindow = function () {
     this._messageWindow = new Window_Message(this.back_window, this.back_window_name, this._big_face);
 
     this.addWindow(this._messageWindow);
-   // this._messageWindow.subWindows().forEach(function (window) {
-        //this.addWindow(window);
-   // }, this);
+    // this._messageWindow.subWindows().forEach(function (window) {
+    //this.addWindow(window);
+    // }, this);
 };
 
 Scene_Map.prototype.create_back_sprite = function () {
@@ -48,7 +48,7 @@ Scene_Map.prototype.createDisplayObjects = function () {
 
 };
 
-Scene_Map.prototype.createMapNameWindow = function() {
+Scene_Map.prototype.createMapNameWindow = function () {
     const rect = this.mapNameWindowRect();
     this._mapNameWindow = new Window_MapName(rect);
 
@@ -185,7 +185,7 @@ Window_Message.prototype.updateButtonsOpacity = function () {
         if (this.btnReturn.opacity < 150)
             this.btnReturn.opacity += 15
         this.backReturn.opacity += 15
-        if (this.btnReturn.isButtonHovered()) {
+        if (this.btnReturn.isBeingTouched()) {
             this.backReturnLight.opacity += 20;
         } else {
             this.backReturnLight.opacity -= 20;
@@ -195,7 +195,7 @@ Window_Message.prototype.updateButtonsOpacity = function () {
         if (this.btnDeck.opacity < 150)
             this.btnDeck.opacity += 15
         this.backDeck.opacity += 15
-        if (this.btnDeck.isButtonHovered()) {
+        if (this.btnDeck.isBeingTouched()) {
             this.backDeckLight.opacity += 20;
         } else {
             this.backDeckLight.opacity -= 20;
@@ -204,7 +204,7 @@ Window_Message.prototype.updateButtonsOpacity = function () {
 
 }
 Window_Message.prototype.updateFastForward = function () {
-    if (this.btnFastForward.isButtonHovered()) {
+    if (this.btnFastForward.isBeingTouched()) {
         this.btnFastForward.opacity = 0
         if (TouchInput.isTriggered()) {
             this.fastForward = true
@@ -305,7 +305,7 @@ Window_Message.prototype.canStart = function () {
     return $gameMessage.hasText() && !$gameMessage.scrollMode();
 };
 Window_Message.prototype.wordWrapWindowMessage = function (text) {
-    let pixiText = new PIXI.Text(text, { fontFamily: 'GameFont', fontSize: 28, fill: 0x000000, align: 'left', wordWrap: true, wordWrapWidth: 500});
+    let pixiText = new PIXI.Text(text, { fontFamily: 'GameFont', fontSize: 28, fill: 0x000000, align: 'left', wordWrap: true, wordWrapWidth: 500 });
     console.log(pixiText.text)
     this.addChild(pixiText)
     return text;
@@ -341,8 +341,9 @@ Window_Message.prototype.create_name_window = function () {
     this._name_text.bitmap.fontFace = "GRENZE ExtraBold"
     this._name_text.bitmap.fontSize = 60;
     this.current_name = $gameMessage.faceName();
-    if (this.current_name == "You" && greenworks) {
-        this.current_name = greenworks.getSteamId().screenName
+    if (this.current_name == "You" || this.current_name == "Invisible") {
+        this.current_name = $dataKamigami.playerName
+    //this.current_name = greenworks.getSteamId().screenName
     }
     let name = this.current_name;
     this._oldName = name;
@@ -352,7 +353,16 @@ Window_Message.prototype.create_name_window = function () {
     this._name_text.y = -120;
 };
 Window_Message.prototype.create_big_face = function () {
-    this._big_face.bitmap = ImageManager.loadFace($gameMessage.faceName());
+    let faceName = $gameMessage.faceName()
+    if (faceName == "You") {
+        if ($dataKamigami.isGirl)
+            this._big_face.bitmap = ImageManager.loadFace("GirlVN");
+        else
+            this._big_face.bitmap = ImageManager.loadFace("GuyVN");
+    } else {
+        this._big_face.bitmap = ImageManager.loadFace($gameMessage.faceName());
+    }
+
     this._big_face.opacity = 1;
     this._big_face.x = 650;
 };
@@ -446,7 +456,7 @@ Window_Message.prototype.processNewLine = function (textState) {
     }
 };
 
-Window_Message.prototype.processNewPage = function(textState) {
+Window_Message.prototype.processNewPage = function (textState) {
     if (textState.text[textState.index] === "\n") {
         textState.index++;
     }
@@ -493,7 +503,7 @@ Window_Base.prototype.standardFontSize = function () {
 };
 
 
-Window_Message.prototype.updateInput = function() {
+Window_Message.prototype.updateInput = function () {
     if (this.isAnySubWindowActive()) {
         return true;
     }
@@ -750,18 +760,18 @@ Window_ChoiceList.prototype.processOk = function () {
 };
 
 var VividXP = VividXP || {};
- VividXP.WordWrap = {};
- VividXP.WordWrap.Parameters = PluginManager.parameters('VividXP_WordWrap');
- VividXP.WordWrap.WordWrapStyle = "break-word";
+VividXP.WordWrap = {};
+VividXP.WordWrap.Parameters = PluginManager.parameters('VividXP_WordWrap');
+VividXP.WordWrap.WordWrapStyle = "break-word";
 
-(function() {
+(function () {
 
     var _Window_Base_processNormalCharacter = Window_Base.prototype.processNormalCharacter;
     var _Window_Base_processDrawIcon = Window_Base.prototype.processDrawIcon;
     var _Window_Message_initMembers = Window_Message.prototype.initMembers;
-    var _Window_Base_processNewLine  = Window_Base.prototype.processNewLine;
+    var _Window_Base_processNewLine = Window_Base.prototype.processNewLine;
 
-    Window_Message.prototype.initMembers = function() {
+    Window_Message.prototype.initMembers = function () {
         this._processWordWrapBreak = false;
         _Window_Message_initMembers.call(this);
     };
@@ -777,14 +787,14 @@ var VividXP = VividXP || {};
      * returns array of indices representing the start of each word in the
      * full message
      */
-    Window_Message.prototype.getWordBoundaries = function(textStateText) {
+    Window_Message.prototype.getWordBoundaries = function (textStateText) {
         var result = [];
         var wordRegex = /\b[\S]+\b\S*/gm;
         var wordBoundaryArr = [];
         while ((wordBoundaryArr = wordRegex.exec(textStateText)) !== null) {
             result.push(wordBoundaryArr);
         }
-        result = result.map(function(match) {
+        result = result.map(function (match) {
             return match.index;
         });
         return result;
@@ -795,18 +805,18 @@ var VividXP = VividXP || {};
      * Overwrites Window_Message.prototype.startMessage to call getWordBoundaries
      * after escaping the text and before displaying the message
      */
-    Window_Message.prototype.startMessage = function() {
-        if ( this._processWordWrapBreak === false ){
+    Window_Message.prototype.startMessage = function () {
+        if (this._processWordWrapBreak === false) {
             this._textState = {};
             this._textState.index = 0;
             this._textState.text = this.convertEscapeCharacters($gameMessage.allText());
             this._textState.wordBoundaries = this.getWordBoundaries(this._textState.text);
         }
         this.contents.outlineWidth = 0;
-       
+
         this.newPage(this._textState);
         this._processWordWrapBreak = false;
-        
+
         this.updatePlacement();
         this.updateBackground();
         this.open();
@@ -818,11 +828,11 @@ var VividXP = VividXP || {};
                 this._name_text.bitmap.clear();
             this.create_big_face();
             this.create_name_window();
-    
+
         }
-        
+
     };
-    Window_Message.prototype.startMessage = function() {
+    Window_Message.prototype.startMessage = function () {
         const text = $gameMessage.allText();
         const textState = this.createTextState(text, 0, 0, 0);
         textState.x = this.newLineX(textState);
@@ -843,10 +853,10 @@ var VividXP = VividXP || {};
                 this._name_text.bitmap.clear();
             this.create_big_face();
             this.create_name_window();
-    
+
         }
     };
-    Window_Message.prototype.newPage = function(textState) {
+    Window_Message.prototype.newPage = function (textState) {
         this.contents.clear();
         if (!this._processWordWrapBreak) {
             this.resetFontSettings();
@@ -864,25 +874,25 @@ var VividXP = VividXP || {};
      * Check if word wrapping needs to take place
      * textState - contains information related to the message
      */
-    Window_Message.prototype.processNormalCharacter = function(textState) {	
-		this.processOverflow(textState);
-		if (!this.needsNewPage(textState)){
-			_Window_Base_processNormalCharacter.call(this, textState);
-		}
+    Window_Message.prototype.processNormalCharacter = function (textState) {
+        this.processOverflow(textState);
+        if (!this.needsNewPage(textState)) {
+            _Window_Base_processNormalCharacter.call(this, textState);
+        }
     };
 
     /***
      * processDrawIcon
      * Check if word wrapping for icons needs to take place. Since icons are 
-	 * images we don't need to check the WordWrapStyle setting, we just move 
-	 * the icon to the next line if it doesn't fit
+     * images we don't need to check the WordWrapStyle setting, we just move 
+     * the icon to the next line if it doesn't fit
      * iconIndex - index corresponding to icon to be displayed
      * textState - contains information related to the message
      */
-    Window_Message.prototype.processDrawIcon = function(iconIndex, textState) {
+    Window_Message.prototype.processDrawIcon = function (iconIndex, textState) {
         var maxWindowWidth = this.contents.width;
         var iconWidth = Window_Base._iconWidth + 4;
-        if ( textState.x >= maxWindowWidth || textState.x + iconWidth >= maxWindowWidth  ) {
+        if (textState.x >= maxWindowWidth || textState.x + iconWidth >= maxWindowWidth) {
             this.wrapToNewLine(textState);
         }
         _Window_Base_processDrawIcon.call(this, iconIndex, textState);
@@ -891,16 +901,16 @@ var VividXP = VividXP || {};
     /***
      * processNewLine
      * Overrides Window_Base.prototype.processNewLine 
-	 * We have to make sure to check if a new line has pushed content off the page,
-	 * in the case of a message that has a mixture of manual line breaks and 
-	 * word wrap.
+     * We have to make sure to check if a new line has pushed content off the page,
+     * in the case of a message that has a mixture of manual line breaks and 
+     * word wrap.
      * textState - contains information related to the message
      */
-    Window_Base.prototype.processNewLine = function(textState) {
+    Window_Base.prototype.processNewLine = function (textState) {
         _Window_Base_processNewLine.call(this, textState);
         if (typeof this.needsNewPage === 'function' && this.needsNewPage(textState)) {
-           this._processWordWrapBreak = true;
-       }
+            this._processWordWrapBreak = true;
+        }
     };
 
     /***
@@ -910,7 +920,7 @@ var VividXP = VividXP || {};
      * the whole word to a new line, or the current character to a new line
      * textState - contains information related to the message
      */
-    Window_Message.prototype.processOverflow = function(textState) {
+    Window_Message.prototype.processOverflow = function (textState) {
         var maxWindowWidth = this.contents.width;
         var w;
         switch (VividXP.WordWrap.WordWrapStyle) {
@@ -919,7 +929,7 @@ var VividXP = VividXP || {};
                 var boundaryStartIndex = textState.wordBoundaries.lastIndexOf(textState.index);
                 if (boundaryStartIndex !== -1) {
                     var boundaryEndIndex;
-                    if ( textState.wordBoundaries[boundaryStartIndex] === lastBoundaryIndex ){
+                    if (textState.wordBoundaries[boundaryStartIndex] === lastBoundaryIndex) {
                         boundaryEndIndex = textState.text.length - 1;
                     } else {
                         boundaryEndIndex = textState.wordBoundaries[boundaryStartIndex + 1] - 1;
@@ -927,7 +937,7 @@ var VividXP = VividXP || {};
                     boundaryStartIndex = textState.wordBoundaries[boundaryStartIndex];
                     var word = textState.text.substring(boundaryStartIndex, boundaryEndIndex);
                     w = this.textWidth(word);
-                    if ( textState.x >= maxWindowWidth || textState.x + w >= maxWindowWidth ){
+                    if (textState.x >= maxWindowWidth || textState.x + w >= maxWindowWidth) {
                         this.wrapToNewLine(textState);
                     }
                 }
@@ -937,7 +947,7 @@ var VividXP = VividXP || {};
             default:
                 var c = textState.text[textState.index];
                 w = this.textWidth(c);
-                if ( textState.x >= maxWindowWidth || textState.x + (w * 2) >= maxWindowWidth ){
+                if (textState.x >= maxWindowWidth || textState.x + (w * 2) >= maxWindowWidth) {
                     this.wrapToNewLine(textState);
                 }
                 break;
@@ -951,12 +961,12 @@ var VividXP = VividXP || {};
      * the message
      * textState - contains information related to the message
      */
-    Window_Message.prototype.wrapToNewLine = function(textState) {
+    Window_Message.prototype.wrapToNewLine = function (textState) {
         this._lineShowFast = false;
         textState.x = this.newLineX();
         textState.y += textState.height;
         textState.height = this.calcTextHeight(textState, false);
-         if (this.needsNewPage(textState)) {
+        if (this.needsNewPage(textState)) {
             this._processWordWrapBreak = true;
             this.startPause();
         }

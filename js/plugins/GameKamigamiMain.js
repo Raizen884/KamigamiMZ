@@ -9,6 +9,7 @@ function Game_Kamigami() {
     this.ShopMusic = "Magic Cards"
     this.boosterPacksMusic = "Magic Cards"
     this.selectDeckMusic = "Magic Cards"
+    this.arcMythology = 0
     this.booster_packs = [false, false, false, false, false];
     this.onTutorial = false
     this.owned_booster_packs = [0, 0, 0, 0];

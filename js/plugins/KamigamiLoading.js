@@ -55,6 +55,11 @@ Scene_Loading.prototype.update = function () {
     this.loadingBar.scale.x = this.loadedFiles / this.allFiles
 
 }
+Scene_Loading.prototype.onLoadFailure = function () { 
+}
+
+Scene_Loading.prototype.onLoadSuccess = function () { 
+}
 //-----------------------------------------------------------------------------
 // Function : create
 //-----------------------------------------------------------------------------
@@ -64,6 +69,8 @@ Scene_Loading.prototype.initialize = function () {
     this.createAllImages();
 
     DataManager.loadGame(1)
+    .then(() => this.onLoadSuccess())
+    .catch(() => this.onLoadFailure());
     if (!$dataKamigami.gameOptions.music) { $dataKamigami.gameOptions.music = 100 }
     if (!$dataKamigami.gameOptions.se) { $dataKamigami.gameOptions.se = 100 }
     IAVRA.I18N.language = $dataKamigami.gameOptions.language

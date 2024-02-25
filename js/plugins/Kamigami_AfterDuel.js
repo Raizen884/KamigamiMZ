@@ -25,7 +25,7 @@ Scene_Kamigami_Duel.prototype.checkGameOver = function () {
 // Function : update_opacity - updates initial opacity
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Duel.prototype.process_end_game = function () {
-    SceneManager.snapForBackgroundFix()
+    SceneManager.snapForBackground()
     SceneManager.push(Scene_Kamigami_AfterDuel)
 }
 
@@ -252,8 +252,6 @@ Scene_Kamigami_AfterDuel.prototype.startingPositions = function () {
     this._victoryText.opacity = 0;
     this._fadeScreenSprite.opacity = 0
 }
-
-
 
 
 Scene_Kamigami_AfterDuel.prototype.createBackground = function () {
@@ -513,7 +511,7 @@ Scene_Kamigami_AfterDuel.prototype.updateGoldEntry = function () {
 Scene_Kamigami_AfterDuel.prototype.updateMain = function () {
     let btnHover = -1
     for (let n = 0; n < 2; n++) {
-        if (this._backOptionsText[n].isButtonHovered()) {
+        if (this._backOptionsText[n].isBeingTouched()) {
             btnHover = n
             this._backOptionsLight[n].opacity += 20
         } else {
@@ -535,7 +533,7 @@ Scene_Kamigami_AfterDuel.prototype.updateMain = function () {
 Scene_Kamigami_AfterDuel.prototype.updateStatistics = function () {
     let btnHover = -1
     for (let n = 0; n < 4; n++) {
-        if (this._backOptionsText[n].isButtonHovered()) {
+        if (this._backOptionsText[n].isBeingTouched()) {
             if (n == 1) {
                 continue
             }

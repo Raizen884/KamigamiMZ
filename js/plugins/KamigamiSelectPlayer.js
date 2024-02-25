@@ -36,6 +36,7 @@ Scene_Kamigami_Select_Player.prototype.initialize = function () {
 // Function : create
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Select_Player.prototype.createVariables = function () {
+    AudioManager.playBgm({ name: "Character Select", pan: 0, pitch: 100, volume: 90 });
     this.phase = 0;
     this.selectedPlayer = 0;
     this.countFrame = 0;
@@ -133,7 +134,7 @@ Scene_Kamigami_Select_Player.prototype.createButtonBack = function () {
     this._buttonBack[0] = new Sprite();
     this._buttonBack[0].bitmap = ImageManager.loadSelectPlayer("backSelect");
     this.addChild(this._buttonBack[0]);
-    
+
     this._buttonBack[1] = new Sprite();
     this._buttonBack[1].bitmap = ImageManager.loadSelectPlayer("backSwitch");
     this._buttonBack[1].y = 1080 - 257
@@ -218,8 +219,90 @@ Scene_Kamigami_Select_Player.prototype.update = function () {
         case 2:
             this.switchPlayers();
             break;
+        case 3:
+            this.updateEndScene();
+            break;
     }
 }
+//-----------------------------------------------------------------------------
+// Function : updateEndScene
+//-----------------------------------------------------------------------------
+Scene_Kamigami_Select_Player.prototype.updateEndScene = function () {
+    if (this.btnEdit.opacity > 255) {
+        this.btnEdit.opacity -= 15
+    }
+    if (chatInput.alpha >= 0) {
+        chatInput.alpha -= 0.05
+        this._descriptionSelectPlayer.alpha -= 0.05
+        return;
+    }
+    this.btnEdit.opacity -= 15
+    if (this._playersBlack[0].opacity > 0 || this._playersBlack[1].opacity > 0) {
+        this._playersBlack[0].opacity -= 15
+        this._playersBlack[1].opacity -= 15
+        this.countFrame = 0
+        return;
+    }
+    if (this._textSelect.opacity > 0) {
+        this._textSelect.opacity -= 15
+    }
+    if (this._textSwitch.opacity > 0) {
+        this._textSwitch.opacity -= 15
+    }
+    if (this._buttonBack[1].x > -700) {
+        this._buttonBack[1].x -= this.countFrame * 2
+        this._buttonBack[1].opacity -= 10
+        if (this._buttonBack[1].x <= -700) {
+            this.countFrame = 0
+        }
+        return
+    }
+    if (this._buttonBack[0].x > -700) {
+        this._buttonBack[0].x -= this.countFrame * 2
+        this._buttonBack[0].opacity -= 10
+        if (this._buttonBack[0].x <= -700) {
+            this.countFrame = 0
+        }
+        return
+    }
+
+    if (this._bgPanels[2].x < 1100) {
+        this._bgPanels[2].x += this.countFrame * 3
+        if (this._bgPanels[2].x >= 1100) {
+            this.countFrame = 0
+        }
+        return
+    }
+    if (this._bgPanels[1].x < 1100) {
+        this._bgPanels[1].x += this.countFrame * 3
+        if (this._bgPanels[1].x >= 1100) {
+            this.countFrame = 0
+        }
+        return
+    }
+    if (this._bgPanels[0].x < 1100) {
+        this._bgPanels[0].x += this.countFrame * 3
+        if (this._bgPanels[0].x >= 1100) {
+            this.countFrame = 0
+        }
+        return
+    }
+
+    if (this._bg.scale.y > 0) {
+        this._players[this.selectedPlayer].opacity -= 25
+        this._bg.scale.y -= 0.08
+        if (this._bg.scale.y <= 0) {
+            this._bg.scale.y = 0
+            if (this.selectedPlayer == 0) {
+                $dataKamigami.isGirl = true;
+            }
+            SceneManager.goto(Scene_Map)
+        }
+        this.countFrame = 0;
+        return;
+    }
+}
+
 
 //-----------------------------------------------------------------------------
 // Function : enteringScene
@@ -234,26 +317,26 @@ Scene_Kamigami_Select_Player.prototype.enteringScene = function () {
         return;
     }
     if (this._bgPanels[0].x > 0 && this.countFrame > 7) {
-        this._bgPanels[0].x -= (this._bgPanels[0].x/10 + 1)
+        this._bgPanels[0].x -= (this._bgPanels[0].x / 10 + 1)
         if (this._bgPanels[0].x <= 0) {
             this._bgPanels[0].x = 0
         }
     }
     if (this._bgPanels[1].x > 0 && this.countFrame > 13) {
-        this._bgPanels[1].x -= (this._bgPanels[1].x/10 + 1)
+        this._bgPanels[1].x -= (this._bgPanels[1].x / 10 + 1)
         if (this._bgPanels[1].x <= 0) {
             this._bgPanels[1].x = 0
         }
     }
     if (this._bgPanels[2].x > 0 && this.countFrame > 20) {
-        this._bgPanels[2].x -= (this._bgPanels[2].x/10 + 1)
+        this._bgPanels[2].x -= (this._bgPanels[2].x / 10 + 1)
         if (this._bgPanels[2].x <= 0) {
             this._bgPanels[2].x = 0
         }
     }
 
     if (this._buttonBack[0].x < 0) {
-        this._buttonBack[0].x += (-this._buttonBack[0].x/10 + 1)
+        this._buttonBack[0].x += (-this._buttonBack[0].x / 10 + 1)
         this._buttonBack[0].opacity += 15
         if (this._buttonBack[0].x >= 0) {
             this._buttonBack[0].x = 0;
@@ -261,7 +344,7 @@ Scene_Kamigami_Select_Player.prototype.enteringScene = function () {
     }
 
     if (this._buttonBack[1].x < 0 && this.countFrame > 13) {
-        this._buttonBack[1].x += (-this._buttonBack[1].x/10 + 1)
+        this._buttonBack[1].x += (-this._buttonBack[1].x / 10 + 1)
         this._buttonBack[1].opacity += 15
         if (this._buttonBack[1].x >= 0) {
             this._buttonBack[1].x = 0;
@@ -269,34 +352,32 @@ Scene_Kamigami_Select_Player.prototype.enteringScene = function () {
     }
 
     if (this._playersBlack[0].x > 1200 && this.countFrame > 26) {
-        this._playersBlack[0].x -= ((this._playersBlack[0].x - 1200)/10 + 1)
+        this._playersBlack[0].x -= ((this._playersBlack[0].x - 1200) / 10 + 1)
         if (this._playersBlack[0].x <= 1200) {
             this._playersBlack[0].x = 1200
         }
     }
 
     if (this._playersBlack[1].x > 1500 && this.countFrame > 35) {
-        this._playersBlack[1].x -= ((this._playersBlack[1].x - 1500)/10 + 1)
+        this._playersBlack[1].x -= ((this._playersBlack[1].x - 1500) / 10 + 1)
         if (this._playersBlack[1].x <= 1500) {
             this._playersBlack[1].x = 1500
         }
     }
-    if (this._textSelect.opacity < 180 && this.countFrame > 26){
+    
+    if (this._textSelect.opacity < 180 && this.countFrame > 26) {
         this._textSelect.opacity += 15
         if (this._textSelect.opacity > 180) {
             this._textSelect.opacity = 0
         }
     }
-    if (this._textSwitch.opacity < 180 && this.countFrame > 35){
+    if (this._textSwitch.opacity < 180 && this.countFrame > 35) {
         this._textSwitch.opacity += 15
         if (this._textSwitch.opacity > 180) {
             this._textSwitch.opacity = 0
         }
     }
 
-    if (this._players[0].opacity < 255 && this.countFrame > 55){
-        this._players[0].opacity += 15
-    }
 
     if (this.countFrame > 50 && this._descriptionSelectPlayer.alpha < 1) {
         this._descriptionSelectPlayer.alpha += 0.05
@@ -314,6 +395,7 @@ Scene_Kamigami_Select_Player.prototype.enteringScene = function () {
 
     if (this.countFrame > 50 && this.btnEdit.opacity < 255) {
         this.btnEdit.opacity += 15
+        this._players[this.selectedPlayer].opacity += 15
     }
     if (this.countFrame > 80) {
         this.phase = 1
@@ -333,6 +415,7 @@ Scene_Kamigami_Select_Player.prototype.updateMainScene = function () {
     let btnHover = this.updateButtons();
     if (TouchInput.isTriggered()) {
         if (this.btnEdit.isBeingTouched()) {
+            AudioManager.playSe({ name: "Cursor1", pan: 0, pitch: 100, volume: 90 });
             chatInput.select();
             return;
         }
@@ -364,10 +447,13 @@ Scene_Kamigami_Select_Player.prototype.updateButtons = function () {
 Scene_Kamigami_Select_Player.prototype.checkButton = function (btnHover) {
     switch (btnHover) {
         case 1:
-            
+            AudioManager.playSe({ name: "System_saint", pan: 0, pitch: 100, volume: 90 });
+            this.countFrame = 0;
+            this.phase = 3;
             break;
-    
+
         case 2:
+            AudioManager.playSe({ name: "Athena_Card_flip", pan: 0, pitch: 100, volume: 90 });
             this.phase = 2;
             this.countFrame = 0;
             this.selectedPlayer = 1 - this.selectedPlayer
@@ -383,7 +469,7 @@ Scene_Kamigami_Select_Player.prototype.switchPlayers = function () {
     let newPlayer = this._players[this.selectedPlayer]
     let oldPlayerShadow = this._playersBlack[1 - this.selectedPlayer]
     let newPlayerShadow = this._playersBlack[this.selectedPlayer]
-    if (oldPlayer.opacity > 0){
+    if (oldPlayer.opacity > 0) {
         oldPlayer.opacity -= 20
         this.countFrame = 0;
         return;
@@ -405,7 +491,7 @@ Scene_Kamigami_Select_Player.prototype.switchPlayers = function () {
         newPlayerShadow.x -= (25 - this.countFrame)
         return;
     }
-    if (newPlayer.opacity < 255){
+    if (newPlayer.opacity < 255) {
         newPlayer.opacity += 20
         return;
     }

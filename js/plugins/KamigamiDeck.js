@@ -350,49 +350,49 @@ Scene_Kamigami_Decks.prototype.rotate_array = function (array, direction) {
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Decks.prototype.update_hover = function () {
     var btn = 0;
-    if (this._chooseDeckBtn.isButtonHovered()) {
+    if (this._chooseDeckBtn.isBeingTouched()) {
         if (this._chooseDeckBtn.opacity <= 170)
             SoundManager.playCursor();
         this._chooseDeckBtn.opacity += 10;
         btn = 1;
     }
-    if (this._editDeckBtn.isButtonHovered()) {
+    if (this._editDeckBtn.isBeingTouched()) {
         if (this._editDeckBtn.opacity <= 170)
             SoundManager.playCursor();
         this._editDeckBtn.opacity += 10;
         btn = 2;
     }
-    if (this._eraseDeckBtn.isButtonHovered()) {
+    if (this._eraseDeckBtn.isBeingTouched()) {
         if (this._eraseDeckBtn.opacity <= 170)
             SoundManager.playCursor();
         this._eraseDeckBtn.opacity += 10;
         btn = 3;
     }
-    if (this._changeBoxBtn.isButtonHovered()) {
+    if (this._changeBoxBtn.isBeingTouched()) {
         if (this._changeBoxBtn.opacity <= 170)
             SoundManager.playCursor();
         this._changeBoxBtn.opacity += 10;
         btn = 4;
     }
-    if (this._leftCursor.isButtonHovered()) {
+    if (this._leftCursor.isBeingTouched()) {
         if (this._leftCursor.opacity <= 170)
             SoundManager.playCursor();
         this._leftCursor.opacity += 10;
         btn = 5;
     }
-    if (this._leftCursor10.isButtonHovered()) {
+    if (this._leftCursor10.isBeingTouched()) {
         if (this._leftCursor10.opacity <= 170)
             SoundManager.playCursor();
         this._leftCursor10.opacity += 10;
         btn = 6;
     }
-    if (this._rightCursor.isButtonHovered()) {
+    if (this._rightCursor.isBeingTouched()) {
         if (this._rightCursor.opacity <= 170)
             SoundManager.playCursor();
         this._rightCursor.opacity += 10;
         btn = 7;
     }
-    if (this._rightCursor10.isButtonHovered()) {
+    if (this._rightCursor10.isBeingTouched()) {
         if (this._rightCursor10.opacity <= 170)
             SoundManager.playCursor();
         this._rightCursor10.opacity += 10;

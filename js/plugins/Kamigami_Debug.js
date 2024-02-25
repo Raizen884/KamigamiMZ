@@ -120,14 +120,14 @@ if (true) {
             //this.addChild(text)
             $dataKamigami.duelInfo[68] = {wins: 0, losses: 0, enabled: true, name: "Anhanga"}
             //loadDeck("Anhanga")
-            $dataKamigami.arcMythology = 1
+            $dataKamigami.arcMythology = 0
             //$dataKamigami.gameOptions.language = "pt"
             //IAVRA.I18N.language = $dataKamigami.gameOptions.language
             //Graphics._switchFullScreen();
             //$dataKamigami.needsRoom = true;
             //SceneManager.goto(Scene_Kamigami_Deck_Build);
             //SceneManager.goto(Scene_Kamigami_Duel);
-            SceneManager.goto(Scene_Map);
+            SceneManager.goto(Scene_CampaignMap);
             //console.log("Teste")
             //$dataKamigami.owned_booster_packs[1] = 20
 
@@ -157,7 +157,7 @@ if (true) {
 
 
     Scene_Title.prototype.configureTestDecks = function () {
-        $dataKamigami.chosenDeck = 0;
+        $dataKamigami.chosenDeck = 2;
         $dataKamigami.decks[0] = ["TestDeck", []]
         for (let n = 0; n < 20; n++) {
             $dataKamigami.decks[0][1].push(133)
