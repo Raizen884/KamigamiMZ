@@ -58,6 +58,7 @@ Scene_Ignis_Shop.prototype.initialize = function () {
     this.write_pic_texts();
     this.create_coin();
     this.createTip()
+    
 };
 
 //-----------------------------------------------------------------------------

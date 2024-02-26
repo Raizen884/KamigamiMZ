@@ -422,10 +422,11 @@ Scene_Kamigami_AfterDuel.prototype.update = function () {
                     this._statistics.scale.y = 0
                 }
             }
-
-            if (this.countFrames > 120) {
-                SceneManager.pop();
+            if (this.countFrames == 120)
                 handleAfterMatch($matchResult)
+            if (this.countFrames > 120) {
+                SceneManager.popUntil("Scene_Kamigami_Duel", "Scene_Kamigami_Tutorial")
+
             }
         default:
             break;

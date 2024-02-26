@@ -449,6 +449,13 @@ Scene_Kamigami_Select_Player.prototype.checkButton = function (btnHover) {
         case 1:
             AudioManager.playSe({ name: "System_saint", pan: 0, pitch: 100, volume: 90 });
             this.countFrame = 0;
+            if (chatInput.text == "") {
+                $dataKamigami.playerName = chatInput.placeholder
+            } else 
+            {
+                $dataKamigami.playerName = chatInput.text
+            }
+
             this.phase = 3;
             break;
 

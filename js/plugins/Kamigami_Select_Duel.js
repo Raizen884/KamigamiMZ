@@ -685,6 +685,7 @@ Scene_Kamigami_Select_Duel.prototype.updatecardOptionsPosition = function (cardO
 Scene_Kamigami_Select_Duel.prototype.createDuelistOptions = function () {
     this.duelistChoices = new SpriteDuelistChoices();
     this.addChild(this.duelistChoices)
+    this.addChild(this.duelistChoices.mask)
     this.duelistChoices.x = 1570
     this.duelistChoices.mask.x = 1520;
     //this.duelistChoices.duelistSelected = this.duelistSelected;

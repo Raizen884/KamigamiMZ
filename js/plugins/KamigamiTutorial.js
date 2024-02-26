@@ -345,20 +345,20 @@ Scene_Kamigami_Tutorial.prototype.mainPhaseTutorial = function () {
 
         switch (this.onTutorialPhase) {
             case 3:
-                text = IAVRA.I18N.localize("#{DuelVocab.TutorialDescription.mainPhase1}")
+                text = IAVRA.I18N.localize("#{DuelVocab.TutorialDescription.mainPhase2}")
                 this.show_big_card_extra_animation(3)
                 this._big_card_front.euler.y = 0
                 this._centerTutorial.x = 790
-                this._centerTutorial.y = 250
+                this._centerTutorial.y = 270
                 this._centerTutorial.scale.x = this._centerTutorial.scale.y = 0.5
                 this.changeTutorialPosition("middle")
                 break;
             case 4:
-                text = IAVRA.I18N.localize("#{DuelVocab.TutorialDescription.mainPhase2}")
+                text = IAVRA.I18N.localize("#{DuelVocab.TutorialDescription.mainPhase1}")
                 this.show_big_card_extra_animation(3)
                 this._big_card_front.euler.y = 0
                 this._centerTutorial.x = 1130
-                this._centerTutorial.y = 250
+                this._centerTutorial.y = 270
                 this._centerTutorial.scale.x = this._centerTutorial.scale.y = 0.5
                 this.changeTutorialPosition("middle")
                 break;

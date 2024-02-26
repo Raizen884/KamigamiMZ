@@ -10,13 +10,21 @@ function resetCampaign() {
     DataManager.saveGame(1)
     SceneManager.goto(Scene_Kamigami_Credits)
 };
-
+SceneManager.popUntil = function(sceneName, sceneName2) {
+    while (this._stack.length > 0) {
+        let oldScene = this._stack.pop();
+        if (sceneName != oldScene.name && sceneName2 != oldScene.name) {
+            this.goto(oldScene);
+            break;
+        }
+    }
+};
 function handleAfterMatch(result) {
     if (result || !$dataKamigami.gameOptions.tutorial) {
-        if ($dataEnemyId && $dataKamigami.needsToUpdateScore) {
+        if ($dataEnemyId !== false && $dataKamigami.needsToUpdateScore) {
             $dataKamigami.duelInfo[$dataEnemyId].wins++
         }
-        SceneManager.pop();
+        SceneManager.popUntil("Scene_Kamigami_Duel", "Scene_Kamigami_Tutorial");
 
     } else {
         if ($dataEnemyId && $dataKamigami.needsToUpdateScore) {
@@ -40,7 +48,7 @@ function loadDeck(deckName, difficulty = false) {
     if (difficulty !== false) {
         $dataKamigami.needsToUpdateScore = true
     } else {
-        $dataKamigami.needsToUpdateScore = false
+        $dataKamigami.needsToUpdateScore = true
         difficulty = $dataKamigami.maxDifficulty;
         if (difficulty == 0)
             handicap = true;

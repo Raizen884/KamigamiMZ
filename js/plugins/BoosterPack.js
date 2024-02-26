@@ -11,6 +11,12 @@ function Scene_Kamigami_Booster() {
 Scene_Kamigami_Booster.prototype = Object.create(Scene_Base.prototype);
 Scene_Kamigami_Booster.prototype.constructor = Scene_Kamigami_Booster;
 
+Scene_Kamigami_Booster.prototype.createSpritebase = function () {
+    this._spriteset = new Spriteset_Base();
+    this._spriteset._effectsContainer = this._spriteset._baseSprite;
+    this.addChild(this._spriteset);
+}
+
 //-----------------------------------------------------------------------------
 // Function : initialize - initiates the graphics
 //-----------------------------------------------------------------------------
@@ -32,6 +38,7 @@ Scene_Kamigami_Booster.prototype.initialize = function () {
     this.createWhiteFade()
     this.createCenterSprite();
     this.createTip();
+    this.createSpritebase();
 };
 //-----------------------------------------------------------------------------
 // Function : createTip
@@ -448,7 +455,7 @@ Scene_Kamigami_Booster.prototype.closeScene = function () {
 // Function : updateButtons
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Booster.prototype.updateButtonsHover = function () {
-    if (this.returnButton.isButtonHovered() && this.phase == 2) {
+    if (this.returnButton.isBeingTouched() && this.phase == 2) {
         this.returnButtonLight.opacity += 20;
         if (this.returnButtonLight.opacity == 20) {
             AudioManager.playSe({ name: "menu_select", pan: 0, pitch: 100, volume: 100 });
@@ -457,7 +464,7 @@ Scene_Kamigami_Booster.prototype.updateButtonsHover = function () {
         this.returnButtonLight.opacity -= 20;
     }
 
-    if (this.returnShop.isButtonHovered() && this.phase == 2) {
+    if (this.returnShop.isBeingTouched() && this.phase == 2) {
         this.returnShopLight.opacity += 20;
         if (this.returnShopLight.opacity == 20) {
             AudioManager.playSe({ name: "menu_select", pan: 0, pitch: 100, volume: 100 });
@@ -479,7 +486,7 @@ Scene_Kamigami_Booster.prototype.updateButtonsClick = function () {
         this.phase = 5
     }
 
-    if (this.returnShop.isButtonHovered()) {
+    if (this.returnShop.isBeingTouched()) {
         AudioManager.playSe({ name: "success", pan: 0, pitch: 95, volume: 100 });
         this.nextScene = 1
         this.countFrame = 0

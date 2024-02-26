@@ -345,6 +345,7 @@ Window_Message.prototype.create_name_window = function () {
         this.current_name = $dataKamigami.playerName
     //this.current_name = greenworks.getSteamId().screenName
     }
+    console.log(this.current_name)
     let name = this.current_name;
     this._oldName = name;
     this._name_text.bitmap.drawText(name, 0, 0, 400, 60, 'center');

@@ -118,7 +118,10 @@ if (true) {
             //$dataKamigami.hasChosenDeck = true
             //let text =  new PIXI.Text(greenworks.getSteamId().steamId, { fontFamily: 'Chau Philomene One', fontSize: 60, fill: 0xc22424, align: 'left', stroke: "#000000", strokeThickness: 3 });
             //this.addChild(text)
-            $dataKamigami.duelInfo[68] = {wins: 0, losses: 0, enabled: true, name: "Anhanga"}
+            for (let n = 0; n < $dataKamigami.duelInfo.length; n++) {
+                $dataKamigami.duelInfo[n].enabled = false
+            }
+            $dataKamigami.duelInfo[0] = {wins: 0, losses: 0, enabled: true, name: "Nymph"}
             //loadDeck("Anhanga")
             $dataKamigami.arcMythology = 0
             //$dataKamigami.gameOptions.language = "pt"
@@ -128,6 +131,7 @@ if (true) {
             //SceneManager.goto(Scene_Kamigami_Deck_Build);
             //SceneManager.goto(Scene_Kamigami_Duel);
             SceneManager.goto(Scene_CampaignMap);
+            //SceneManager.goto(Scene_Kamigami_Select_Player);
             //console.log("Teste")
             //$dataKamigami.owned_booster_packs[1] = 20
 

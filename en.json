@@ -410,7 +410,10 @@
 			"prologue10": "And if I don't help, you just let me die?",
 			"prologue11": "See! You are smart also. No time to lose! Choose your \ndeck and your mission will start now!",
 			"prologue12": "That is a cliche way to start an Isekai, but I don't think I have any choice.",
-			"prologue13": "Nice choice! Now you will have access to the god's realm, a place only the sacred can enter! \nYou will face many difficulties, but I believe you will be able to overcome them!"
+			"prologue13": "Nice choice! Now you will have access to the god's realm, a place only the sacred can enter! \nYou will face many difficulties, but I believe you will be able to overcome them!",
+			"prologue14": "Would you like to play the tutorial? \nIt will be accessible at all times in the main menu options.",
+			"prologue15": "Yes",
+			"prologue16": "No"
 		}
 	}
 }

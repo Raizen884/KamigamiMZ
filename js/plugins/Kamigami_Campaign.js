@@ -31,7 +31,8 @@ Scene_CampaignMap.prototype.initialize = function () {
     this.createButtonText();
     this.createBackFrames();
     this.createGodImage();
-    this.create
+    AudioManager.playBgm({ name: "Onward!! 2", pan: 0, pitch: 100, volume: 100 });
+    
 
 };
 Scene_CampaignMap.prototype.createBackGods = function () {
@@ -199,6 +200,9 @@ Scene_CampaignMap.prototype.update = function () {
         case 6:
             this.updateScene();
             break;
+        case 7:
+            this.updateChallengerAccept()
+            break
     }
 
 };
@@ -313,6 +317,10 @@ Scene_CampaignMap.prototype.updateChallengerButtons = function () {
         this.cancelTextLight.opacity -= 20
     }
     if (this.duelTextLight.isBeingTouched()) {
+        if (TouchInput.isTriggered()) {
+            this.phase = 7;
+            this.countFrames = -1;
+        }
         this.duelTextLight.opacity += 20
     } else {
         this.duelTextLight.opacity -= 20
@@ -342,6 +350,32 @@ Scene_CampaignMap.prototype.updateChallengerReturn = function () {
     this.tl.play()
     if (this.countFrames == 80) {
         this.phase = 2
+    }
+
+}
+
+Scene_CampaignMap.prototype.updateChallengerAccept = function () {
+    this.cancelTextLight.opacity -= 20
+    this.duelTextLight.opacity -= 20
+    if (this._fade.opacity > 0) {
+        this._fade.opacity -= 3
+    }
+    if (this.countFrames <= 60 && this.countFrames >= 20) {
+        let count = 60 - this.countFrames
+        this._cancelButtonBack.x -= (40 - count)
+        this._duelButtonBack.x -= (40 - count)
+        this.duelText.x = this.cancelText.x = this._cancelButtonBack.x
+    }
+
+    for (let n = 0; n < 3; n++) {
+        let m = 2 - n
+        if (this.countFrames < 80 && this.countFrames >= m * 10 && (50 - (this.countFrames - (m * 10))) > 0) {
+            this._transitionPics[n].x += (50 - (this.countFrames - (m * 10)))
+        }
+    }
+    this.tl.play()
+    if (this.countFrames == 80) {
+        loadDeck(this.godName)
     }
 
 }
@@ -419,19 +453,30 @@ SpriteCampaign.prototype.createDeityButtons = function () {
         let y = JSON.parse(deityInfos[n])["Y Position"]
         let name = JSON.parse(deityInfos[n])["Name"]
         let pathArray = JSON.parse(JSON.parse(deityInfos[n])["Requirement"])[0]
-        let defeated = $dataKamigami.duelInfo[0].enabled
-        if (defeated) {
+        if ($dataKamigami.duelInfo[n].wins > 0) {
             lockType = 3;
+        } else if ($dataKamigami.duelInfo[n].enabled || this.checkPath(pathArray)) {
+            lockType = 2;
         }
         this.deityButtons.push(new SpriteCampaignButton(this.civilization, lockType, name, x, y, pathArray))
         this.addChild(this.deityButtons[this.deityButtons.length - 1])
     }
 
 }
+SpriteCampaign.prototype.checkPath = function (pathArray) { 
+    for (let i = 0; i < $dataKamigami.duelInfo.length; i++) {
+        if ($dataKamigami.duelInfo[i].name == pathArray && $dataKamigami.duelInfo[i].wins > 0 ) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 SpriteCampaign.prototype.checkButtonTrigger = function () {
 
     for (let n = 0; n < this.deityButtons.length; n++) {
-        if (this.deityButtons[n].isBeingTouched()) {
+        if (this.deityButtons[n].isBeingTouched() && this.deityButtons[n].lockType >= 2) {
             return this.deityButtons[n].getName();
         }
     }
@@ -545,6 +590,7 @@ SpriteCampaignButton.prototype.initialize = function (civilizationType, lockType
     this.x = x;
     this.y = y;
     this.requirements = requirements
+    this.lockType = lockType
     //this.anchor.x = this.anchor.y = 0.5
     this.createSprites(civilizationType, lockType)
     this.bitmap = new Bitmap(62, 62)
