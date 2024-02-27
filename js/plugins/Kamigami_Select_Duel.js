@@ -738,8 +738,8 @@ SpriteDuelistChoices.prototype.createAllOptions = function () {
     this.duelistOptions = new Array();
     let card
     let cardId
-    for (let n = 0; n < 121; n++) {
-        if (n != 120) {
+    for (let n = 0; n < 151; n++) {
+        if (n != 150) {
             card = new KamigamiCard()
             card.loadCardData(n, 0);
             if (card.cardType == 2 || card.cardType == 3 || card.name == "Phoenix Egg")
@@ -901,8 +901,8 @@ SpriteDuelistButton.prototype.loadCivilization = function (type) {
         case 3:
             this.typeIcon.bitmap = ImageManager.loadDeckBuild("Japan")
             break;
-        case 3:
-            this.typeIcon.bitmap = ImageManager.loadDeckBuild("")
+        case 4:
+            this.typeIcon.bitmap = ImageManager.loadDeckBuild("Brazil")
             break;
         default:
             break;

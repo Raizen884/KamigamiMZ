@@ -1,4 +1,4 @@
-if (true) {
+if (false) {
     SceneManager.updateScene = function() {
         if (this._scene) {
             if (this._scene.isStarted()) {
@@ -108,6 +108,9 @@ if (true) {
             $dataKamigami.enemy_tt_cards[40] = 1;
             $dataKamigami.maxDifficulty = 2;
             $dataKamigami.difficultySetting = 0;
+            $gameParty.gainGold(2000)
+            $dataKamigami.booster_packs[0] = true
+            $dataKamigami.booster_packs[1] = true
             //this._fakeCenter = new Sprite_Animation_EF();
             //this._fakeCenter.setup([this._logo2, this._logo1], $dataAnimationsEF[this._animationCount], false);
             //this.addChild(this._fakeCenter);
@@ -119,7 +122,7 @@ if (true) {
             //let text =  new PIXI.Text(greenworks.getSteamId().steamId, { fontFamily: 'Chau Philomene One', fontSize: 60, fill: 0xc22424, align: 'left', stroke: "#000000", strokeThickness: 3 });
             //this.addChild(text)
             for (let n = 0; n < $dataKamigami.duelInfo.length; n++) {
-                $dataKamigami.duelInfo[n].enabled = false
+                //$dataKamigami.duelInfo[n].enabled = false
             }
             $dataKamigami.duelInfo[0] = {wins: 0, losses: 0, enabled: true, name: "Nymph"}
             //loadDeck("Anhanga")
@@ -130,7 +133,7 @@ if (true) {
             //$dataKamigami.needsRoom = true;
             //SceneManager.goto(Scene_Kamigami_Deck_Build);
             //SceneManager.goto(Scene_Kamigami_Duel);
-            SceneManager.goto(Scene_CampaignMap);
+            //SceneManager.goto(Scene_Title);
             //SceneManager.goto(Scene_Kamigami_Select_Player);
             //console.log("Teste")
             //$dataKamigami.owned_booster_packs[1] = 20

@@ -125,7 +125,7 @@ SpriteGod.prototype.loadCardValues = function (id) {
     if (cardType == 2) {
         this.imageValues[3].x = 130
         this.imageValues[3].y = -326
-        this.imageValues[3].opacity = 255;
+        this.imageValues[3].opacity = 0;
         this.removeChild(this.imageValues[3])
         this.addChild(this.imageValues[3])
     } else if (cardType == 0) {
@@ -291,28 +291,29 @@ SpriteGod.prototype.loadGodBasicLayers = function (godName, id) {
     if (id != -1) {
         let card = new KamigamiCard()
         card.loadCardData(id, 0)
+        let rank = ["_s", "_a", "_b"]
+        let cardTemplate = ""
+        let rankNum = rank[Math.floor(id / 150)]
+        //this.rankSprite.bitmap = ImageManager.loadSpecialCards(rank[Math.floor(id / 150)])
         switch (card.cardType) {
             case 0:
-                if (godName == "big_hades" || godName == "big_odin") {
-                    this.imageBaseLayer.bitmap = ImageManager.loadKamigami("big_template_god")
-                } else {
-                    this.imageBaseLayer.bitmap = ImageManager.loadKamigami("big_template_goddess")
-                }
+                cardTemplate = "card_base_goddess"
                 break;
             case 1:
                 if (card.isDeity) {
-                    this.imageBaseLayer.bitmap = ImageManager.loadKamigami("big_template_deity")
+                    cardTemplate = "card_base_deity"
                 } else {
-                    this.imageBaseLayer.bitmap = ImageManager.loadKamigami("big_template_creature")
+                    cardTemplate = "card_base_creature"
                 }
                 break;
             case 2:
-                this.imageBaseLayer.bitmap = ImageManager.loadKamigami("big_template_miracle")
+                cardTemplate = "card_base_miracle"
                 break;
             case 3:
-                this.imageBaseLayer.bitmap = ImageManager.loadKamigami("big_template_monument")
+                cardTemplate = "card_base_monument"
                 break;
         }
+        this.imageBaseLayer.bitmap = ImageManager.loadKamigami(cardTemplate + rankNum)
     }
     this.imageLayerCard.bitmap = ImageManager.loadKamigami(godName)
 }

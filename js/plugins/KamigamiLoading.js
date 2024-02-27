@@ -50,6 +50,7 @@ Scene_Loading.prototype.update = function () {
         this.backBar.opacity = 255;
     }
     if (this.allFiles == this.loadedFiles) {
+        Graphics._switchFullScreen();
        SceneManager.goto(Scene_Title)
     }
     this.loadingBar.scale.x = this.loadedFiles / this.allFiles
@@ -65,7 +66,7 @@ Scene_Loading.prototype.onLoadSuccess = function () {
 //-----------------------------------------------------------------------------
 Scene_Loading.prototype.initialize = function () {
     Scene_Base.prototype.initialize.call(this);
-    Graphics._switchFullScreen();
+    
     this.createAllImages();
 
     DataManager.loadGame(1)

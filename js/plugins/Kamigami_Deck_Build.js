@@ -246,6 +246,7 @@ Scene_Kamigami_Deck_Build.prototype.createBackGround = function () {
 Scene_Kamigami_Deck_Build.prototype.createAllCardOptionsDeck = function () {
     this.cardOptionsDeck = new SpriteCardOptionsDeck();
     this.addChild(this.cardOptionsDeck)
+    this.addChild(this.cardOptionsDeck.mask)
     this.cardOptionsDeck.x = 60
 };
 

@@ -163,6 +163,7 @@ Scene_Kamigami_Deck_Select.prototype.createDeckButtons = function () {
 Scene_Kamigami_Deck_Select.prototype.createAllDeckOptions = function () {
     this.deckChoices = new SpriteDeckChoices();
     this.addChild(this.deckChoices)
+    this.addChild(this.deckChoices.mask)
     this.deckChoices.x = 60
     this.deckSelected = $dataKamigami.selectedDeck;
     //this.deckChoices.deckSelected = this.deckSelected;
