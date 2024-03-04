@@ -1,4 +1,4 @@
-if (false) {
+if (true) {
     SceneManager.updateScene = function() {
         if (this._scene) {
             if (this._scene.isStarted()) {
@@ -132,7 +132,7 @@ if (false) {
             //Graphics._switchFullScreen();
             //$dataKamigami.needsRoom = true;
             //SceneManager.goto(Scene_Kamigami_Deck_Build);
-            //SceneManager.goto(Scene_Kamigami_Duel);
+            SceneManager.goto(Scene_Kamigami_Duel);
             //SceneManager.goto(Scene_Title);
             //SceneManager.goto(Scene_Kamigami_Select_Player);
             //console.log("Teste")
@@ -164,15 +164,15 @@ if (false) {
 
 
     Scene_Title.prototype.configureTestDecks = function () {
-        $dataKamigami.chosenDeck = 2;
+        $dataKamigami.chosenDeck = 0;
         $dataKamigami.decks[0] = ["TestDeck", []]
         for (let n = 0; n < 20; n++) {
-            $dataKamigami.decks[0][1].push(133)
+            $dataKamigami.decks[0][1].push(5)
         }
         for (let n = 0; n < 20; n++) {
 
             //$dataKamigami.decks[0][1].push(119)
-            $dataKamigami.decks[0][1].push(135)
+            $dataKamigami.decks[0][1].push(4)
         }
         $dataKamigami.decks[0][1].push(2)
     };
@@ -294,7 +294,7 @@ if (false) {
     Scene_Kamigami_Duel.prototype.initialize_variables = function () {
         _debug_Duel_initialize_variables.call(this, ...arguments)
         //this.turn = 0;
-        //this.devotion_player1 = 1000;
+        this.devotion_player1 = 1000;
     }
 
     const _debug_Duel_startAllMethods = Scene_Kamigami_Duel.prototype.startAllMethods
