@@ -15,7 +15,7 @@ Scene_Kamigami_Duel.prototype.initialize = function () {
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Duel.prototype.createSpecialGodCard = function () {
     this._big_card_front = new SpriteGod();
-    //this._big_card_front.configureGod("big_zeus", 58);
+    //this._big_card_front.configureGod("bbr_coaraci", 58);
     //this._big_card_front.x = Graphics.width / 2;
     //this._big_card_front.y = Graphics.height / 2;
     this._big_card_front.anchor.x = this._big_card_front.anchor.y = 0.5;
@@ -197,7 +197,10 @@ SpriteGod.prototype.configureGod = function (godName, id = -1, noAnimation = fal
     }
     this.godName = godName;
     let specialCards = []
-    specialCards = ["big_set", "big_hades", "big_hel", "big_loki", "big_odin", "big_ra", "big_thor", "big_isis", "big_izanami", "big_poseidon", "big_izanagi", "big_amaterasu", "big_zeus", "big_tsukiyomi"]
+    specialCards = ["big_set", "big_hades", "big_hel", "big_loki", "big_odin",
+        "big_ra", "big_thor", "big_isis", "big_izanami", "big_poseidon", "big_izanagi",
+        "big_amaterasu", "big_zeus", "big_tsukiyomi",
+        "bbr_coaraci", "bbr_anhanga"]
     this.closeAllImages();
     this.godLayers = []
     if (id >= 0) {
@@ -227,6 +230,7 @@ SpriteGod.prototype.configureGod = function (godName, id = -1, noAnimation = fal
     this.container.filters = []
     this._big_card_front.scale.y = 1;
     this.tl.to(this.displacementFilter.scale, 8, { x: 0, y: -3, ease: Expo.easeInOut });
+    this.specialCardRank;
     switch (godName) {
         case "big_set":
             this.setCard();
@@ -269,6 +273,12 @@ SpriteGod.prototype.configureGod = function (godName, id = -1, noAnimation = fal
             break
         case "big_hel":
             this.helCard();
+            break
+        case "bbr_coaraci":
+            this.coaraciCard();
+            break
+        case "bbr_anhanga":
+            this.anhangaCard();
             break
         default:
             break;
@@ -326,7 +336,7 @@ SpriteGod.prototype.setCard = function () {
     this.frontSprite.opacity = 150;
     this.backSprite.opacity = 255;
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
-    this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god2")
     this.loadGodLayerExtras(this.maskInside, "Set_god")
     this.loadGodLayerExtras(this.maskInside, "Set_god1")
@@ -350,7 +360,7 @@ SpriteGod.prototype.hadesCard = function () {
     this.frontSprite.opacity = 160;
     this.backSprite.opacity = 255;
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
-    this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_god")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_layer3")
     this.loadGodLayerExtras(this.maskInside, "hades_god")
     this.removeChild(this.frontSprite)
@@ -374,7 +384,7 @@ SpriteGod.prototype.helCard = function () {
     this.frontSprite.opacity = 200;
     this.backSprite.opacity = 255;
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
-    this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god")
     this.loadGodLayerExtras(this.maskInside, "Hel_god2")
     this.removeChild(this.container)
@@ -395,7 +405,40 @@ SpriteGod.prototype.helCard = function () {
     this._displacement.anchor.set(0.5);
     this.container.filters = [this.displacementFilter];
 };
-
+//-----------------------------------------------------------------------------
+// Function : coaraciCard
+//-----------------------------------------------------------------------------
+SpriteGod.prototype.coaraciCard = function () {
+    let godName = "Coaraci"
+    this.frontSprite.opacity = 150;
+    this.backSprite.opacity = 255;
+    this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
+    this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god2")
+    //this.loadGodLayerExtras(this.maskInside, "Coaraci_god")
+    let n = this.godLayers.length
+    this.godLayers.push(new Sprite())
+    this.godLayers[n].bitmap = ImageManager.loadSpecialCards("Coaraci_god")
+    this.godLayers[n].anchor.x = 0.5;
+    this.godLayers[n].anchor.y = 0.5;
+    this.godLayers[n].mask = this.maskInside
+    this.addChild(this.godLayers[n])
+    this.removeChild(this.container)
+    this.addChild(this.container)
+    this.removeChild(this.frontSprite)
+    this.addChild(this.frontSprite)
+    this.removeChild(this.imageLayerCard)
+    this.addChild(this.imageLayerCard)
+    this.createParticlesFront(godName);
+    this.createParticlesBack(godName);
+    this._displacement.bitmap = ImageManager.loadDisplacement("map15");
+    this._displacement.scale.set(8);
+    this._displacement.anchor.set(0.5);
+    this.tl.to(this.displacementFilter.scale, 8, { x: -200, y: -10, ease: Expo.easeInOut });
+    this.tl.timeScale(1000)
+    this.tl.gotoAndPlay(0)
+    this.container.filters = [this.displacementFilter];
+};
 //-----------------------------------------------------------------------------
 // Function : lokiCard
 //-----------------------------------------------------------------------------
@@ -404,7 +447,7 @@ SpriteGod.prototype.lokiCard = function () {
     this.frontSprite.opacity = 160;
     this.backSprite.opacity = 255;
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
-    this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god")
     this.createParticlesFront(godName);
     this.createParticlesBack(godName);
@@ -422,7 +465,30 @@ SpriteGod.prototype.lokiCard = function () {
     this.containerBack.filters = [this.displacementFilterBack];
     this.containerBack.y = 20;
 };
-
+//-----------------------------------------------------------------------------
+// Function : anhangaCard
+//-----------------------------------------------------------------------------
+SpriteGod.prototype.anhangaCard = function () {
+    let godName = "Anhanga"
+    this.frontSprite.opacity = 160;
+    this.backSprite.opacity = 255;
+    this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
+    this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god2")
+    this.loadGodLayerExtras(this.maskInside, "Anhanga_god")
+    this.removeChild(this.frontSprite)
+    this.addChild(this.frontSprite)
+    this.removeChild(this.imageLayerCard)
+    this.addChild(this.imageLayerCard)
+    this.createParticlesFront(godName);
+    this.createParticlesBack(godName);
+    this._displacement.bitmap = ImageManager.loadDisplacement("Heart");
+    this._displacement.scale.set(1);
+    this._displacement.anchor.set(0.5);
+    this.container.filters = [this.displacementFilter];
+    this.tl.timeScale(0.1)
+    this.tl.gotoAndPlay(0)
+};
 //-----------------------------------------------------------------------------
 // Function : odinCard
 //-----------------------------------------------------------------------------
@@ -431,7 +497,7 @@ SpriteGod.prototype.odinCard = function () {
     this.frontSprite.opacity = 160;
     this.backSprite.opacity = 255;
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
-    this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_god")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god")
     this.createParticlesFront(godName);
     this.createParticlesBack(godName);
@@ -450,7 +516,7 @@ SpriteGod.prototype.raCard = function () {
     this.frontSprite.opacity = 150;
     this.backSprite.opacity = 255;
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
-    this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god")
     this.createParticlesFront(godName);
     this.createParticlesBack(godName);
@@ -470,7 +536,7 @@ SpriteGod.prototype.thorCard = function () {
     this.frontSprite.opacity = 100;
     this.backSprite.opacity = 55;
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
-    this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god2")
     this.loadGodLayerExtras(this.maskInside, "Thor_god")
     this.loadGodLayerExtras(this.maskInside, "Thor_god1")
@@ -497,7 +563,7 @@ SpriteGod.prototype.isisCard = function () {
     this.frontSprite.opacity = 150;
     this.backSprite.opacity = 255;
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
-    this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_layer4")
     this.loadGodLayerExtras(this.maskInside, "Isis_god")
     let n = this.godLayers.length
@@ -530,7 +596,7 @@ SpriteGod.prototype.tsukiyomiCard = function () {
     this.frontSprite.opacity = 150;
     this.backSprite.opacity = 255;
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
-    this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god")
     this.createParticlesFront(godName);
     this.createParticlesBack(godName);
@@ -551,7 +617,7 @@ SpriteGod.prototype.zeusCard = function () {
     this.frontSprite.opacity = 50;
     this.backSprite.opacity = 255;
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
-    this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god4")
     this.loadGodLayerExtras(this.maskInside, "Zeus_god3")
     this.loadGodLayerExtras(this.maskInside, "Zeus_god2")
@@ -579,7 +645,7 @@ SpriteGod.prototype.amaterasuCard = function () {
     this.frontSprite.opacity = 255;
     this.backSprite.opacity = 255;
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
-    this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god")
     this.createParticlesFront(godName);
     this.createParticlesBack(godName);
@@ -599,7 +665,7 @@ SpriteGod.prototype.izanamiCard = function () {
     this.frontSprite.opacity = 255;
     this.backSprite.opacity = 50;
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
-    this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god")
     this.createParticlesFront(godName);
     this.createParticlesBack(godName);
@@ -613,7 +679,7 @@ SpriteGod.prototype.poseidonCard = function () {
     this.frontSprite.opacity = 255;
     this.backSprite.opacity = 255;
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
-    this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god")
     this.createParticlesFront(godName);
     this.createParticlesBack(godName);
@@ -633,7 +699,7 @@ SpriteGod.prototype.izanagiCard = function () {
     this.frontSprite.opacity = 255;
     this.backSprite.opacity = 80;
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
-    this.imageLayerCard.bitmap = ImageManager.loadKamigami("big_template_goddess")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god2")
     this.loadGodLayerExtras(this.maskInside, "Izanagi_god")
     this.loadGodLayerExtras(this.maskInside, "Izanagi_god1")
@@ -736,6 +802,12 @@ SpriteGod.prototype.createParticlesFront = function (godName) {
             this.emitter.y = -50;
             this.emitter.x = 0;
             break;
+        case "Coaraci":
+            this.emitter2 = fx.getParticleEmitter('BR-Leafs');
+            this.emitter2.init(this.backSprite, true, 1);
+            this.emitter2.y = -220;
+            this.emitter2.x = 0;
+            break;
         default:
             break;
     }
@@ -820,6 +892,12 @@ SpriteGod.prototype.createParticlesBack = function (godName) {
             this.emitter2.y = 85;
             this.emitter2.x = -70;
             break;
+        case "Coaraci":
+            this.emitter2 = fx.getParticleEmitter('BR-Sun');
+            this.emitter2.init(this.backSprite, true, 0.5);
+            this.emitter2.y = -220;
+            this.emitter2.x = 50;
+            break;
         default:
             break;
     }
@@ -876,7 +954,7 @@ SpriteGod.prototype.update = function (cameraX = SceneManager._scene.specialCard
     this.maskInside.y = cameraY;
     this._displacement.y = Math.sin(this.countFrames * Math.PI / 600) * 300
     this._displacement.x = Math.cos(this.countFrames * Math.PI / 600) * 300
-    if (this.oldId < 120)
+    if (this.oldId < 150)
         this.updateGodMovement();
     this.updateCheckButton();
 };
@@ -884,7 +962,7 @@ SpriteGod.prototype.update = function (cameraX = SceneManager._scene.specialCard
 // Function : updateGodMovement
 //-----------------------------------------------------------------------------
 SpriteGod.prototype.updateGodMovement = function () {
-    let scaleGods = ["big_hades", "big_odin", "big_amaterasu", "big_tsukiyomi", "big_ra"]
+    let scaleGods = ["big_hades", "big_odin", "big_amaterasu", "big_tsukiyomi", "big_ra", "bbr_anhanga"]
     let scaleGodsBack = ["big_zeus", "big_tsukiyomi", "big_loki", "big_isis"]
     if (scaleGods.includes(this.godName)) {
         this.moveGodScaleLayer(this._big_card_front);
@@ -917,6 +995,9 @@ SpriteGod.prototype.updateGodMovement = function () {
     }
     if (this.godName == "big_isis") {
         this.playSpecialIsisCard();
+    }
+    if (this.godName == "bbr_anhanga") {
+        this.playSpecialAnhangaCard();
     }
 };
 //-----------------------------------------------------------------------------
@@ -961,6 +1042,18 @@ SpriteGod.prototype.playSpecialHadesCard = function () {
         this._big_card_front.opacity += 5
     }
 };
+//-----------------------------------------------------------------------------
+// Function : playSpecialHadesCard
+//-----------------------------------------------------------------------------
+SpriteGod.prototype.playSpecialAnhangaCard = function () {
+    if (this.countFrames % 40 < 20) {
+        this._big_card_front.opacity -= 10
+    } else {
+        this._big_card_front.opacity += 10
+    }
+    this._big_card_front.opacity = Math.max(100, this._big_card_front.opacity)
+}
+
 
 //-----------------------------------------------------------------------------
 // Function : playSpecialZeusCard
@@ -1261,7 +1354,7 @@ SpriteGod.prototype.writeCardText = function (id) {
         this.textHeader.destroy()
     }
     let baseText = text.length > 1 ? text[1] : text[0]
-    this.text = new PIXI.Text(baseText, { fontFamily: 'Overpass', fontSize: 20, fill: 0x262130, align: 'center', wordWrap: true, wordWrapWidth: 290, lineHeight: 24 });
+    this.text = new PIXI.Text(baseText, { fontFamily: 'Overpass', fontSize: 20, fill: 0x262130, align: 'center', wordWrap: true, wordWrapWidth: 285, lineHeight: 24 });
     this.text.anchor.x = 0.5
     this.text.y = 120 + text.length * 30
     this.text.convertTo3d()
@@ -1277,7 +1370,7 @@ SpriteGod.prototype.writeCardText = function (id) {
         this.textHeader.bitmap.textColor = "#262130"
         this.textHeader.bitmap.outlineWidth = 0
         this.textHeader.bitmap.drawText(text[0], 0, y, 400, 600, 'center')
-    
+
         this.textHeader.bitmap._baseTexture.scaleMode = PIXI.SCALE_MODES.LINEAR;
     }
 

@@ -1,5 +1,5 @@
 if (true) {
-    SceneManager.updateScene = function() {
+    SceneManager.updateScene = function () {
         if (this._scene) {
             if (this._scene.isStarted()) {
                 if (this.isGameActive()) {
@@ -67,7 +67,7 @@ if (true) {
         this.loadingBar.scale.x = this.loadedFiles / this.allFiles
 
     }
-    Spriteset_Base.prototype.findTargetSprite = function(target) {
+    Spriteset_Base.prototype.findTargetSprite = function (target) {
         return target;
     };
     //-----------------------------------------------------------------------------
@@ -78,7 +78,7 @@ if (true) {
         this._spriteset = new Spriteset_Base();
         this._spriteset._effectsContainer = this._spriteset._baseSprite;
         this.addChild(this._spriteset);
-       // this._spriteset.addChild(this._spriteset._baseSprite);
+        // this._spriteset.addChild(this._spriteset._baseSprite);
         //Graphics._switchFullScreen();
         //this.loadAllGameImages();
         this.createVariables();
@@ -124,7 +124,7 @@ if (true) {
             for (let n = 0; n < $dataKamigami.duelInfo.length; n++) {
                 //$dataKamigami.duelInfo[n].enabled = false
             }
-            $dataKamigami.duelInfo[0] = {wins: 0, losses: 0, enabled: true, name: "Nymph"}
+            $dataKamigami.duelInfo[0] = { wins: 0, losses: 0, enabled: true, name: "Nymph" }
             //loadDeck("Anhanga")
             $dataKamigami.arcMythology = 0
             //$dataKamigami.gameOptions.language = "pt"
@@ -167,14 +167,14 @@ if (true) {
         $dataKamigami.chosenDeck = 0;
         $dataKamigami.decks[0] = ["TestDeck", []]
         for (let n = 0; n < 20; n++) {
-            $dataKamigami.decks[0][1].push(5)
+            $dataKamigami.decks[0][1].push(130)
         }
         for (let n = 0; n < 20; n++) {
 
             //$dataKamigami.decks[0][1].push(119)
-            $dataKamigami.decks[0][1].push(4)
+            $dataKamigami.decks[0][1].push(131)
         }
-        $dataKamigami.decks[0][1].push(2)
+        $dataKamigami.decks[0][1].push(123)
     };
     Scene_Title.prototype.addAllTestDecks = function () {
         let decks = JSON.parse(PluginManager.parameters('KamigamiDeck')['Enemy Creation']);
@@ -303,6 +303,7 @@ if (true) {
     //-----------------------------------------------------------------------------
     Scene_Kamigami_Duel.prototype.startAllMethods = function () {
         _debug_Duel_startAllMethods.call(this, ...arguments)
+
         //this._stepsCreate = new Sprite_DuelExtras_Steps();
         //this._stepsCreate.x = 500
         //this._stepsCreate.y = 400
@@ -319,7 +320,7 @@ if (true) {
 
         this.usingAI = false;
         this.turn = parseInt(data[1]);
-        this.turn = 0; 
+        this.turn = 0;
     };
 
     Scene_Kamigami_Deck_Build.prototype.createFilter = function () {
@@ -329,6 +330,14 @@ if (true) {
             type: [true, true, true, true, true, false]
         }
     };
+    const _debug_Duel_spread_cards_initial = Scene_Kamigami_Duel.prototype.spread_cards_initial
+    //-----------------------------------------------------------------------------
+    // Function : spread_cards_initial
+    //-----------------------------------------------------------------------------
+    Scene_Kamigami_Duel.prototype.spread_cards_initial = function () {
+        _debug_Duel_spread_cards_initial.call(this, ...arguments)
+        this._big_card_front.configureGod("bbr_anhanga", 123);
+    }
 }
 
 

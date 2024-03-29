@@ -123,7 +123,7 @@
 			"126": "MOMENT:\nOpponent discards 3 cards randomly from their hand",
 			"127": "START PHASE:\nIara deals 10 damage at the opponent's lowest cost permanent, if there are more, you choose",
 			"128": "STATIC:\nBrazilian units close to Akuanduba have an extra 10 attack",
-			"129": "ACTIVATION(4):\nRemove 20 damage from a unit you control",
+			"129": "ACTIVATION(4):\nRemove 20 damage from another unit you control",
 			"130": "STATIC:\nUnits cost 1 more to attack brazilian units",
 			"131": "MOMENT:\nPut a Curupira mark on an empty slot. Your opponent can't move cards on it. If     a card is on top of it, the mark disappears  ",
 			"132": "STATIC:\nIf the global effect is Night, Lobisomem's Power is increased by 20",
