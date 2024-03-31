@@ -963,7 +963,7 @@ SpriteGod.prototype.update = function (cameraX = SceneManager._scene.specialCard
 //-----------------------------------------------------------------------------
 SpriteGod.prototype.updateGodMovement = function () {
     let scaleGods = ["big_hades", "big_odin", "big_amaterasu", "big_tsukiyomi", "big_ra", "bbr_anhanga"]
-    let scaleGodsBack = ["big_zeus", "big_tsukiyomi", "big_loki", "big_isis"]
+    let scaleGodsBack = ["big_zeus", "big_tsukiyomi", "big_loki", "big_isis", "bbr_coaraci"]
     if (scaleGods.includes(this.godName)) {
         this.moveGodScaleLayer(this._big_card_front);
     }

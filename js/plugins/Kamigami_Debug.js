@@ -131,8 +131,8 @@ if (true) {
             //IAVRA.I18N.language = $dataKamigami.gameOptions.language
             //Graphics._switchFullScreen();
             //$dataKamigami.needsRoom = true;
-            //SceneManager.goto(Scene_Kamigami_Deck_Build);
-            SceneManager.goto(Scene_Kamigami_Duel);
+            SceneManager.goto(Scene_Kamigami_Deck_Build);
+            //SceneManager.goto(Scene_Kamigami_Duel);
             //SceneManager.goto(Scene_Title);
             //SceneManager.goto(Scene_Kamigami_Select_Player);
             //console.log("Teste")
