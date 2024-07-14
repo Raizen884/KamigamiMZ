@@ -744,6 +744,9 @@ Scene_Kamigami_Duel.prototype.checkForSkillTargets = function () {
         case 72: // Boto
             this.check_light_permanent_no_god(this.getOppositeTurn())
             break
+        case 75: // Curupira
+            this.check_light_creature(this.getOppositeTurn())
+            break;
         case 103: // Loki
             this.check_light_all_creatures();
             break;
@@ -868,6 +871,9 @@ Scene_Kamigami_Duel.prototype.applySkillEffects = function (target) {
             break
         case 72: // Boto
             this.cardDefinitions.addNewStartTurnEffect([5, this.boardState.getValue(target).boardId, 72, this.turn])
+            break
+        case 75: // Curupira
+            this.cardDefinitions.addNewStaticEffect([2, this.boardState.getValue(target).boardId, 75, this.turn])
             break
         case 103: // Loki
             if (this.lokiFirstTarget != target && this.set_devotion(0, - Math.max(0, this.getSkillCost(1030)))) {
@@ -1347,6 +1353,7 @@ Scene_Kamigami_Duel.prototype.callAfterEffects = function (animation) {
         case 311: // Hera
             this.apply_hera(animation[1])
             break
+
         case 34: // Zeus Statue
             this.apply_zeus_statue(turn)
             break
@@ -1389,6 +1396,9 @@ Scene_Kamigami_Duel.prototype.callAfterEffects = function (animation) {
             break;
         case 21: // Sekhmet
             this.apply_sekhmet(animation[1])
+            break;
+        case 75: // Curupira
+            this.apply_curupira(animation[1])
             break;
         case 27: // Freyja
             this.apply_freyja()
@@ -1881,7 +1891,12 @@ Scene_Kamigami_Duel.prototype.playCardAnimation = function (effectId, target) {
             this.equalize_positions(this._center_sprite, this.board_cards[target])
             this._center_sprite.startAnimation(animation, false, 0);
             break
-        case 72: //Boto
+        case 72: // Boto
+            animation = $dataAnimations[250];
+            this.equalize_positions(this._center_sprite, this.board_cards[target])
+            this._center_sprite.startAnimation(animation, false, 0);
+            break;
+        case 75: // Curupira
             animation = $dataAnimations[250];
             this.equalize_positions(this._center_sprite, this.board_cards[target])
             this._center_sprite.startAnimation(animation, false, 0);

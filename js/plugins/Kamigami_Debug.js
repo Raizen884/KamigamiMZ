@@ -131,8 +131,8 @@ if (true) {
             //IAVRA.I18N.language = $dataKamigami.gameOptions.language
             //Graphics._switchFullScreen();
             //$dataKamigami.needsRoom = true;
-            SceneManager.goto(Scene_Kamigami_Deck_Build);
-            //SceneManager.goto(Scene_Kamigami_Duel);
+            //SceneManager.goto(Scene_Kamigami_Deck_Build);
+            SceneManager.goto(Scene_CampaignMap);
             //SceneManager.goto(Scene_Title);
             //SceneManager.goto(Scene_Kamigami_Select_Player);
             //console.log("Teste")
@@ -336,7 +336,7 @@ if (true) {
     //-----------------------------------------------------------------------------
     Scene_Kamigami_Duel.prototype.spread_cards_initial = function () {
         _debug_Duel_spread_cards_initial.call(this, ...arguments)
-        this._big_card_front.configureGod("bbr_anhanga", 123);
+        //this._big_card_front.configureGod("bbr_anhanga", 123);
     }
 }
 

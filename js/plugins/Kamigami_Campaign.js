@@ -30,6 +30,7 @@ Scene_CampaignMap.prototype.initialize = function () {
     this.createButtons();
     this.createButtonText();
     this.createBackFrames();
+    this.createGodTexts();
     this.createGodImage();
     AudioManager.playBgm({ name: "Onward!! 2", pan: 0, pitch: 100, volume: 100 });
     
@@ -143,7 +144,34 @@ Scene_CampaignMap.prototype.createBackFrames = function () {
         this.addChild(this._transitionPics[n])
         this._transitionPics[n].x = Graphics.width - 1133 + n * 150 + 1275
     }
+    this._transitionDescription = new Sprite();
+    this._transitionDescription.bitmap = ImageManager.loadCampaign(`transition2`)
+    this.addChild(this._transitionDescription)
+    this._transitionDescription.x = -861
+    this._transitionDescription.y = 300
 }
+Scene_CampaignMap.prototype.createGodTexts = function () {
+    let text = "";//IAVRA.I18N.localize("#{DuelVocab.LGodsDescription.giveup}")
+    this._godName = new PIXI.Text(text, { fontFamily: 'Chau Philomene One', fontSize: 76, fill: 0xFFFFFF});
+    this.addChild(this._godName)
+    this._godName.anchor.x = 0.5
+    this._godName.x = 300
+    this._godName.y = 320
+    this._godName.alpha = 0.9
+
+    text = ""
+    this._godDescription = new PIXI.Text(text, { fontFamily: 'Chau Philomene One', fontSize: 32, fill: 0xFFFFFF,     
+    lineHeight: 40,
+    wordWrap: true,
+    wordWrapWidth: 700});
+    this.addChild(this._godDescription)
+    this._godDescription.anchor.x = 0
+    this._godDescription.x = 50
+    this._godDescription.y = 400
+    this._godDescription.alpha = 0.9
+}
+
+
 Scene_CampaignMap.prototype.createGodImage = function () {
     this.createContainer();
     this.deityImage = new Sprite();
@@ -270,6 +298,7 @@ Scene_CampaignMap.prototype.checkButtonTrigger = function () {
     if (name != "") {
         this.phase = 3
         this.godName = name;
+        this.godDescriptionText = IAVRA.I18N.localize(`#{DuelVocab.LGodsDescription.${name}}`);
         this.countFrames = -1;
         this.deityImage.bitmap = ImageManager.loadFace(this.godName)
         this.container.filters[1].enabled = false
@@ -295,12 +324,28 @@ Scene_CampaignMap.prototype.updateChallengerEntering = function () {
             this._transitionPics[n].x -= (50 - (this.countFrames - (m * 10)))
         }
     }
+    if (this.countFrames > 38) {
+        this._transitionDescription.x += (80 - this.countFrames)
+    }
+
+    if (this.countFrames > 50) {
+        this.updateDescriptionTexts(this.countFrames - 50);
+    }
     this.tl.reverse()
     if (this.countFrames == 80) {
         this.phase = 4
     }
 
 }
+Scene_CampaignMap.prototype.updateDescriptionTexts = function (position) {
+    this._godName.text = this.godName.substring(0, position)
+    console.log(this._godName.text)
+    if (position > 5){
+        this._godDescription.text = this.godDescriptionText.substring(0, (position) * 5)
+    }
+    
+}
+
 
 Scene_CampaignMap.prototype.updateChallengerButtons = function () {
     if (TouchInput.isRightPressed()) {

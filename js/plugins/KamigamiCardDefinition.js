@@ -354,6 +354,9 @@ Scene_Kamigami_Duel.prototype.callCardDefinition = function (cardId, AI, turn = 
         case 74: // Boitata
             this.cardDefinitions.addNewStartTurnEffect([-1, this.boardState.getValue(this.board_place).boardId, 74, turn])
             break
+        case 75: // Curupira
+            this.extra_animations.push(['Effect_Card', cardId, 75, turn])
+            break
         case 76: // Full Moon
             this._weatherSprite.changeWeather("night")
             break;
@@ -1906,7 +1909,8 @@ KamigamiCardDefinitions.prototype.attack_apply_effects_no_target = function (boa
     for (var n = 0; n < this.staticEffects.length; n++) {
         if (this.staticEffects[n][1] == boardCard.boardId) {
             switch (this.staticEffects[n][2]) {
-                case 101: //Medusa
+                case 101: // Medusa
+                case 75: // Curupira
                     return 9999;
             }
         }
@@ -2292,6 +2296,14 @@ Scene_Kamigami_Duel.prototype.apply_fujin = function (board_place) {
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Duel.prototype.apply_hera = function (cardId) {
     this.cardDefinitions.addExtraSkillById(cardId, 31);
+};
+
+
+//-----------------------------------------------------------------------------
+// Function : apply_curupira - id 75 - adiciona 
+//-----------------------------------------------------------------------------
+Scene_Kamigami_Duel.prototype.apply_curupira = function (cardId) {
+    this.cardDefinitions.addExtraSkillById(cardId, 75);
 };
 
 //-----------------------------------------------------------------------------

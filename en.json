@@ -15,6 +15,9 @@
 			"IzanamiF": "She is together with \nIzanagi known as the gods \nof creation. Izanami dies \ngiving birth to Kagu-tsuchi, \nIzanagi went to the Yomi(land \nof the dead), but she could not \nreturn to the living world. Once \nhe discovered her appearance was \nrotting, he ran away. She kills the \nliving beings as vengence.",
 			"IzanagiF": "Deity of creation, \nIzanagi gave creation to all \nthe japanese archipelago. \nSince Izanami cursed the world, \nshe started to kill the people, \nand to counter this, Izanagi \nmade a vowing that more people \nwould be born than she could kill."
 		},
+		"LGodsDescription": {
+			"Dionysus": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla laoreet maximus sollicitudin. Aliquam erat volutpat. Phasellus tincidunt eleifend libero, sit amet congue arcu ultrices in. Morbi sit amet sapien est. Sed a vestibulum nulla. Integer lorem mi, rutrum id lectus eu, congue tempus elit."
+		},
 		"Cards": {
 			"0": "START PHASE:\nAdd 1 devotion for each Greek unit card in your graveyard",
 			"1": "STATIC:\nPoseidon's movement cost is reduced by 2 for each other Greek permanent you control",
@@ -125,7 +128,7 @@
 			"128": "STATIC:\nBrazilian units close to Akuanduba have an extra 10 attack",
 			"129": "ACTIVATION(4):\nRemove 20 damage from another unit you control",
 			"130": "STATIC:\nUnits cost 1 more to attack brazilian units",
-			"131": "MOMENT:\nPut a Curupira mark on an empty slot. Your opponent can't move cards on it. If     a card is on top of it, the mark disappears  ",
+			"131": "MOMENT:\nPut a Curupira mark on an enemy unit. That card can't move during the next turn.",
 			"132": "STATIC:\nIf the global effect is Night, Lobisomem's Power is increased by 20",
 			"135": "MOMENT:\nChoose an opponent's non-god unit, it is destroyed in your third turn from this one",
 			"136": "MOMENT:\nDraw a card, discard a card",
@@ -136,7 +139,7 @@
 			"141": "ACTIVATION(0) Exile a card from your hand to add 1 to Dark Forest's devotion generation",
 			"142": "STATIC:\nDecrease movement cost for brazilian unit's you control by 1",
 			"143": "Change the global effect to either day, night, storm or none",
-			"144": "   Shuffle all non-god permanents, graveyard      and hands into each respective deck, draw      5 cards, reset all god effects, your devotion  is set to 0. Exile Rage of the Gods",
+			"144": "Shuffle all non-god permanents, graveyard and hands into each respective deck, draw 5 cards, reset all god effects, your devotion is set to 0. Exile Rage of the Gods",
 			"145": "Change your devotion with  your opponent.",
 			"146": "Permanently increase an unit's attack by 10.",
 			"147": "Add 1 devotion for each card in your hand",
