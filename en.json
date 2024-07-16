@@ -16,7 +16,16 @@
 			"IzanagiF": "Deity of creation, \nIzanagi gave creation to all \nthe japanese archipelago. \nSince Izanami cursed the world, \nshe started to kill the people, \nand to counter this, Izanagi \nmade a vowing that more people \nwould be born than she could kill."
 		},
 		"LGodsDescription": {
-			"Dionysus": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla laoreet maximus sollicitudin. Aliquam erat volutpat. Phasellus tincidunt eleifend libero, sit amet congue arcu ultrices in. Morbi sit amet sapien est. Sed a vestibulum nulla. Integer lorem mi, rutrum id lectus eu, congue tempus elit."
+			"Nymph": "The nymphs are mystical deities that appear close to the form they inhabit. Because of their beauty, they are sometimes desired by mortals, but usually they are very aggressive towards their affairs.",
+			"Medusa": "Medusa is one of the three Gorgons, perhaps the most known one. Famous for her living snakes instead of hair, whoever looks directly to her was turned to stone. Perseu was the hero who beheaded her and used her head as a weapon to turn foes into stones.",
+			"Aphrodite": "Goddess of love, beauty and lust. She was married to Hephaestus, but very frequently unfaithful towards him, known for seducing other gods like Ares or other mortals like Adonis.",
+			"Minotaur": "Minos was the king of Cretes, he prayed to Poseidon to send him a bull, but because of its beauty, Minos was unable to sacrifice him back to Poseidon. Poseidon punished Minos making his wife Pasiphae fall in love with the bull, therefore giving birth to Minotaur",
+			"Ares": "God of war and courage and known for its savagery in combats, different than his half-sister Athena which is known for its strategic leaning in wars, Ares just goes for pure force and violence. His relation with Aphrodite is the representation of the very opposites love and hate.",
+			"Harpy": "Half-Human and half-bird personification of the wind. Harpies were vultures that stealed food from their victims as shown in the story of Phineus whom was punished by Zeus being put in a island with a buffet of incredible food, but never able to eat them as the harpies feasted on the buffet.",
+			"Demeter": "Goddess of harvest and agriculture. Her daughter Persephone is married with Hades, where she has to spend a third of the year with him. Demeter feeling the grief over her daughter for this period is the reason for the winter to occur, when she returns, begins the fertile months of spring and summer.",
+			"Dionysus": "God of party and inventor of the wine, Dionysus traveled throughout the land teaching people about the cultivation of grapes and how to transform it into wine.",
+			"Hermes": "The messenger of the gods, Hermes can easily travel between the mortal and the divine realms. Hermes is an excellent guide and also incredibly skilled at tricking others, be it at war or persuits.",
+			"Apollo": "The messenger of the gods, Hermes can easily travel between the mortal and the divine realms. Hermes is an excellent guide and also incredibly skilled at tricking be it at war or persuits."
 		},
 		"Cards": {
 			"0": "START PHASE:\nAdd 1 devotion for each Greek unit card in your graveyard",

@@ -33,7 +33,7 @@ Scene_CampaignMap.prototype.initialize = function () {
     this.createGodTexts();
     this.createGodImage();
     AudioManager.playBgm({ name: "Onward!! 2", pan: 0, pitch: 100, volume: 100 });
-    
+
 
 };
 Scene_CampaignMap.prototype.createBackGods = function () {
@@ -152,7 +152,7 @@ Scene_CampaignMap.prototype.createBackFrames = function () {
 }
 Scene_CampaignMap.prototype.createGodTexts = function () {
     let text = "";//IAVRA.I18N.localize("#{DuelVocab.LGodsDescription.giveup}")
-    this._godName = new PIXI.Text(text, { fontFamily: 'Chau Philomene One', fontSize: 76, fill: 0xFFFFFF});
+    this._godName = new PIXI.Text(text, { fontFamily: 'Chau Philomene One', fontSize: 76, fill: 0xFFFFFF });
     this.addChild(this._godName)
     this._godName.anchor.x = 0.5
     this._godName.x = 300
@@ -160,10 +160,12 @@ Scene_CampaignMap.prototype.createGodTexts = function () {
     this._godName.alpha = 0.9
 
     text = ""
-    this._godDescription = new PIXI.Text(text, { fontFamily: 'Chau Philomene One', fontSize: 32, fill: 0xFFFFFF,     
-    lineHeight: 40,
-    wordWrap: true,
-    wordWrapWidth: 700});
+    this._godDescription = new PIXI.Text(text, {
+        fontFamily: 'Chau Philomene One', fontSize: 32, fill: 0xFFFFFF,
+        lineHeight: 40,
+        wordWrap: true,
+        wordWrapWidth: 700
+    });
     this.addChild(this._godDescription)
     this._godDescription.anchor.x = 0
     this._godDescription.x = 50
@@ -324,7 +326,7 @@ Scene_CampaignMap.prototype.updateChallengerEntering = function () {
             this._transitionPics[n].x -= (50 - (this.countFrames - (m * 10)))
         }
     }
-    if (this.countFrames > 38) {
+    if (this.countFrames > 38 && this.countFrames <= 80) {
         this._transitionDescription.x += (80 - this.countFrames)
     }
 
@@ -332,18 +334,17 @@ Scene_CampaignMap.prototype.updateChallengerEntering = function () {
         this.updateDescriptionTexts(this.countFrames - 50);
     }
     this.tl.reverse()
-    if (this.countFrames == 80) {
+    if (this.countFrames == 110) {
         this.phase = 4
     }
 
 }
 Scene_CampaignMap.prototype.updateDescriptionTexts = function (position) {
     this._godName.text = this.godName.substring(0, position)
-    console.log(this._godName.text)
-    if (position > 5){
+    if (position > 5) {
         this._godDescription.text = this.godDescriptionText.substring(0, (position) * 5)
     }
-    
+
 }
 
 
@@ -374,24 +375,7 @@ Scene_CampaignMap.prototype.updateChallengerButtons = function () {
 
 
 Scene_CampaignMap.prototype.updateChallengerReturn = function () {
-    this.cancelTextLight.opacity -= 20
-    this.duelTextLight.opacity -= 20
-    if (this._fade.opacity > 0) {
-        this._fade.opacity -= 3
-    }
-    if (this.countFrames <= 60 && this.countFrames >= 20) {
-        let count = 60 - this.countFrames
-        this._cancelButtonBack.x -= (40 - count)
-        this._duelButtonBack.x -= (40 - count)
-        this.duelText.x = this.cancelText.x = this._cancelButtonBack.x
-    }
-
-    for (let n = 0; n < 3; n++) {
-        let m = 2 - n
-        if (this.countFrames < 80 && this.countFrames >= m * 10 && (50 - (this.countFrames - (m * 10))) > 0) {
-            this._transitionPics[n].x += (50 - (this.countFrames - (m * 10)))
-        }
-    }
+    this.updateExitImages();
     this.tl.play()
     if (this.countFrames == 80) {
         this.phase = 2
@@ -400,8 +384,22 @@ Scene_CampaignMap.prototype.updateChallengerReturn = function () {
 }
 
 Scene_CampaignMap.prototype.updateChallengerAccept = function () {
+    this.updateExitImages();
+    this.tl.play()
+    if (this.countFrames == 80) {
+        loadDeck(this.godName)
+    }
+
+}
+Scene_CampaignMap.prototype.updateExitImages = function () {
+    let position = Math.max(0, (30 - this.countFrames))
+    this._godName.text = this.godName.substring(0, position)
+    this._godDescription.text = this.godDescriptionText.substring(0, (position) * 5)
     this.cancelTextLight.opacity -= 20
     this.duelTextLight.opacity -= 20
+    this._transitionDescription.x -= this.countFrames
+    if (this._transitionDescription.x < -861) 
+        this._transitionDescription.x = -861
     if (this._fade.opacity > 0) {
         this._fade.opacity -= 3
     }
@@ -418,13 +416,7 @@ Scene_CampaignMap.prototype.updateChallengerAccept = function () {
             this._transitionPics[n].x += (50 - (this.countFrames - (m * 10)))
         }
     }
-    this.tl.play()
-    if (this.countFrames == 80) {
-        loadDeck(this.godName)
-    }
-
 }
-
 //-----------------------------------------------------------------------------
 // SpriteCampaign
 //
@@ -508,9 +500,9 @@ SpriteCampaign.prototype.createDeityButtons = function () {
     }
 
 }
-SpriteCampaign.prototype.checkPath = function (pathArray) { 
+SpriteCampaign.prototype.checkPath = function (pathArray) {
     for (let i = 0; i < $dataKamigami.duelInfo.length; i++) {
-        if ($dataKamigami.duelInfo[i].name == pathArray && $dataKamigami.duelInfo[i].wins > 0 ) {
+        if ($dataKamigami.duelInfo[i].name == pathArray && $dataKamigami.duelInfo[i].wins > 0) {
             return true;
         }
     }
