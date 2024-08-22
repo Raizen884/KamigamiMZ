@@ -126,7 +126,7 @@ if (true) {
             }
             $dataKamigami.duelInfo[0] = { wins: 0, losses: 0, enabled: true, name: "Nymph" }
             //loadDeck("Anhanga")
-            $dataKamigami.arcMythology = 0
+            $dataKamigami.arcMythology = 2
             //$dataKamigami.gameOptions.language = "pt"
             //IAVRA.I18N.language = $dataKamigami.gameOptions.language
             //Graphics._switchFullScreen();
