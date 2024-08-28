@@ -446,7 +446,7 @@ SpriteCampaign.prototype.createVariables = function () {
     this.isZooming = false;
     this._finalXPosition = 0;
     this._finalYPosition = 0;
-    this.civilization = 1;
+    this.civilization = 4;
 }
 SpriteCampaign.prototype.createPathSprite = function () {
     this._pathSprites = new Array()
@@ -527,7 +527,7 @@ SpriteCampaign.prototype.getCivilizationByGodCard = function (godCard) {
     let greekCards = [0, 1, 2]
     let egyptCards = [30, 31, 32]
     let norseCards = [58, 59, 60, 61]
-    let japanCards = [88, 89, 90]
+    let japanCards = [88, 89, 90, 91]
     let brazilCards = [120, 121, 122, 123]
     if (greekCards.includes(godCard)) {
         return 0
@@ -538,6 +538,12 @@ SpriteCampaign.prototype.getCivilizationByGodCard = function (godCard) {
     if (norseCards.includes(godCard)) {
         return 2
     }
+    if (japanCards.includes(godCard)) {
+        return 3
+    }
+    if (brazilCards.includes(godCard)) {
+        return 4
+    }
 }
 
 SpriteCampaign.prototype.createBackMap = function () {
@@ -545,7 +551,8 @@ SpriteCampaign.prototype.createBackMap = function () {
     //this._bg.bitmap = ImageManager.loadCampaign("GreekCampaign")
     //this._bg.bitmap = ImageManager.loadCampaign("EgyptCampaign")
     //this._bg.bitmap = ImageManager.loadCampaign("NorseCampaign")
-    this._bg.bitmap = ImageManager.loadCampaign("JapanCampaign")
+    //this._bg.bitmap = ImageManager.loadCampaign("JapanCampaign")
+    this._bg.bitmap = ImageManager.loadCampaign("BrazilCampaign")
     this.anchor.x = this.anchor.y = 0.5
     this.scale.x = this.scale.y = 0.45
     this.addChild(this._bg)
