@@ -336,7 +336,11 @@
 			"campaignDuelMenu2": "DECK",
 			"campaignDuelMenu2sub": "change cards.",
 			"campaignDuelMenu3": "SHOP",
-			"campaignDuelMenu3sub": "buy cards."
+			"campaignDuelMenu3sub": "buy cards.",
+			"selectCampaign1": "RETURN",
+			"selectCampaign1sub": "to main menu.",
+			"selectCampaign2": "SELECT",
+			"selectCampaign2sub": "Choose this mythology!"
 		},
 		"MenuText": {
 			"options1": "PLAY TUTORIAL",
@@ -501,7 +505,12 @@
 			"prologue13": "Nice choice! Now you will have access to the god's realm, a place only the sacred can enter! \nYou will face many difficulties, but I believe you will be able to overcome them!",
 			"prologue14": "Would you like to play the tutorial? \nIt will be accessible at all times in the main menu options.",
 			"prologue15": "Yes",
-			"prologue16": "No"
+			"prologue16": "No",
+			"preCampaignStory": "STORY",
+			"preCampaignStrategy": "STRATEGY",
+			"japanStory": "Two important sources for Japanese myths, as they are recognized today, are the Kojiki and the Nihon Shoki.The Kojiki, or Record of Ancient Matters, is the oldest surviving account of Japan's myths, legends, and history.",
+			"japanStrategy": "Japanese cards contain a powerful combination of miracles and effects, they are able to turn the game around with powerful wraths. Their decks are also able to slowly run you out of resources, be careful to not be pressed until there is no other way out, but to resign."
+			
 		}
 	}
 }

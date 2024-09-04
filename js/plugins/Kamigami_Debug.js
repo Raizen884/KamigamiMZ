@@ -132,7 +132,7 @@ if (true) {
             //Graphics._switchFullScreen();
             //$dataKamigami.needsRoom = true;
             //SceneManager.goto(Scene_Kamigami_Deck_Build);
-            SceneManager.goto(Scene_CampaignMap);
+            SceneManager.goto(Scene_Kamigami_CampaignSelect);
             //SceneManager.goto(Scene_Title);
             //SceneManager.goto(Scene_Kamigami_Select_Player);
             //console.log("Teste")
