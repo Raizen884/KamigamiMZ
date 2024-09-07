@@ -513,9 +513,16 @@
 			"mythology3": "NORSE",
 			"mythology4": "JAPANESE",
 			"mythology5": "BRAZILIAN",
+			"greekStory": "Greek mythology is the body of myths originally told by the ancient Greeks, and a genre of ancient Greek folklore, today absorbed alongside Roman mythology into the broader designation of classical mythology. These stories concern the ancient Greek religion's view of the origin and nature of the world; the lives and activities of deities, heroes and mythological creatures.",
+			"greekStrategy": "Greek main deities relies on the generation of devotion and how it is used in duels. Greek decks will usually overflow their opponents with devotion generation if not controlled rapidly.",
+			"egyptStory": "Egyptian mythology is the collection of myths from ancient Egypt, which describe the actions of the Egyptian gods as a means of understanding the world around them. The beliefs that these myths express are an important part of ancient Egyptian religion. Myths appear frequently in Egyptian writings and art, particularly in short stories and in religious material such as hymns, ritual texts, funerary texts, and temple decoration.",
+			"egyptStrategy": "Egypt strategies vary from their incredible healing powers and their undead nature, be ready to fight more than once their deities as they might come back turns later.",
+			"norseStory": "Norse, Nordic, or Scandinavian mythology, is the body of myths belonging to the North Germanic peoples, stemming from Old Norse religion and continuing after the Christianization of Scandinavia, and into the Nordic folklore of the modern period. Norse mythology consists of tales of various deities, beings, and heroes derived from numerous sources from both before and after the pagan period, including medieval manuscripts, archaeological representations, and folk tradition.",
+			"norseStrategy": "Norse deities and creatures are specialized in battles, just like in their mythology as their power comes from their bloody duels. Be ready for a battlefield war when a norse deck is on the duel, their enemies blood will only fuel their strategies even further.",
 			"japanStory": "Two important sources for Japanese myths, as they are recognized today, are the Kojiki and the Nihon Shoki.The Kojiki, or Record of Ancient Matters, is the oldest surviving account of Japan's myths, legends, and history.",
-			"japanStrategy": "Japanese cards contain a powerful combination of miracles and effects, they are able to turn the game around with powerful wraths. Their decks are also able to slowly run you out of resources, be careful to not be pressed until there is no other way out, but to resign."
-			
+			"japanStrategy": "Japanese cards contain a powerful combination of miracles and effects, they are able to turn the game around with powerful wraths. Their decks are also able to slowly run you out of resources, be careful to not be pressed until there is no other way out, but to resign.",
+			"brazilStory": "Brazilian mythology has many roots like African, Medieval Iberic and most importantly their indigenous roots like the Tupi-Guarani. While some myths are derived from other mythologies, their deities mostly comes from how the earth was molded and its nature.",
+			"brazilStrategy": "Brazilian main strategy comes from the nature and how it affects the battlefield, be ready to fight storms, thunders and the scalding sun when facing its decks!"
 		}
 	}
 }
