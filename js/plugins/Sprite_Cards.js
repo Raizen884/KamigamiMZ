@@ -177,6 +177,17 @@ Sprite_Card.prototype.isBeingTouched = function () {
     return x >= 0 && y >= 0 && x < this.width && y < this.height;
 };
 
+Sprite_Card.prototype.isBeingTouchedOffset = function (offsetX = 0, offsetY = 0) {
+    var x = this.canvasToLocalX(TouchInput.x + this.width / 2 + this.width * offsetX);
+    var y = this.canvasToLocalY(TouchInput.y + this.height / 2 + this.height * offsetY);
+    return x >= 0 && y >= 0 && x < this.width && y < this.height;
+};
+
+Sprite_Card.prototype.isPixelTouched = function () {
+    const touchPos = new Point(TouchInput.x, TouchInput.y);
+        const localPos = this.worldTransform.applyInverse(touchPos);
+    return this.bitmap.getAlphaPixel(localPos.x, localPos.y) != 0
+}
 
 Sprite_Card.prototype.canvasToLocalX = function (x) {
     var node = this;

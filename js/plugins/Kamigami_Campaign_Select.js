@@ -45,9 +45,26 @@ Scene_Kamigami_CampaignSelect.prototype.createBackMap = function () {
 // Function : updates - updates process
 //-----------------------------------------------------------------------------
 Scene_Kamigami_CampaignSelect.prototype.createGod = function () {
+    this.container = new PIXI.Container();
+    this.addChild(this.container);
+    this._displacement = new Sprite();
+    this._displacement.bitmap = ImageManager.loadDisplacement("map8");
+    this._displacement.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
+    this._displacement.scale.set(1.5);
+    this._displacement.anchor.set(0.5);
+    this.container.addChild(this._displacement);
+    this.displacementFilter = new PIXI.filters.DisplacementFilter(this._displacement);
+    this.container.filters = [this.displacementFilter];
+    this.displacementFilter.scale.x = 0;
+    this.displacementFilter.scale.y = 0;
+    this.tl = new TimelineMax({ paused: true });
+    this.tl.to(this.displacementFilter.scale, 8, { x: 0, y: 3000, ease: Expo.easeInOut });
+    this.tl.timeScale(4);
+    this.tl.gotoAndStop(100);
+    this.tl.reverse();
     this._bigGod = new Sprite();
     this._bigGod.bitmap = ImageManager.loadFace("ZeusF");
-    this.addChild(this._bigGod);
+    this.container.addChild(this._bigGod);
 }
 
 //-----------------------------------------------------------------------------
@@ -162,13 +179,15 @@ Scene_Kamigami_CampaignSelect.prototype.createSelectionButtons = function () {
     this._selectButtons = new Array();
     let symbols = ["Greek", "Egypt", "Norse", "Japan", "Brazil"]
     for (let n = 0; n < 5; n++) {
-        this._selectButtons[n] = new Sprite();
+        this._selectButtons[n] = new Sprite_Card();
         this._selectButtons[n].bitmap = ImageManager.loadCampaign("selectedMito");
         this._selectButtons[n].anchor.x = 0.5;
         this._selectButtons[n].anchor.y = -2.5;
         this._selectButtons[n].x = Graphics.width / 2;
         this._selectButtons[n].y = Graphics.height / 2;
-        this._selectButtons[n].rotation = (2 - n) * 0.85;
+        //this._selectButtons[n].rotation = (2 - n) * 0.85;
+        this._selectButtons[n].rotation = 2 * 0.85;
+        this._selectButtons[n].opacity = 0
         this._selectButtons[n].mythoText = new PIXI.Text("", { fontFamily: 'GameFont', fontSize: 48, fill: 0xffffff, align: 'center' });
         this._selectButtons[n].mythoText.y = 420
         this._selectButtons[n].mythoText.alpha = 0.7
@@ -182,6 +201,8 @@ Scene_Kamigami_CampaignSelect.prototype.createSelectionButtons = function () {
         this._selectButtons[n].addChild(this._selectButtons[n].mythoSymbol)
         this.addChild(this._selectButtons[n])
         this._selectButtons[n].setHue(this.configHue[n])
+        if (this.index != n)
+            this._selectButtons[n].setColorTone([0, 0, 0, 255])
     }
 }
 
@@ -191,10 +212,10 @@ Scene_Kamigami_CampaignSelect.prototype.createSelectionButtons = function () {
 Scene_Kamigami_CampaignSelect.prototype.update = function () {
     switch (this.phase) {
         case 0:
-            this.updateOpening();
+            this.updateOpening()
             break;
         case 1:
-
+            this.updateSelection()
             break;
         default:
             break;
@@ -215,7 +236,7 @@ Scene_Kamigami_CampaignSelect.prototype.updateOpening = function () {
         this._buttonBack[0].x += (30 - this.countFrame) * 2
         this._textReturn.x = this._buttonBack[0].x
     }
-        
+
     if (this.countFrame > 15 && this.countFrame < 45) {
         this._buttonBack[1].x += (45 - this.countFrame) * 2
         this._textSelect.x = this._buttonBack[1].x
@@ -232,6 +253,33 @@ Scene_Kamigami_CampaignSelect.prototype.updateOpening = function () {
         this._descriptionHeader2.x -= (75 - this.countFrame) * 2
     }
 
+    if (this.countFrame > 40) {
+        if (this._selectButtons[4].rotation > -1.7)
+            for (let n = 0; n < 5; n++) {
+                this._selectButtons[n].opacity += 10
+                this._selectButtons[n].rotation -= n * 0.025
+            }
+    }
+    if (this.countFrame > 100) {
+        this.countFrame = 0
+        this.phase = 1
+    }
+}
+//-----------------------------------------------------------------------------
+// Function : updateSelection - updates process
+//-----------------------------------------------------------------------------
+Scene_Kamigami_CampaignSelect.prototype.updateSelection = function () {
+    this.updateButtonHover();
 }
 
+//-----------------------------------------------------------------------------
+// Function : updateButtonHover - updates process
+//-----------------------------------------------------------------------------
+Scene_Kamigami_CampaignSelect.prototype.updateButtonHover = function () {
+    if (this._selectButtons[1].isPixelTouched()) {
+        this._selectButtons[1].setColorTone([0, 0, 0, 0])
+    } else {
+        this._selectButtons[1].setColorTone([0, 0, 0, 255])
+    }
+}
 //
