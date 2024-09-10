@@ -131,7 +131,7 @@ Scene_Loading.prototype.loadAllGameImages = function () {
     var fs = require('fs');
     let files = fs.readdirSync(baseUrl);
     let filesImg;
-    files.splice(files.indexOf("pictures"), 1)
+    //files.splice(files.indexOf("pictures"), 1)
     this.allFiles = 0;
     for (let n = 0; n < files.length; n++) {
         filesImg = fs.readdirSync(baseUrl + files[n]);

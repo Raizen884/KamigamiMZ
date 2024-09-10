@@ -9,6 +9,7 @@ Scene_Kamigami_CampaignSelect.prototype.constructor = Scene_Kamigami_CampaignSel
 Scene_Kamigami_CampaignSelect.prototype.initialize = function () {
     Scene_Base.prototype.initialize.call(this);
     this.createVariables();
+    this.createButtonRect();
     this.createBackMap();
     this.createBackFade();
     this.createGod();
@@ -26,15 +27,29 @@ Scene_Kamigami_CampaignSelect.prototype.createVariables = function () {
     this.countFrame = 0;
     this.configHue = [0, 260, 40, 90, 310];
     this.currentHue = 0;
+    this.mythTexts = ["greek", "egypt", "norse", "japan", "brazil"]
+    this.mapList = ["GreekCampaign", "EgyptCampaign", "NorseCampaign", "JapanCampaign", "BrazilCampaign"]
+
+}
+//-----------------------------------------------------------------------------
+// Function : updates - updates process
+//-----------------------------------------------------------------------------
+Scene_Kamigami_CampaignSelect.prototype.createButtonRect = function () {
+    this.rectButtons = new Array();
+    this.rectButtons[0] = new Rectangle(440, 300, 150, 300)
+    this.rectButtons[1] = new Rectangle(450, 700, 300, 300)
+    this.rectButtons[2] = new Rectangle(800, 925, 320, 150)
+    this.rectButtons[3] = new Rectangle(1190, 700, 300, 300)
+    this.rectButtons[4] = new Rectangle(1350, 300, 150, 300)
 }
 //-----------------------------------------------------------------------------
 // Function : updates - updates process
 //-----------------------------------------------------------------------------
 Scene_Kamigami_CampaignSelect.prototype.createBackMap = function () {
-    let mapList = ["GreekCampaign", "EgyptCampaign", "NorseCampaign", "JapanCampaign", "BrazilCampaign"]
+    
     this._backMap = new Array();
     this._backMap = new Sprite();
-    this._backMap.bitmap = ImageManager.loadCampaign(mapList[this.index]);
+    this._backMap.bitmap = ImageManager.loadCampaign(this.mapList[this.index]);
     this.addChild(this._backMap);
     this._backMap.scale.y = this._backMap.scale.x = 0.5
     this._backMap.opacity = 0;
@@ -63,10 +78,39 @@ Scene_Kamigami_CampaignSelect.prototype.createGod = function () {
     this.tl.gotoAndStop(100);
     this.tl.reverse();
     this._bigGod = new Sprite();
-    this._bigGod.bitmap = ImageManager.loadFace("ZeusF");
+    this.loadRandomGod();
+
     this.container.addChild(this._bigGod);
 }
-
+//-----------------------------------------------------------------------------
+// Function : createGod
+//-----------------------------------------------------------------------------
+Scene_Kamigami_CampaignSelect.prototype.loadRandomGod = function () {
+    let greekGods = ["ZeusF"]
+    let egyptGods = ["IsisF"]
+    let norseGods = ["ThorF"]
+    let japanGods = ["IzanamiF"]
+    let brazilGods = ["AnhangaF"]
+    let chosenGod = ""
+    switch (this.index) {
+        case 0:
+            chosenGod = greekGods[Math.floor(Math.random() * greekGods.length)]
+            break;
+        case 1:
+            chosenGod = egyptGods[Math.floor(Math.random() * egyptGods.length)]
+            break;
+        case 2:
+            chosenGod = norseGods[Math.floor(Math.random() * norseGods.length)]
+            break;
+        case 3:
+            chosenGod = japanGods[Math.floor(Math.random() * japanGods.length)]
+            break;
+        case 4:
+            chosenGod = brazilGods[Math.floor(Math.random() * brazilGods.length)]
+            break;
+    }
+    this._bigGod.bitmap = ImageManager.loadFace(chosenGod);
+}
 //-----------------------------------------------------------------------------
 // Function : createGod
 //-----------------------------------------------------------------------------
@@ -143,11 +187,11 @@ Scene_Kamigami_CampaignSelect.prototype.createDescriptions = function () {
     this._descriptionHeader1.x = 1920 - 340 + 870
     this._descriptionHeader1.alpha = 0.8
     this._descriptionMythology = new PIXI.Text("", {
-        fontFamily: 'GameFont', fontSize: 32, fill: 0xffffff, align: 'right',
+        fontFamily: 'GameFont', fontSize: 24, fill: 0xffffff, align: 'right',
         wordWrap: true,
         wordWrapWidth: 350
     });
-    this._descriptionMythology.text = IAVRA.I18N.localize("#{DuelVocab.Campaign.japanStory}")
+    this._descriptionMythology.text = IAVRA.I18N.localize(`#{DuelVocab.Campaign.${this.mythTexts[this.index]}Story}`)
     this.addChild(this._descriptionMythology);
     this._descriptionMythology.y = 100
     this._descriptionMythology.x = 1920 - 20 + 870
@@ -160,11 +204,11 @@ Scene_Kamigami_CampaignSelect.prototype.createDescriptions = function () {
     this._descriptionHeader2.x = 1920 - 340 + 870
     this._descriptionHeader2.alpha = 0.8
     this._descriptionStrategy = new PIXI.Text("", {
-        fontFamily: 'GameFont', fontSize: 32, fill: 0xffffff, align: 'right',
+        fontFamily: 'GameFont', fontSize: 24, fill: 0xffffff, align: 'right',
         wordWrap: true,
         wordWrapWidth: 350
     });
-    this._descriptionStrategy.text = IAVRA.I18N.localize("#{DuelVocab.Campaign.japanStrategy}")
+    this._descriptionStrategy.text = IAVRA.I18N.localize(`#{DuelVocab.Campaign.${this.mythTexts[this.index]}Strategy}`)
     this.addChild(this._descriptionStrategy);
     this._descriptionStrategy.y = 680
     this._descriptionStrategy.x = 1920 - 20 + 870
@@ -216,6 +260,9 @@ Scene_Kamigami_CampaignSelect.prototype.update = function () {
             break;
         case 1:
             this.updateSelection()
+            break;
+        case 2:
+            this.updateSwitchMythology();
             break;
         default:
             break;
@@ -276,10 +323,107 @@ Scene_Kamigami_CampaignSelect.prototype.updateSelection = function () {
 // Function : updateButtonHover - updates process
 //-----------------------------------------------------------------------------
 Scene_Kamigami_CampaignSelect.prototype.updateButtonHover = function () {
-    if (this._selectButtons[1].isPixelTouched()) {
-        this._selectButtons[1].setColorTone([0, 0, 0, 0])
-    } else {
-        this._selectButtons[1].setColorTone([0, 0, 0, 255])
+    let hoverBtn = this.checkButtonsHover();
+    if (TouchInput.isTriggered() && hoverBtn != -1) {
+        this.phase = 2;
+        this.oldHue = this.configHue[this.index]
+        this.maxHueDif = this.configHue[hoverBtn] - this.oldHue
+        if (this.maxHueDif > 180) {
+            this.maxHueDif -= 360
+        }
+        if (this.maxHueDif < -180) {
+            this.maxHueDif += 360
+        }
+        this.index = hoverBtn;
+        this.countFrame = 0;
+        this.resetHover();
     }
 }
+//-----------------------------------------------------------------------------
+// Function : resetHover - updates process
+//-----------------------------------------------------------------------------
+Scene_Kamigami_CampaignSelect.prototype.resetHover = function () {
+    for (let n = 0; n < 5; n++) {
+        if (n == this.index) {
+            continue;
+        }
+        this._selectButtons[n].setColorTone([0, 0, 0, 255])
+    }
+}
+
+
+//-----------------------------------------------------------------------------
+// Function : updateButtonHover - updates process
+//-----------------------------------------------------------------------------
+Scene_Kamigami_CampaignSelect.prototype.checkButtonsHover = function () {
+    for (let n = 0; n < 5; n++) {
+        if (n == this.index) {
+            continue;
+        }
+        if (this.rectButtons[n].contains(TouchInput.x, TouchInput.y)) {
+            this._selectButtons[n].setColorTone([0, 0, 0, 0])
+            return n;
+        } else {
+            this._selectButtons[n].setColorTone([0, 0, 0, 255])
+
+        }
+    }
+    return -1;
+}
+
+
 //
+//-----------------------------------------------------------------------------
+// Function : updateSwitchMythology - updates process
+//-----------------------------------------------------------------------------
+Scene_Kamigami_CampaignSelect.prototype.updateSwitchMythology = function () {
+    this.countFrame++;
+    let currentHue = 0;
+    if (this.countFrame == 1) {
+        this.tl.play();
+
+    }
+    if (this.countFrame < 30){
+        this._backMap.opacity -= 10
+        if (this._descriptionMythology.alpha > 0) {
+            this._descriptionMythology.alpha -= 0.05
+            this._descriptionStrategy.alpha -= 0.05
+        }
+    }
+    if (this.countFrame == 30){
+        this._backMap.bitmap = ImageManager.loadCampaign(this.mapList[this.index]);
+        this._descriptionMythology.text = IAVRA.I18N.localize(`#{DuelVocab.Campaign.${this.mythTexts[this.index]}Story}`)
+        this._descriptionStrategy.text = IAVRA.I18N.localize(`#{DuelVocab.Campaign.${this.mythTexts[this.index]}Strategy}`)
+ 
+    }
+    if (this.countFrame > 30){
+        this._backMap.opacity += 10
+        if (this._descriptionMythology.alpha < 0.8) {
+            this._descriptionMythology.alpha += 0.05
+            this._descriptionStrategy.alpha += 0.05
+        }
+    }
+
+    if (this.countFrame < 60) {
+        currentHue = (this.countFrame / 60) * this.maxHueDif + this.oldHue
+        this.changeHue(currentHue)
+    }
+    if (this.countFrame == 60) {
+        this.changeHue(this.configHue[this.index])
+        this.phase = 1;
+        this.loadRandomGod();
+        this.tl.reverse();
+    }
+
+    //this._buttonBack
+}
+
+//-----------------------------------------------------------------------------
+// Function : changeHue - updates process
+//-----------------------------------------------------------------------------
+Scene_Kamigami_CampaignSelect.prototype.changeHue = function (hue) {
+    for (let n = 0; n < 4; n++) {
+        this._buttonBack[n].setHue(hue)
+    }
+    this._backFade.setHue(hue)
+}   
