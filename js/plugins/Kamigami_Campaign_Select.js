@@ -17,18 +17,21 @@ Scene_Kamigami_CampaignSelect.prototype.initialize = function () {
     this.createButtons();
     this.createDescriptions();
     this.createSelectionButtons();
+    this.changeHue(this.configHue[this.index])
 };
 //-----------------------------------------------------------------------------
 // Function : updates - updates process
 //-----------------------------------------------------------------------------
 Scene_Kamigami_CampaignSelect.prototype.createVariables = function () {
-    this.index = 0;
+    this.index = 3;
     this.phase = 0;
     this.countFrame = 0;
     this.configHue = [0, 260, 40, 90, 310];
     this.currentHue = 0;
     this.mythTexts = ["greek", "egypt", "norse", "japan", "brazil"]
+    this.configureLightColor = [0x19FF47, 0xFFD800, 0x00FFE9, 0xFF00F2, 0x00FF26]
     this.mapList = ["GreekCampaign", "EgyptCampaign", "NorseCampaign", "JapanCampaign", "BrazilCampaign"]
+    this.choiceInput = 0
 
 }
 //-----------------------------------------------------------------------------
@@ -46,7 +49,7 @@ Scene_Kamigami_CampaignSelect.prototype.createButtonRect = function () {
 // Function : updates - updates process
 //-----------------------------------------------------------------------------
 Scene_Kamigami_CampaignSelect.prototype.createBackMap = function () {
-    
+
     this._backMap = new Array();
     this._backMap = new Sprite();
     this._backMap.bitmap = ImageManager.loadCampaign(this.mapList[this.index]);
@@ -168,10 +171,10 @@ Scene_Kamigami_CampaignSelect.prototype.createButtons = function () {
     //this._textSelectLight.opacity = 0
     this.addChild(this._textSelect);
 
-    this._textReturnLight = new Sprite_Kami_ButtonLight(0, "selectCampaign1", 90, 0x19FF47);
+    this._textReturnLight = new Sprite_Kami_ButtonLight(0, "selectCampaign1", 90, this.configureLightColor[this.index]);
     this.addChild(this._textReturnLight);
     this._textReturnLight.opacity = 0
-    this._textSelectLight = new Sprite_Kami_ButtonLight(0, "selectCampaign2", 90, 0x19FF47);
+    this._textSelectLight = new Sprite_Kami_ButtonLight(0, "selectCampaign2", 90, this.configureLightColor[this.index]);
     this._textSelectLight.y = 1080 - 257
     this._textSelectLight.opacity = 0
     this.addChild(this._textSelectLight);
@@ -264,6 +267,9 @@ Scene_Kamigami_CampaignSelect.prototype.update = function () {
         case 2:
             this.updateSwitchMythology();
             break;
+        case 3:
+            this.updateChoiceSelected();
+            break;
         default:
             break;
     }
@@ -317,8 +323,32 @@ Scene_Kamigami_CampaignSelect.prototype.updateOpening = function () {
 //-----------------------------------------------------------------------------
 Scene_Kamigami_CampaignSelect.prototype.updateSelection = function () {
     this.updateButtonHover();
+    if (this.phase == 1)
+        this.updateSwitchButtonHover();
 }
 
+//-----------------------------------------------------------------------------
+// Function : updateSwitchButtonHover - updates process
+//-----------------------------------------------------------------------------
+Scene_Kamigami_CampaignSelect.prototype.updateSwitchButtonHover = function () {
+    if (this._textReturnLight.isBeingTouched()) {
+        this._textReturnLight.opacity += 30
+        if (TouchInput.isTriggered()) {
+            this.phase = 3
+            this.choiceInput = 0;
+            this.countFrame = 0;
+        }
+    } else
+        this._textReturnLight.opacity -= 30
+    if (this._textSelectLight.isBeingTouched()) {
+        this._textSelectLight.opacity += 30
+        if (TouchInput.isTriggered()) {
+            this.phase = 3
+            this.choiceInput = 1;
+        }
+    } else
+        this._textSelectLight.opacity -= 30
+}
 //-----------------------------------------------------------------------------
 // Function : updateButtonHover - updates process
 //-----------------------------------------------------------------------------
@@ -328,6 +358,7 @@ Scene_Kamigami_CampaignSelect.prototype.updateButtonHover = function () {
         this.phase = 2;
         this.oldHue = this.configHue[this.index]
         this.maxHueDif = this.configHue[hoverBtn] - this.oldHue
+
         if (this.maxHueDif > 180) {
             this.maxHueDif -= 360
         }
@@ -335,9 +366,18 @@ Scene_Kamigami_CampaignSelect.prototype.updateButtonHover = function () {
             this.maxHueDif += 360
         }
         this.index = hoverBtn;
+        this.changeLightButtonsColor()
         this.countFrame = 0;
         this.resetHover();
     }
+}
+
+//-----------------------------------------------------------------------------
+// Function : changeLightButtonsColor - updates process
+//-----------------------------------------------------------------------------
+Scene_Kamigami_CampaignSelect.prototype.changeLightButtonsColor = function () {
+    this._textReturnLight.changeColor(this.configureLightColor[this.index])
+    this._textSelectLight.changeColor(this.configureLightColor[this.index])
 }
 //-----------------------------------------------------------------------------
 // Function : resetHover - updates process
@@ -383,20 +423,20 @@ Scene_Kamigami_CampaignSelect.prototype.updateSwitchMythology = function () {
         this.tl.play();
 
     }
-    if (this.countFrame < 30){
+    if (this.countFrame < 30) {
         this._backMap.opacity -= 10
         if (this._descriptionMythology.alpha > 0) {
             this._descriptionMythology.alpha -= 0.05
             this._descriptionStrategy.alpha -= 0.05
         }
     }
-    if (this.countFrame == 30){
+    if (this.countFrame == 30) {
         this._backMap.bitmap = ImageManager.loadCampaign(this.mapList[this.index]);
         this._descriptionMythology.text = IAVRA.I18N.localize(`#{DuelVocab.Campaign.${this.mythTexts[this.index]}Story}`)
         this._descriptionStrategy.text = IAVRA.I18N.localize(`#{DuelVocab.Campaign.${this.mythTexts[this.index]}Strategy}`)
- 
+
     }
-    if (this.countFrame > 30){
+    if (this.countFrame > 30) {
         this._backMap.opacity += 10
         if (this._descriptionMythology.alpha < 0.8) {
             this._descriptionMythology.alpha += 0.05
@@ -426,4 +466,62 @@ Scene_Kamigami_CampaignSelect.prototype.changeHue = function (hue) {
         this._buttonBack[n].setHue(hue)
     }
     this._backFade.setHue(hue)
-}   
+}
+
+//-----------------------------------------------------------------------------
+// Function : updateChoiceSelected - updates process
+//-----------------------------------------------------------------------------
+Scene_Kamigami_CampaignSelect.prototype.updateChoiceSelected = function () {
+    this.countFrame++;
+    if (this.countFrame < 60) {
+        if (this.choiceInput == 0) {
+            this._textReturnLight.opacity = this.countFrame % 8 * 60
+        } else
+            this._textSelectLight.opacity = this.countFrame % 8 * 60
+        return;
+    }
+    this._textReturnLight.opacity = 0
+    this._textSelectLight.opacity = 0
+    if(this.countFrame == 60) {
+        this.tl.play();
+    }
+
+    if (this._selectButtons[0].opacity > 0)
+        for (let n = 0; n < 5; n++) {
+            this._selectButtons[n].opacity -= 10
+            this._selectButtons[n].rotation += n * 0.025
+        }
+
+
+    if (this.countFrame > 60 && this.countFrame < 90) {
+        this._buttonBack[3].x += (this.countFrame - 60) * 2
+        this._descriptionStrategy.x += (this.countFrame - 60) * 2
+        this._descriptionHeader2.x += (this.countFrame - 60) * 2
+    }
+    if (this.countFrame > 75 && this.countFrame < 105) {
+        this._buttonBack[2].x += (this.countFrame - 75) * 2
+        this._descriptionMythology.x += (this.countFrame - 75) * 2
+        this._descriptionHeader1.x += (this.countFrame - 75) * 2
+
+    }
+
+    if (this.countFrame > 90 && this.countFrame < 120) {
+        this._buttonBack[1].x -= (this.countFrame - 90) * 2
+        this._textSelect.x = this._buttonBack[1].x
+    }
+    if (this.countFrame > 105 && this.countFrame < 135) {
+        this._buttonBack[0].x -= (this.countFrame - 105) * 2
+        this._textReturn.x = this._buttonBack[0].x
+    }
+    if (this.countFrame > 115 && this._backMap.opacity > 0) {
+        this._backMap.opacity -= 10
+        this._backFade.opacity -= 10
+    }
+    if (this.countFrame > 140) {
+        if (this.choiceInput == 0) {
+            SceneManager.goto(Scene_Main_Menu)
+        } else {
+            SceneManager.goto(Scene_CampaignMap)
+        }
+    }
+}

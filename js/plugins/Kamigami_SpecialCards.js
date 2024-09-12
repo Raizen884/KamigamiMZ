@@ -129,7 +129,7 @@ SpriteGod.prototype.loadCardValues = function (id) {
         this.removeChild(this.imageValues[3])
         this.addChild(this.imageValues[3])
     } else if (cardType == 0) {
-        this.imageValues[3].x = 144
+        this.imageValues[3].x = -215
         this.imageValues[3].y = -292
         this.imageValues[3].opacity = 255;
         this.removeChild(this.imageValues[3])
@@ -139,7 +139,7 @@ SpriteGod.prototype.loadCardValues = function (id) {
         this.imageValues[2].bitmap = ImageManager.loadSpecialCards("card_numbers_small")
         this.setSmallNumberFrame(this.imageValues[2], addDevotion % 10)
         this.imageValues[2].opacity = 255;
-        this.imageValues[2].x = -170
+        this.imageValues[2].x = 186
         this.imageValues[2].y = -278
         this.removeChild(this.imageValues[2])
         this.addChild(this.imageValues[2])
@@ -153,14 +153,14 @@ SpriteGod.prototype.loadCardValues = function (id) {
         this.imageValues[0].opacity = 255;
         this.removeChild(this.imageValues[0])
         this.addChild(this.imageValues[0])
-        this.imageValues[0].x = 178
+        this.imageValues[0].x = -178
         this.imageValues[0].y = -278
     }
     if (cardType != 0) {
         this.imageValues[1].bitmap = ImageManager.loadSpecialCards("card_numbers_small")
         this.setSmallNumberFrame(this.imageValues[1], costDevotion % 10)
         this.imageValues[1].opacity = 255;
-        this.imageValues[1].x = 178
+        this.imageValues[1].x = -178
         this.imageValues[1].y = -278
         this.removeChild(this.imageValues[1])
         this.addChild(this.imageValues[1])
@@ -200,7 +200,7 @@ SpriteGod.prototype.configureGod = function (godName, id = -1, noAnimation = fal
     specialCards = ["big_set", "big_hades", "big_hel", "big_loki", "big_odin",
         "big_ra", "big_thor", "big_isis", "big_izanami", "big_poseidon", "big_izanagi",
         "big_amaterasu", "big_zeus", "big_tsukiyomi",
-        "bbr_coaraci", "bbr_anhanga"]
+        "bbr_coaraci", "bbr_anhanga", "bbr_tupan"]
     this.closeAllImages();
     this.godLayers = []
     if (id >= 0) {
@@ -279,6 +279,9 @@ SpriteGod.prototype.configureGod = function (godName, id = -1, noAnimation = fal
             break
         case "bbr_anhanga":
             this.anhangaCard();
+            break
+        case "bbr_tupan":
+            this.tupanCard();
             break
         default:
             break;
@@ -527,7 +530,33 @@ SpriteGod.prototype.raCard = function () {
     this.tl.timeScale(0.1)
     this.tl.gotoAndPlay(0)
 };
-
+//-----------------------------------------------------------------------------
+// Function : thorCard
+//-----------------------------------------------------------------------------
+SpriteGod.prototype.tupanCard = function () {
+    let godName = "Tupan"
+    this.frontSprite.opacity = 100;
+    this.backSprite.opacity = 55;
+    this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
+    this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god2")
+    this.loadGodLayerExtras(this.maskInside, "Tupan_god")
+    //this.loadGodLayerExtras(this.maskInside, "Thor_god1")
+    //this.loadGodLayerExtras(this.maskInside, "Thor_god2")
+    this.removeChild(this.frontSprite)
+    this.addChild(this.frontSprite)
+    this.removeChild(this.imageLayerCard)
+    this.addChild(this.imageLayerCard)
+    this.createParticlesFront(godName);
+    this.createParticlesBack(godName);
+    this._displacement.bitmap = ImageManager.loadDisplacement("map15");
+    this._displacement.scale.set(10);
+    this._displacement.anchor.set(0.5);
+    this.tl.to(this.displacementFilter.scale, 8, { x: -10, y: -250, ease: Expo.easeInOut });
+    this.tl.timeScale(1000)
+    this.tl.gotoAndPlay(0)
+    this.container.filters = [this.displacementFilter];
+};
 //-----------------------------------------------------------------------------
 // Function : thorCard
 //-----------------------------------------------------------------------------
@@ -954,6 +983,10 @@ SpriteGod.prototype.update = function (cameraX = SceneManager._scene.specialCard
     this.maskInside.y = cameraY;
     this._displacement.y = Math.sin(this.countFrames * Math.PI / 600) * 300
     this._displacement.x = Math.cos(this.countFrames * Math.PI / 600) * 300
+    if (this.godName == "bbr_tupan") {
+        this._displacement.y = Math.sin(this.countFrames * Math.PI / 100) * 300
+        this._displacement.x = Math.cos(this.countFrames * Math.PI / 100) * 300     
+    }
     if (this.oldId < 150)
         this.updateGodMovement();
     this.updateCheckButton();
@@ -972,6 +1005,9 @@ SpriteGod.prototype.updateGodMovement = function () {
         this.moveGodScaleLayer(this.godLayers[0], this.godLayers[1]);
     }
     if (this.godName == "big_thor") {
+        this.moveGodScaleLayer(this.godLayers[0]);
+    }
+    if (this.godName == "bbr_tupan") {
         this.moveGodScaleLayer(this.godLayers[0]);
     }
     if (scaleGodsBack.includes(this.godName)) {

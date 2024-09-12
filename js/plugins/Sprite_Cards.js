@@ -675,6 +675,13 @@ Sprite_Kami_ButtonLight.prototype.createTexts = function (position, jsonText, sp
     this.mainTextSub.y += 120 + mainFontSize - 78
 }
 
+Sprite_Kami_ButtonLight.prototype.changeColor = function(newColor) {
+    this.mainText.style.fill = newColor
+    this.mainText.style.dropShadowColor = newColor
+    this.mainTextSub.style.fill = newColor
+    this.mainTextSub.style.dropShadowColor = newColor
+}
+
 const _kami_Scene_Map_terminate = Scene_Map.prototype.stop
 Scene_Map.prototype.stop = function () {
     if (AudioManager._currentBgm)
