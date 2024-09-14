@@ -537,12 +537,18 @@ SpriteGod.prototype.tupanCard = function () {
     let godName = "Tupan"
     this.frontSprite.opacity = 100;
     this.backSprite.opacity = 55;
+    this.fallLightning = 0
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
     this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
     this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god2")
+
+    this.loadGodLayerExtras(this.maskInside, "Tupan_layer3")
+    this.loadGodLayerExtras(this.maskInside, "Tupan_layer4")
+    this.godLayers[0].opacity = 0
+    this.godLayers[1].opacity = 0
+    this.removeChild(this.container)
+    this.addChild(this.container)
     this.loadGodLayerExtras(this.maskInside, "Tupan_god")
-    //this.loadGodLayerExtras(this.maskInside, "Thor_god1")
-    //this.loadGodLayerExtras(this.maskInside, "Thor_god2")
     this.removeChild(this.frontSprite)
     this.addChild(this.frontSprite)
     this.removeChild(this.imageLayerCard)
@@ -832,10 +838,16 @@ SpriteGod.prototype.createParticlesFront = function (godName) {
             this.emitter.x = 0;
             break;
         case "Coaraci":
-            this.emitter2 = fx.getParticleEmitter('BR-Leafs');
-            this.emitter2.init(this.backSprite, true, 1);
-            this.emitter2.y = -220;
-            this.emitter2.x = 0;
+            this.emitter = fx.getParticleEmitter('BR-Leafs');
+            this.emitter.init(this.backSprite, true, 1);
+            this.emitter.y = -220;
+            this.emitter.x = 0;
+            break;
+        case "Tupan":
+            this.emitter = fx.getParticleEmitter('Hades-card2');
+            this.emitter.init(this.frontSprite, true, 2);
+            this.emitter.y = 220;
+            this.emitter.x = 0;
             break;
         default:
             break;
@@ -927,6 +939,12 @@ SpriteGod.prototype.createParticlesBack = function (godName) {
             this.emitter2.y = -220;
             this.emitter2.x = 50;
             break;
+        case "Tupan":
+            this.emitter2 = fx.getParticleEmitter('Hades-card2');
+            this.emitter2.init(this.backSprite, true, 2);
+            this.emitter2.y = 120;
+            this.emitter2.x = 0;
+            break;
         default:
             break;
     }
@@ -985,12 +1003,46 @@ SpriteGod.prototype.update = function (cameraX = SceneManager._scene.specialCard
     this._displacement.x = Math.cos(this.countFrames * Math.PI / 600) * 300
     if (this.godName == "bbr_tupan") {
         this._displacement.y = Math.sin(this.countFrames * Math.PI / 100) * 300
-        this._displacement.x = Math.cos(this.countFrames * Math.PI / 100) * 300     
+        this._displacement.x = Math.cos(this.countFrames * Math.PI / 100) * 300
+
     }
     if (this.oldId < 150)
         this.updateGodMovement();
     this.updateCheckButton();
 };
+
+//-----------------------------------------------------------------------------
+// Function : updateTupanLightning
+//-----------------------------------------------------------------------------
+SpriteGod.prototype.updateTupanLightning = function () {
+    if (this.fallLightning == 1) {
+        this.godLayers[0].opacity -= 30
+        if (this.godLayers[0].opacity == 0) {
+            this.fallLightning = 0
+        }
+    }
+    if (this.fallLightning == 2) {
+        this.godLayers[1].opacity -= 30
+
+        if (this.godLayers[1].opacity == 0) {
+            this.fallLightning = 0
+        }
+    }
+    if (this.fallLightning == 0) {
+        if (Math.random() > 0.95) {
+            this.fallLightning = Math.randomInt(2) + 1;
+            if (Math.random() > 0.9) {
+                this.godLayers[0].scale.x *= -1
+                this.godLayers[1].scale.x *= -1
+            }
+        }
+        if (this.fallLightning == 1) {
+            this.godLayers[0].opacity = 255
+        } else if (this.fallLightning == 2)
+            this.godLayers[1].opacity = 255
+    }
+
+}
 //-----------------------------------------------------------------------------
 // Function : updateGodMovement
 //-----------------------------------------------------------------------------
@@ -1008,7 +1060,8 @@ SpriteGod.prototype.updateGodMovement = function () {
         this.moveGodScaleLayer(this.godLayers[0]);
     }
     if (this.godName == "bbr_tupan") {
-        this.moveGodScaleLayer(this.godLayers[0]);
+        this.moveGodScaleLayer(this.godLayers[2]);
+        this.updateTupanLightning();
     }
     if (scaleGodsBack.includes(this.godName)) {
         this.moveBackDisplacement();
@@ -1390,7 +1443,7 @@ SpriteGod.prototype.writeCardText = function (id) {
         this.textHeader.destroy()
     }
     let baseText = text.length > 1 ? text[1] : text[0]
-    this.text = new PIXI.Text(baseText, { fontFamily: 'Overpass', fontSize: 20, fill: 0x262130, align: 'center', wordWrap: true, wordWrapWidth: 285, lineHeight: 24 });
+    this.text = new PIXI.Text(baseText, { fontFamily: 'Overpass', fontSize: 20, fill: 0x262130, align: 'center', wordWrap: true, wordWrapWidth: 280, lineHeight: 24 });
     this.text.anchor.x = 0.5
     this.text.y = 120 + text.length * 30
     this.text.convertTo3d()

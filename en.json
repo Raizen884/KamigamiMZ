@@ -340,7 +340,9 @@
 			"selectCampaign1": "RETURN",
 			"selectCampaign1sub": "to main menu.",
 			"selectCampaign2": "SELECT",
-			"selectCampaign2sub": "Choose this mythology!"
+			"selectCampaign2sub": "Choose this mythology!",
+			"selectCampaign3": "UNLOCK",
+			"selectCampaign3sub": "Unlock this mythology!"
 		},
 		"MenuText": {
 			"options1": "PLAY TUTORIAL",

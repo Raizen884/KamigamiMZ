@@ -33,6 +33,7 @@ function Game_Kamigami() {
     this.transitionType = 0;
     // AI Global Configuration
     this.cardEffectList = [102, 103, 110, 113, 112, 107]
+    this.unlockedDuels = [false, false, false, false, false]
     //$gameVariables.setValue(2, 2)
 
 

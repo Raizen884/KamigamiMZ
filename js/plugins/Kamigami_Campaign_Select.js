@@ -72,7 +72,10 @@ Scene_Kamigami_CampaignSelect.prototype.createGod = function () {
     this._displacement.anchor.set(0.5);
     this.container.addChild(this._displacement);
     this.displacementFilter = new PIXI.filters.DisplacementFilter(this._displacement);
-    this.container.filters = [this.displacementFilter];
+    this.overlayColorGod = new PIXI.filters.ColorOverlayFilter([1, 0, 0], [0, 0, 1], 0.001)
+    this.container.filters = [this.displacementFilter, this.overlayColorGod];
+    this.container.filters[1].color = "#FFFFFF";
+    this.container.filters[1].enabled = !$dataKamigami.unlockedDuels[this.index]
     this.displacementFilter.scale.x = 0;
     this.displacementFilter.scale.y = 0;
     this.tl = new TimelineMax({ paused: true });
@@ -166,10 +169,17 @@ Scene_Kamigami_CampaignSelect.prototype.createButtons = function () {
     //this._textReturnLight.opacity = 0
     this._textSelect = new Sprite_Kami_Button(0, "selectCampaign2", 90);
     this._textSelect.y = 1080 - 257
-    this._textSelect.opacity = 180
+    this._textSelect.opacity = 0
     this._textSelect.x = -870
     //this._textSelectLight.opacity = 0
     this.addChild(this._textSelect);
+
+    this._textUnlock = new Sprite_Kami_Button(0, "selectCampaign3", 90);
+    this._textUnlock.y = 1080 - 257
+    this._textUnlock.opacity = 0
+    this._textUnlock.x = -870
+    //this._textSelectLight.opacity = 0
+    this.addChild(this._textUnlock);
 
     this._textReturnLight = new Sprite_Kami_ButtonLight(0, "selectCampaign1", 90, this.configureLightColor[this.index]);
     this.addChild(this._textReturnLight);
@@ -178,6 +188,10 @@ Scene_Kamigami_CampaignSelect.prototype.createButtons = function () {
     this._textSelectLight.y = 1080 - 257
     this._textSelectLight.opacity = 0
     this.addChild(this._textSelectLight);
+    this._textUnlockLight = new Sprite_Kami_ButtonLight(0, "selectCampaign3", 90, this.configureLightColor[this.index]);
+    this._textUnlockLight.y = 1080 - 257
+    this._textUnlockLight.opacity = 0
+    this.addChild(this._textUnlockLight);
 }
 //-----------------------------------------------------------------------------
 // Function : create
@@ -270,6 +284,9 @@ Scene_Kamigami_CampaignSelect.prototype.update = function () {
         case 3:
             this.updateChoiceSelected();
             break;
+        case 4:
+            this.updateUnlockOption();
+            break;
         default:
             break;
     }
@@ -285,6 +302,11 @@ Scene_Kamigami_CampaignSelect.prototype.updateOpening = function () {
         this.countFrame = 0;
         return
     }
+    if ($dataKamigami.unlockedDuels[this.index]) {
+        this._textSelect.opacity = 180
+    } else {
+        this._textUnlock.opacity = 180
+    }
     if (this.countFrame < 30) {
         this._buttonBack[0].x += (30 - this.countFrame) * 2
         this._textReturn.x = this._buttonBack[0].x
@@ -293,6 +315,7 @@ Scene_Kamigami_CampaignSelect.prototype.updateOpening = function () {
     if (this.countFrame > 15 && this.countFrame < 45) {
         this._buttonBack[1].x += (45 - this.countFrame) * 2
         this._textSelect.x = this._buttonBack[1].x
+        this._textUnlock.x = this._buttonBack[1].x
     }
     if (this.countFrame > 30 && this.countFrame < 60) {
         this._buttonBack[2].x -= (60 - this.countFrame) * 2
@@ -340,14 +363,24 @@ Scene_Kamigami_CampaignSelect.prototype.updateSwitchButtonHover = function () {
         }
     } else
         this._textReturnLight.opacity -= 30
-    if (this._textSelectLight.isBeingTouched()) {
+    if (this._textSelectLight.isBeingTouched() && $dataKamigami.unlockedDuels[this.index]) {
         this._textSelectLight.opacity += 30
         if (TouchInput.isTriggered()) {
             this.phase = 3
             this.choiceInput = 1;
+            this.countFrame = 0;
         }
     } else
         this._textSelectLight.opacity -= 30
+    if (this._textUnlockLight.isBeingTouched() && !$dataKamigami.unlockedDuels[this.index]) {
+        this._textUnlockLight.opacity += 30
+        if (TouchInput.isTriggered()) {
+            this.phase = 3
+            this.choiceInput = 2;
+            this.countFrame = 0;
+        }
+    } else
+        this._textUnlockLight.opacity -= 30
 }
 //-----------------------------------------------------------------------------
 // Function : updateButtonHover - updates process
@@ -378,6 +411,7 @@ Scene_Kamigami_CampaignSelect.prototype.updateButtonHover = function () {
 Scene_Kamigami_CampaignSelect.prototype.changeLightButtonsColor = function () {
     this._textReturnLight.changeColor(this.configureLightColor[this.index])
     this._textSelectLight.changeColor(this.configureLightColor[this.index])
+    this._textUnlockLight.changeColor(this.configureLightColor[this.index])
 }
 //-----------------------------------------------------------------------------
 // Function : resetHover - updates process
@@ -434,6 +468,14 @@ Scene_Kamigami_CampaignSelect.prototype.updateSwitchMythology = function () {
         this._backMap.bitmap = ImageManager.loadCampaign(this.mapList[this.index]);
         this._descriptionMythology.text = IAVRA.I18N.localize(`#{DuelVocab.Campaign.${this.mythTexts[this.index]}Story}`)
         this._descriptionStrategy.text = IAVRA.I18N.localize(`#{DuelVocab.Campaign.${this.mythTexts[this.index]}Strategy}`)
+        if ($dataKamigami.unlockedDuels[this.index]) {
+            this._textSelect.opacity = 180
+            this._textUnlock.opacity = 0
+        } else {
+            this._textSelect.opacity = 0
+            this._textUnlock.opacity = 180
+        }
+
 
     }
     if (this.countFrame > 30) {
@@ -453,6 +495,7 @@ Scene_Kamigami_CampaignSelect.prototype.updateSwitchMythology = function () {
         this.phase = 1;
         this.loadRandomGod();
         this.tl.reverse();
+        this.container.filters[1].enabled = !$dataKamigami.unlockedDuels[this.index]
     }
 
     //this._buttonBack
@@ -464,8 +507,75 @@ Scene_Kamigami_CampaignSelect.prototype.updateSwitchMythology = function () {
 Scene_Kamigami_CampaignSelect.prototype.changeHue = function (hue) {
     for (let n = 0; n < 4; n++) {
         this._buttonBack[n].setHue(hue)
+        if (!$dataKamigami.unlockedDuels[this.index]) {
+            this._buttonBack[n].setColorTone([0, 0, 0, 255])
+        } else {
+            this._buttonBack[n].setColorTone([0, 0, 0, 0])
+        }
     }
     this._backFade.setHue(hue)
+    if (!$dataKamigami.unlockedDuels[this.index]) {
+        this._backFade.setColorTone([0, 0, 0, 255])
+        this._backMap.setColorTone([0, 0, 0, 255])
+    } else {
+        this._backFade.setColorTone([0, 0, 0, 0])
+        this._backMap.setColorTone([0, 0, 0, 0])
+    }
+}
+//-----------------------------------------------------------------------------
+// Function : updateUnlockOption - updates process
+//-----------------------------------------------------------------------------
+Scene_Kamigami_CampaignSelect.prototype.updateUnlockOption = function () {
+    this.countFrame++;
+    let currentFrame = this.countFrame
+    let colorTone = Math.max(0, (10 - currentFrame) * 25)
+    if (this.countFrame < 12)
+        this._buttonBack[0].setColorTone([0, 0, 0, colorTone])
+    if (this.countFrame > 12 && this.countFrame < 25) {
+        currentFrame = this.countFrame - 12
+        colorTone = Math.max(0, (10 - currentFrame) * 25)
+        this._buttonBack[1].setColorTone([0, 0, 0, colorTone])
+    }
+    if (this.countFrame > 24 && this.countFrame < 37) {
+        currentFrame = this.countFrame - 24
+        colorTone = Math.max(0, (10 - currentFrame) * 25)
+        this._buttonBack[2].setColorTone([0, 0, 0, colorTone])
+    }
+    if (this.countFrame > 36 && this.countFrame < 49) {
+        currentFrame = this.countFrame - 36
+        colorTone = Math.max(0, (10 - currentFrame) * 25)
+        this._buttonBack[3].setColorTone([0, 0, 0, colorTone])
+    }
+    if (this.countFrame > 48 && this.countFrame < 61) {
+        currentFrame = this.countFrame - 48
+        colorTone = Math.max(0, (10 - currentFrame) * 25)
+        this._backFade.setColorTone([0, 0, 0, colorTone])
+
+    }
+
+    if (this.countFrame > 55 && this.countFrame < 70) {
+        currentFrame = this.countFrame - 55
+        colorTone = Math.max(0, (10 - currentFrame) * 25)
+        this._backMap.setColorTone([0, 0, 0, colorTone])
+    }
+    if (this.countFrame > 40 && this.countFrame < 55) {
+        this._bigGod.opacity -= 20
+    }
+    if (this.countFrame == 55) {
+        this.container.filters[1].enabled = false
+    }
+    if (this.countFrame > 55) {
+        this._bigGod.opacity += 20
+    }
+
+    if (this.countFrame >= 70) {
+        $dataKamigami.unlockedDuels[this.index] = true
+
+        this._textSelect.opacity = 180
+        this._textUnlock.opacity = 0
+        this.phase = 1
+        this.countFrame = 0
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -476,13 +586,22 @@ Scene_Kamigami_CampaignSelect.prototype.updateChoiceSelected = function () {
     if (this.countFrame < 60) {
         if (this.choiceInput == 0) {
             this._textReturnLight.opacity = this.countFrame % 8 * 60
-        } else
+        } else if (this.choiceInput == 1)
             this._textSelectLight.opacity = this.countFrame % 8 * 60
+        else
+            this._textUnlockLight.opacity = this.countFrame % 8 * 60
         return;
     }
     this._textReturnLight.opacity = 0
     this._textSelectLight.opacity = 0
-    if(this.countFrame == 60) {
+    this._textUnlockLight.opacity = 0
+    if (this.countFrame == 60 && this.choiceInput == 2) {
+        this.phase = 4
+        this.countFrame = 0
+        this.openingWhiteFade = true
+        return
+    }
+    if (this.countFrame == 60) {
         this.tl.play();
     }
 
