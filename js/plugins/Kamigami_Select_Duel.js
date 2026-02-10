@@ -372,7 +372,7 @@ Scene_Kamigami_Select_Duel.prototype.updateButtonsClick = function () {
 
     if (this.duelText.isBeingTouched()) {
         let duelId = this.duelistChoices.duelistOptions[this.duelistSelected].duelId;
-        if (!$dataKamigami.duelInfo[duelId].enabled) {
+        if ($dataKamigami.duelInfo[duelId].wins == 0) {
             AudioManager.playSe({ name: "beep", pan: 0, pitch: 100, volume: 100 });
             return;
         }
@@ -549,13 +549,13 @@ Scene_Kamigami_Select_Duel.prototype.updateGodChange = function () {
         this.godTimeLine = this.duelistChoices.currentDuelist(this.duelistSelected)
         this.deityImage.bitmap = ImageManager.loadFace(this.godTimeLine)
         let duelId = this.duelistChoices.duelistOptions[this.duelistSelected].duelId;
-        if (duelId == -1 || !$dataKamigami.duelInfo[duelId].enabled) {
+        if (duelId == -1 || $dataKamigami.duelInfo[duelId].wins == 0) {
             this.deityImage.opacity = 130
 
         } else {
             this.deityImage.opacity = 255
         }
-        this.container.filters[1].enabled = !$dataKamigami.duelInfo[duelId].enabled
+        this.container.filters[1].enabled = $dataKamigami.duelInfo[duelId].wins == 0
         this.tl.reverse();
         this.loadDeityInformation(duelId);
 
@@ -590,7 +590,7 @@ Scene_Kamigami_Select_Duel.prototype.updateGodChange = function () {
 
 };
 Scene_Kamigami_Select_Duel.prototype.loadDeityInformation = function (duelId) {
-    if ($dataKamigami.duelInfo[duelId].enabled)
+    if ($dataKamigami.duelInfo[duelId].wins > 0)
         this.infoBackName.text = this.godTimeLine.toUpperCase()
     else
         this.infoBackName.text = "????????"
@@ -742,13 +742,14 @@ SpriteDuelistChoices.prototype.createAllOptions = function () {
         if (n != 150) {
             card = new KamigamiCard()
             card.loadCardData(n, 0);
-            if (card.cardType == 2 || card.cardType == 3 || card.name == "Phoenix Egg")
+            if (card.cardType == 2 || card.cardType == 3 || card.name == "Phoenix Egg") 
                 continue
             cardId = this.getDuelId(card.name)
             if (cardId == -1) {
                 continue
             }
         } else {
+            continue
             card = { name: "Dagandr", specialType: 2, cardType: 1 }
             cardId = 67
         }
@@ -843,7 +844,7 @@ SpriteDuelistButton.prototype.initialize = function () {
 SpriteDuelistButton.prototype.configureDuelist = function (name, specialType, id, cardType, cardId) {
     this.duelistId = id
     this.name = name
-    if (!$dataKamigami.duelInfo[cardId].enabled) {
+    if ($dataKamigami.duelInfo[cardId].wins == 0) {
         name = "???????"
     }
     this.specialType = specialType

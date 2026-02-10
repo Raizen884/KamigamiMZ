@@ -1241,8 +1241,13 @@ Scene_Main_Menu.prototype.closeMenu = function () {
         if (this.btn_hover == 1) {
             if (!$gameSwitches.value(1))
                 SceneManager.push(Scene_Kamigami_Select_Player)
-            else
-                SceneManager.push(Scene_CampaignMap)
+            else {
+                if ($dataKamigami.duelInfo[0].enabled)
+                    SceneManager.goto(Scene_Kamigami_CampaignSelect)
+                else
+                    SceneManager.push(Scene_CampaignMap)
+            }
+
         }
 
         else if (this.duelDecision) {

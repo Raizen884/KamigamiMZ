@@ -1015,31 +1015,42 @@ SpriteGod.prototype.update = function (cameraX = SceneManager._scene.specialCard
 // Function : updateTupanLightning
 //-----------------------------------------------------------------------------
 SpriteGod.prototype.updateTupanLightning = function () {
+    let lightSpeed = 30
     if (this.fallLightning == 1) {
-        this.godLayers[0].opacity -= 30
-        if (this.godLayers[0].opacity == 0) {
-            this.fallLightning = 0
+        this.godLayers[0].opacity += lightSpeed
+        if (this.godLayers[0].opacity > 170) {
+            this.fallLightning = 3
         }
     }
     if (this.fallLightning == 2) {
-        this.godLayers[1].opacity -= 30
+        this.godLayers[1].opacity += lightSpeed
 
-        if (this.godLayers[1].opacity == 0) {
+        if (this.godLayers[1].opacity > 170) {
+            this.fallLightning = 4
+        }
+    }
+    if (this.fallLightning == 3) {
+        this.godLayers[0].opacity -= lightSpeed
+        if (this.godLayers[0].opacity <= 0) {
+            this.fallLightning = 0
+        }
+    }
+    if (this.fallLightning == 4) {
+        this.godLayers[1].opacity -= lightSpeed
+
+        if (this.godLayers[1].opacity <= 0) {
             this.fallLightning = 0
         }
     }
     if (this.fallLightning == 0) {
         if (Math.random() > 0.95) {
             this.fallLightning = Math.randomInt(2) + 1;
-            if (Math.random() > 0.9) {
+            if (Math.random() > 0.1) {
                 this.godLayers[0].scale.x *= -1
                 this.godLayers[1].scale.x *= -1
             }
         }
-        if (this.fallLightning == 1) {
-            this.godLayers[0].opacity = 255
-        } else if (this.fallLightning == 2)
-            this.godLayers[1].opacity = 255
+
     }
 
 }
@@ -1059,7 +1070,7 @@ SpriteGod.prototype.updateGodMovement = function () {
     if (this.godName == "big_thor") {
         this.moveGodScaleLayer(this.godLayers[0]);
     }
-    if (this.godName == "bbr_tupan") {
+    if (this.godName == "bbr_tupan" && this.godLayers[1]) {
         this.moveGodScaleLayer(this.godLayers[2]);
         this.updateTupanLightning();
     }
@@ -1098,7 +1109,7 @@ SpriteGod.prototype.playSpecialHelCard = function () {
     }
     if (this.countFrames == 550 || this.countFrames == 1150) {
         let animation = $dataAnimations[138];
-        this.godLayers[0].startAnimation(animation, false, 0);
+            //this.godLayers[0].startAnimation(animation, false, 0);
     }
 
     if (this.countFrames > 0 && this.countFrames < 27) {
@@ -1936,7 +1947,7 @@ exportAllImages = function () {
     let url
     let b64
     let spr = new SpriteStaticGod()
-    for (let n = 126; n < 134; n++) {
+    for (let n = 0; n < 150; n++) {
         if (Game_Kamigami.convertedCardList[n].cardType == 2 || Game_Kamigami.convertedCardList[n].cardType == 3)
             continue;
         let name = Game_Kamigami.convertedCardList[n].Image_Big

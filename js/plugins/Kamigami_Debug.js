@@ -1,12 +1,12 @@
-if (true) {
+if (false) {
     SceneManager.updateScene = function () {
         if (this._scene) {
             if (this._scene.isStarted()) {
                 if (this.isGameActive()) {
                     this._scene.update();
+                    this._scene.update();
                 }
                 if (Input.isPressed("space")) {
-                    this._scene.update();
                     this._scene.update();
                     this._scene.update();
                     this._scene.update();
@@ -117,12 +117,12 @@ if (true) {
             //this._animationCount++
             //this.addAllTestDecks(); 
             //this.addBrazilTestDecks();
-            //$dataKamigami.chosenDeck = 4
-            //$dataKamigami.hasChosenDeck = true
+            $dataKamigami.chosenDeck = 1
+            $dataKamigami.hasChosenDeck = true
             //let text =  new PIXI.Text(greenworks.getSteamId().steamId, { fontFamily: 'Chau Philomene One', fontSize: 60, fill: 0xc22424, align: 'left', stroke: "#000000", strokeThickness: 3 });
             //this.addChild(text)
             for (let n = 0; n < $dataKamigami.duelInfo.length; n++) {
-                //$dataKamigami.duelInfo[n].enabled = false
+                $dataKamigami.duelInfo[n].enabled = false
             }
             $dataKamigami.duelInfo[0] = { wins: 0, losses: 0, enabled: true, name: "Nymph" }
             //loadDeck("Anhanga")
@@ -132,7 +132,7 @@ if (true) {
             //Graphics._switchFullScreen();
             //$dataKamigami.needsRoom = true;
             //SceneManager.goto(Scene_Kamigami_Deck_Build);
-            SceneManager.goto(Scene_Kamigami_CampaignSelect);
+            //SceneManager.goto(Scene_Kamigami_CampaignSelect);
             //SceneManager.goto(Scene_Title);
             //SceneManager.goto(Scene_Kamigami_Select_Player);
             //console.log("Teste")
@@ -179,8 +179,8 @@ if (true) {
     Scene_Title.prototype.addAllTestDecks = function () {
         let decks = JSON.parse(PluginManager.parameters('KamigamiDeck')['Enemy Creation']);
         let singleDeck
-        let deckNames = ["Poseidon", "Hades", "Zeus", "Set", "Isis", "Ra", "Odin", "Loki", "Thor", "Hel", "Izanagi", "Izanami", "Amaterasu", "Tusukuyomi"]
-        let index = 0
+        let deckNames = ["Poseidon", "Hades", "Zeus", "Set", "Isis", "Ra", "Odin", "Loki", "Thor", "Hel", "Izanagi", "Izanami", "Amaterasu", "Tusukuyomi", "Jaci", "Coaraci", "Tupan", "Anhanga"]
+        let index = 1
         for (let n = 0; n < decks.length; n++) {
 
             singleDeck = JSON.parse(decks[n])
@@ -294,7 +294,7 @@ if (true) {
     Scene_Kamigami_Duel.prototype.initialize_variables = function () {
         _debug_Duel_initialize_variables.call(this, ...arguments)
         //this.turn = 0;
-        this.devotion_player1 = 1000;
+        //this.devotion_player1 = 1000;
     }
 
     const _debug_Duel_startAllMethods = Scene_Kamigami_Duel.prototype.startAllMethods

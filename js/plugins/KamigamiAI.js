@@ -1228,6 +1228,8 @@ NPC_AI.prototype.calculateStaticRate = function (cardEffect, boardValues) {
                 return 4
             }
             return 2
+        case 140: // Dark Forest
+            return this.calculateDarkForestPlay();
     }
     return 0
 }
@@ -1568,6 +1570,8 @@ NPC_AI.prototype.getStaticValue = function (cardEffect) {
             return 4
         case 79: // hunting Shrine
             return 4
+        case 140: // Dark Forest
+            return this.calculateDarkForestStatic();
     }
     return 0
 }
@@ -1886,6 +1890,26 @@ NPC_AI.prototype.calculateAIPlague = function () {
     }
     return value
 }
+
+
+
+//-----------------------------------------------------------------------------
+// Function : calculates card value by cardType - Miracle
+//-----------------------------------------------------------------------------
+NPC_AI.prototype.calculateDarkForestPlay = function () {
+    var value = 0
+    value = SceneManager._scene.npc_hand.length * 2;
+    return value
+}
+
+//-----------------------------------------------------------------------------
+// Function : calculates card value by cardType - Miracle
+//-----------------------------------------------------------------------------
+NPC_AI.prototype.calculateDarkForestStatic = function () {
+    var value = 0
+    return value
+}
+
 
 //-----------------------------------------------------------------------------
 // Function : calculates card value by cardType - Miracle
@@ -2345,7 +2369,7 @@ Scene_Kamigami_Duel.prototype.checkAnhangaGyDevotion = function () {
         this.extra_animations.push(['Effect_Card', 123, 115, this.turn])
         this.extra_animations.push(['Extra_Skills', 1, true, false, 115, true]);
         return true;
-    } 
+    }
     return false;
 }
 

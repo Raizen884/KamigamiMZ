@@ -398,7 +398,7 @@ Scene_CampaignMap.prototype.updateExitImages = function () {
     this.cancelTextLight.opacity -= 20
     this.duelTextLight.opacity -= 20
     this._transitionDescription.x -= this.countFrames
-    if (this._transitionDescription.x < -861) 
+    if (this._transitionDescription.x < -861)
         this._transitionDescription.x = -861
     if (this._fade.opacity > 0) {
         this._fade.opacity -= 3
@@ -446,7 +446,7 @@ SpriteCampaign.prototype.createVariables = function () {
     this.isZooming = false;
     this._finalXPosition = 0;
     this._finalYPosition = 0;
-    this.civilization = 4;
+    this.civilization = $dataKamigami.chosenCivilization;
 }
 SpriteCampaign.prototype.createPathSprite = function () {
     this._pathSprites = new Array()
@@ -548,11 +548,23 @@ SpriteCampaign.prototype.getCivilizationByGodCard = function (godCard) {
 
 SpriteCampaign.prototype.createBackMap = function () {
     this._bg = new Sprite()
-    //this._bg.bitmap = ImageManager.loadCampaign("GreekCampaign")
-    //this._bg.bitmap = ImageManager.loadCampaign("EgyptCampaign")
-    //this._bg.bitmap = ImageManager.loadCampaign("NorseCampaign")
-    //this._bg.bitmap = ImageManager.loadCampaign("JapanCampaign")
-    this._bg.bitmap = ImageManager.loadCampaign("BrazilCampaign")
+    switch ($dataKamigami.chosenCivilization) {
+        case 0:
+            this._bg.bitmap = ImageManager.loadCampaign("GreekCampaign")
+            break;
+        case 1:
+            this._bg.bitmap = ImageManager.loadCampaign("EgyptCampaign")
+            break;
+        case 2:
+            this._bg.bitmap = ImageManager.loadCampaign("NorseCampaign")
+            break;
+        case 3:
+            this._bg.bitmap = ImageManager.loadCampaign("JapanCampaign")
+            break;
+        case 4:
+            this._bg.bitmap = ImageManager.loadCampaign("BrazilCampaign")
+            break;
+    }
     this.anchor.x = this.anchor.y = 0.5
     this.scale.x = this.scale.y = 0.45
     this.addChild(this._bg)

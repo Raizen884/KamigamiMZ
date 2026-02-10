@@ -18,12 +18,36 @@ Scene_Kamigami_CampaignSelect.prototype.initialize = function () {
     this.createDescriptions();
     this.createSelectionButtons();
     this.changeHue(this.configHue[this.index])
+    this.changeAudioBGM();
+
 };
 //-----------------------------------------------------------------------------
 // Function : updates - updates process
 //-----------------------------------------------------------------------------
+Scene_Kamigami_CampaignSelect.prototype.changeAudioBGM = function () {
+    switch (this.index) {
+        case 0:
+            AudioManager.playBgm({ name: "Apollo - The God of Music", pan: 0, pitch: 100, volume: 90 });
+            break;
+        case 1:
+            AudioManager.playBgm({ name: "Desert", pan: 0, pitch: 100, volume: 90 });
+            break;
+        case 2:
+            AudioManager.playBgm({ name: "Nidhogg", pan: 0, pitch: 100, volume: 90 });
+            break;
+        case 3:
+            AudioManager.playBgm({ name: "Yuki-Onna", pan: 0, pitch: 100, volume: 90 });
+            break;
+        case 4:
+            AudioManager.playBgm({ name: "Artemis - The God of Wilderness", pan: 0, pitch: 100, volume: 90 });
+            break;
+    }
+}
+//-----------------------------------------------------------------------------
+// Function : updates - updates process
+//-----------------------------------------------------------------------------
 Scene_Kamigami_CampaignSelect.prototype.createVariables = function () {
-    this.index = 3;
+    this.index = $dataKamigami.chosenCivilization;
     this.phase = 0;
     this.countFrame = 0;
     this.configHue = [0, 260, 40, 90, 310];
@@ -32,6 +56,7 @@ Scene_Kamigami_CampaignSelect.prototype.createVariables = function () {
     this.configureLightColor = [0x19FF47, 0xFFD800, 0x00FFE9, 0xFF00F2, 0x00FF26]
     this.mapList = ["GreekCampaign", "EgyptCampaign", "NorseCampaign", "JapanCampaign", "BrazilCampaign"]
     this.choiceInput = 0
+    this.demoUnlock = [0]
 
 }
 //-----------------------------------------------------------------------------
@@ -181,6 +206,13 @@ Scene_Kamigami_CampaignSelect.prototype.createButtons = function () {
     //this._textSelectLight.opacity = 0
     this.addChild(this._textUnlock);
 
+    this._textUnlockDemo = new Sprite_Kami_Button(0, "selectCampaign4", 90);
+    this._textUnlockDemo.y = 1080 - 257
+    this._textUnlockDemo.opacity = 0
+    this._textUnlockDemo.x = 0
+    //this._textSelectLight.opacity = 0
+    this.addChild(this._textUnlockDemo);
+
     this._textReturnLight = new Sprite_Kami_ButtonLight(0, "selectCampaign1", 90, this.configureLightColor[this.index]);
     this.addChild(this._textReturnLight);
     this._textReturnLight.opacity = 0
@@ -304,9 +336,16 @@ Scene_Kamigami_CampaignSelect.prototype.updateOpening = function () {
     }
     if ($dataKamigami.unlockedDuels[this.index]) {
         this._textSelect.opacity = 180
-    } else {
+    }
+
+    else if (this.demoUnlock.contains(this.index)) {
         this._textUnlock.opacity = 180
     }
+
+    else {
+        this._textUnlockDemo.opacity = 180
+    }
+
     if (this.countFrame < 30) {
         this._buttonBack[0].x += (30 - this.countFrame) * 2
         this._textReturn.x = this._buttonBack[0].x
@@ -355,8 +394,10 @@ Scene_Kamigami_CampaignSelect.prototype.updateSelection = function () {
 //-----------------------------------------------------------------------------
 Scene_Kamigami_CampaignSelect.prototype.updateSwitchButtonHover = function () {
     if (this._textReturnLight.isBeingTouched()) {
+        if (this._textReturnLight.opacity == 0) {AudioManager.playSe({ name: "menu_select", pan: 0, pitch: 95, volume: 100 });}
         this._textReturnLight.opacity += 30
         if (TouchInput.isTriggered()) {
+            AudioManager.playSe({ name: "success", pan: 0, pitch: 95, volume: 100 });
             this.phase = 3
             this.choiceInput = 0;
             this.countFrame = 0;
@@ -364,23 +405,28 @@ Scene_Kamigami_CampaignSelect.prototype.updateSwitchButtonHover = function () {
     } else
         this._textReturnLight.opacity -= 30
     if (this._textSelectLight.isBeingTouched() && $dataKamigami.unlockedDuels[this.index]) {
+        if (this._textSelectLight.opacity == 0) {AudioManager.playSe({ name: "menu_select", pan: 0, pitch: 95, volume: 100 });}
         this._textSelectLight.opacity += 30
         if (TouchInput.isTriggered()) {
+            AudioManager.playSe({ name: "success", pan: 0, pitch: 95, volume: 100 });
             this.phase = 3
             this.choiceInput = 1;
             this.countFrame = 0;
         }
     } else
         this._textSelectLight.opacity -= 30
-    if (this._textUnlockLight.isBeingTouched() && !$dataKamigami.unlockedDuels[this.index]) {
+    if (this._textUnlockLight.isBeingTouched() && !$dataKamigami.unlockedDuels[this.index] && this.demoUnlock.contains(this.index)) {
+        if (this._textUnlockLight.opacity == 0) {AudioManager.playSe({ name: "menu_select", pan: 0, pitch: 95, volume: 100 });}
         this._textUnlockLight.opacity += 30
         if (TouchInput.isTriggered()) {
+            AudioManager.playSe({ name: "success", pan: 0, pitch: 95, volume: 100 });
             this.phase = 3
             this.choiceInput = 2;
             this.countFrame = 0;
         }
     } else
         this._textUnlockLight.opacity -= 30
+
 }
 //-----------------------------------------------------------------------------
 // Function : updateButtonHover - updates process
@@ -399,6 +445,7 @@ Scene_Kamigami_CampaignSelect.prototype.updateButtonHover = function () {
             this.maxHueDif += 360
         }
         this.index = hoverBtn;
+        this.changeAudioBGM();
         this.changeLightButtonsColor()
         this.countFrame = 0;
         this.resetHover();
@@ -471,10 +518,17 @@ Scene_Kamigami_CampaignSelect.prototype.updateSwitchMythology = function () {
         if ($dataKamigami.unlockedDuels[this.index]) {
             this._textSelect.opacity = 180
             this._textUnlock.opacity = 0
-        } else {
+            this._textUnlockDemo.opacity = 0
+        } else if (this.demoUnlock.contains(this.index)) {
             this._textSelect.opacity = 0
             this._textUnlock.opacity = 180
+            this._textUnlockDemo.opacity = 0
+        } else {
+            this._textUnlockDemo.opacity = 180
+            this._textSelect.opacity = 0
+            this._textUnlock.opacity = 0
         }
+
 
 
     }
@@ -573,6 +627,7 @@ Scene_Kamigami_CampaignSelect.prototype.updateUnlockOption = function () {
 
         this._textSelect.opacity = 180
         this._textUnlock.opacity = 0
+        this._textUnlockDemo.opacity = 0
         this.phase = 1
         this.countFrame = 0
     }
@@ -640,6 +695,7 @@ Scene_Kamigami_CampaignSelect.prototype.updateChoiceSelected = function () {
         if (this.choiceInput == 0) {
             SceneManager.goto(Scene_Main_Menu)
         } else {
+            $dataKamigami.chosenCivilization = this.index
             SceneManager.goto(Scene_CampaignMap)
         }
     }

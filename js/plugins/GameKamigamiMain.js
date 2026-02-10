@@ -12,7 +12,7 @@ function Game_Kamigami() {
     this.arcMythology = 0
     this.booster_packs = [false, false, false, false, false];
     this.onTutorial = false
-    this.owned_booster_packs = [0, 0, 0, 0];
+    this.owned_booster_packs = [0, 0, 0, 0, 0];
     this.booster_pack_info = [["booster_pack", 150], ["booster_pack", 150], ["booster_pack", 150], ["booster_pack", 150], ["booster_pack", 150]];
     this.decks = new Array(99);
     this.allCards = new Array(450)
@@ -31,6 +31,7 @@ function Game_Kamigami() {
     this.card_list = JSON.parse(PluginManager.parameters('KamigamiDuel')['Card Creation']);
     this.enemyName = ""
     this.transitionType = 0;
+    this.chosenCivilization = 0;
     // AI Global Configuration
     this.cardEffectList = [102, 103, 110, 113, 112, 107]
     this.unlockedDuels = [false, false, false, false, false]

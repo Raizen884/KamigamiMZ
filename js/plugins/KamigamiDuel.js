@@ -115,7 +115,7 @@ Scene_Kamigami_Duel.prototype.createSpritebase = function () {
 // Function : initialize - initiates the graphics
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Duel.prototype.startAllMethods = function () {
-    
+
     AudioManager.stopSe();
     AudioManager.stopBgs();
     this.initialize_classes();
@@ -159,8 +159,20 @@ Scene_Kamigami_Duel.prototype.startAllMethods = function () {
     this.startOnlineTimer();
     this.createDevotionContainer();
     this.createSpritebase();
+    this.fixBoardPositions();
 };
+//-----------------------------------------------------------------------------
+// Function : fixBoardPositions
+//-----------------------------------------------------------------------------
+Scene_Kamigami_Duel.prototype.fixBoardPositions = function () {
+    if ($boardChoice == 5) {
+        this._devotion_player1.y += 50;
+        this._devotion_player1.x += 15;
+        this._devotion_player2.y -= 50;
+        this._devotion_player2.x -= 5;
+    }
 
+};
 //-----------------------------------------------------------------------------
 // Function : load_parameters
 //-----------------------------------------------------------------------------
@@ -1583,7 +1595,7 @@ Scene_Kamigami_Duel.prototype.exileCard = function (turn, index, id) {
 //-----------------------------------------------------------------------------
 // Function : exileCard
 //-----------------------------------------------------------------------------
-Scene_Kamigami_Duel.prototype.exileCardDarkForest = function (turn, index, id, boardPosition) { 
+Scene_Kamigami_Duel.prototype.exileCardDarkForest = function (turn, index, id, boardPosition) {
     this.resetExtraAnimation()
     this.extra_animations.unshift(["Exile_Card", turn, index, boardPosition])
     this.extra_animations.unshift(["Effect_Card", id, 117, turn])

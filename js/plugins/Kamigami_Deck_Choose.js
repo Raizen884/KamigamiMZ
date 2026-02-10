@@ -140,7 +140,7 @@ Scene_Kamigami_Deck_Choose.prototype.createBigGods = function (type) {
             godNames = ["Izanami", "Izanagi", "Amaterasu"]
             break;
     }
-    
+
     for (let index = 0; index < this.bigGods.length; index++) {
         this.bigGods[index] = new Sprite();
         this.bigGods[index].bitmap = ImageManager.loadFace(godNames[index])
@@ -201,23 +201,28 @@ Scene_Kamigami_Deck_Choose.prototype.createVariables = function (type) {
             this.deckLists[2] = [29, 29, 7, 7, 7, 7, 23, 23, 23, 23, 17, 17, 17, 17, 16, 16, 16, 16, 13, 13, 13, 13, 11, 11, 11, 11, 15, 15, 15, 15, 3, 3, 3, 3, 6, 6, 18, 18, 18, 18, 2]
             break;
         case 1:
-            this.deckLists[0] = [276, 276, 276, 276, 286, 286, 286, 286, 290, 290, 290, 290, 285, 285, 285, 285, 294, 294, 294, 294, 279, 279, 279, 279, 292, 292, 292, 292, 280, 280, 280, 280, 273, 273, 273, 273, 295, 295, 295, 295, 152]
-            this.deckLists[1] = [283, 283, 283, 283, 284, 284, 284, 284, 277, 277, 277, 277, 274, 274, 274, 274, 290, 290, 290, 290, 279, 279, 279, 279, 289, 289, 289, 289, 296, 296, 296, 296, 265, 265, 265, 265, 286, 286, 286, 286, 150]
-            this.deckLists[2] = [282, 282, 282, 282, 278, 278, 278, 278, 286, 286, 286, 286, 287, 287, 277, 277, 280, 280, 275, 275, 275, 275, 285, 285, 285, 285, 283, 283, 283, 283, 323, 323, 323, 323, 290, 290, 284, 284, 284, 284, 151]
+            this.deckLists[0] = [36, 36, 36, 36, 46, 46, 46, 46, 50, 50, 50, 50, 45, 45, 45, 45, 54, 54, 54, 54, 39, 39, 39, 39, 52, 52, 52, 52, 40, 40, 40, 40, 33, 33, 33, 33, 55, 55, 55, 55, 32]
+            this.deckLists[1] = [43, 43, 43, 43, 44, 44, 44, 44, 37, 37, 37, 37, 34, 34, 34, 34, 50, 50, 50, 50, 39, 39, 39, 39, 49, 49, 49, 49, 56, 56, 56, 56, 25, 25, 25, 25, 46, 46, 46, 46, 30]
+            this.deckLists[2] = [42, 42, 42, 42, 38, 38, 38, 38, 46, 46, 46, 46, 47, 47, 37, 37, 40, 40, 35, 35, 35, 35, 45, 45, 45, 45, 43, 43, 43, 43, 83, 83, 83, 83, 50, 50, 44, 44, 44, 44, 31]
             break;
         case 2:
-            this.deckLists[0] = [305, 305, 305, 305, 304, 304, 304, 304, 310, 310, 310, 310, 306, 306, 306, 306, 308, 308, 308, 308, 307, 307, 307, 307, 312, 312, 312, 312, 315, 315, 315, 315, 311, 311, 311, 311, 317, 317, 317, 317, 178]
-            this.deckLists[1] = [323, 323, 323, 323, 313, 313, 313, 313, 303, 303, 303, 303, 326, 326, 326, 326, 312, 312, 312, 312, 310, 310, 310, 308, 308, 308, 314, 314, 314, 314, 305, 305, 305, 305, 320, 320, 320, 320, 329, 329, 180]
-            this.deckLists[2] = [320, 320, 320, 320, 302, 302, 302, 302, 310, 310, 310, 310, 314, 314, 314, 314, 307, 307, 307, 307, 306, 306, 306, 306, 319, 319, 319, 319, 321, 321, 317, 317, 322, 322, 318, 318, 304, 304, 304, 304, 181]
+            this.deckLists[0] = [65, 65, 65, 65, 64, 64, 64, 64, 70, 70, 70, 70, 66, 66, 66, 66, 68, 68, 68, 68, 67, 67, 67, 67, 72, 72, 72, 72, 75, 75, 75, 75, 71, 71, 71, 71, 77, 77, 77, 77, 58]
+            this.deckLists[1] = [83, 83, 83, 83, 73, 73, 73, 73, 63, 63, 63, 63, 86, 86, 86, 86, 72, 72, 72, 72, 70, 70, 70, 68, 68, 68, 74, 74, 74, 74, 65, 65, 65, 65, 80, 80, 80, 80, 89, 89, 60]
+            this.deckLists[2] = [80, 80, 80, 80, 62, 62, 62, 62, 70, 70, 70, 70, 74, 74, 74, 74, 67, 67, 67, 67, 66, 66, 66, 66, 79, 79, 79, 79, 81, 81, 77, 77, 82, 82, 78, 78, 64, 64, 64, 64, 61]
             break;
         case 3:
-            this.deckLists[0] = [349, 349, 349, 349, 347, 347, 347, 347, 346, 346, 346, 346, 351, 351, 351, 351, 343, 343, 343, 343, 337, 337, 337, 337, 336, 336, 336, 336, 340, 340, 340, 340, 341, 341, 341, 341, 344, 344, 344, 344, 212]
-            this.deckLists[1] = [350, 350, 350, 350, 346, 346, 346, 346, 355, 355, 355, 355, 354, 354, 354, 354, 334, 334, 342, 342, 342, 342, 338, 338, 338, 338, 340, 340, 340, 340, 343, 343, 343, 343, 352, 352, 349, 349, 349, 349, 211]
-            this.deckLists[2] = [355, 355, 355, 355, 354, 354, 354, 354, 339, 339, 339, 339, 343, 343, 343, 343, 338, 338, 338, 338, 346, 346, 346, 346, 350, 350, 350, 350, 347, 347, 347, 347, 341, 341, 341, 341, 336, 336, 336, 336, 210]
+            this.deckLists[0] = [109, 109, 109, 109, 107, 107, 107, 107, 106, 106, 106, 106, 111, 111, 111, 111, 103, 103, 103, 103, 97, 97, 97, 97, 96, 96, 96, 96, 100, 100, 100, 100, 101, 101, 101, 101, 104, 104, 104, 104, 92]
+            this.deckLists[1] = [110, 110, 110, 110, 106, 106, 106, 106, 115, 115, 115, 115, 114, 114, 114, 114, 94, 94, 102, 102, 102, 102, 98, 98, 98, 98, 100, 100, 100, 100, 103, 103, 103, 103, 112, 112, 109, 109, 109, 109, 91]
+            this.deckLists[2] = [115, 115, 115, 115, 114, 114, 114, 114, 99, 99, 99, 99, 103, 103, 103, 103, 98, 98, 98, 98, 106, 106, 106, 106, 110, 110, 110, 110, 107, 107, 107, 107, 101, 101, 101, 101, 96, 96, 96, 96, 90]
+            break;
+        case 4:
+            this.deckLists[0] = [109, 109, 109, 109, 107, 107, 107, 107, 106, 106, 106, 106, 111, 111, 111, 111, 103, 103, 103, 103, 97, 97, 97, 97, 96, 96, 96, 96, 100, 100, 100, 100, 101, 101, 101, 101, 104, 104, 104, 104, 92]
+            this.deckLists[1] = [110, 110, 110, 110, 106, 106, 106, 106, 115, 115, 115, 115, 114, 114, 114, 114, 94, 94, 102, 102, 102, 102, 98, 98, 98, 98, 100, 100, 100, 100, 103, 103, 103, 103, 112, 112, 109, 109, 109, 109, 91]
+            this.deckLists[2] = [115, 115, 115, 115, 114, 114, 114, 114, 99, 99, 99, 99, 103, 103, 103, 103, 98, 98, 98, 98, 106, 106, 106, 106, 110, 110, 110, 110, 107, 107, 107, 107, 101, 101, 101, 101, 96, 96, 96, 96, 90]
             break;
     }
     for (let i = 0; i < 3; i++) {
-        for (let z = 0; z< 40; z++) {
+        for (let z = 0; z < 40; z++) {
             this.deckLists[i][z] += 300
         }
         this.deckLists[i][40] += 150
@@ -270,6 +275,7 @@ Scene_Kamigami_Deck_Choose.prototype.createDecks = function () {
         for (let m = 0; m < 40; m++) {
             let cardId = this.deckLists[n][m];
             this.decks[n][m] = new SpriteStaticGod();
+            console.log(cardId)
             this.decks[n][m].configureGod(Game_Kamigami.convertedCardList[cardId].Image_Big, cardId)
             this.decks[n][m].anchor.x = this.decks[n][m].anchor.y = 0.5;
 
@@ -528,7 +534,7 @@ Scene_Kamigami_Deck_Choose.prototype.deckSelecting = function () {
         if (this.flashScreen.opacity == 255) {
             this.godCard.opacity = 254;
             this.godsBackground[this.deckChoice].opacity = 255;
-	    AudioManager.playSe({ name: "Athena_Main_Card_flip", pan: 0, pitch: 100, volume: 90 });
+            AudioManager.playSe({ name: "Athena_Main_Card_flip", pan: 0, pitch: 100, volume: 90 });
         }
         return;
     }
@@ -567,17 +573,17 @@ Scene_Kamigami_Deck_Choose.prototype.deckSelecting = function () {
 Scene_Kamigami_Deck_Choose.prototype.positionAllMiniCards = function () {
     let deck = this.miniDecks[this.deckChoice]
     let count = 0;
-        if (this.countFrames == 1)  {
-	   AudioManager.playSe({ name: "Athena_Choosen_Deck", pan: 0, pitch: 95, volume: 100 });
-	   return
-	}
+    if (this.countFrames == 1) {
+        AudioManager.playSe({ name: "Athena_Choosen_Deck", pan: 0, pitch: 95, volume: 100 });
+        return
+    }
     for (let n = 0; n < 40; n++) {
         if (n * 3 > this.countFrames) {
-	    return
+            return
         }
         if (deck[n].x < this.finalPositions[n][0]) {
             deck[n].x += (this.finalPositions[n][0] - deck[n].x) / 20 + 1
-	    if (deck[n].x > this.finalPositions[n][0]) {
+            if (deck[n].x > this.finalPositions[n][0]) {
                 deck[n].x = this.finalPositions[n][0]
             }
         }
@@ -633,7 +639,7 @@ Scene_Kamigami_Deck_Choose.prototype.updateButtonHovers = function () {
         if (TouchInput.isTriggered()) {
             AudioManager.playSe({ name: "Athena_Deck_Choose", pan: 0, pitch: 95, volume: 100 });
             AudioManager.stopBgm();
-	    this.btnChoice = 0;
+            this.btnChoice = 0;
             this.phase = 4
             this.countFrames = 0
         }
@@ -757,8 +763,9 @@ Scene_Kamigami_Deck_Choose.prototype.closeSceneConfirm = function () {
     this.specialCardCameraMini.y += this.specialFrame
     if (this.specialCardCameraMini.y > Graphics.height + 300) {
         this.addNewDeck();
-        $dataKamigami.gameOptions.deck = true
-        SceneManager.pop()
+        $dataKamigami.gameOptions.deck = true;
+        DataManager.saveGame(1);
+        SceneManager.goto(Scene_Kamigami_CampaignSelect)
         this.phase = 5;
     }
 };
@@ -766,19 +773,19 @@ Scene_Kamigami_Deck_Choose.prototype.closeSceneConfirm = function () {
 Scene_Kamigami_Deck_Choose.prototype.backDeckChoiceScreen = function () {
     let deck = this.miniDecks[this.deckChoice]
     let count = 0;
-        if (this.countFrames == 10)  {
-	   AudioManager.playSe({ name: "Athena_Deck_Shuffle", pan: 0, pitch: 100, volume: 100 });
-	   return
-	}
-        if (this.countFrames == 80)  {
-	   AudioManager.playSe({ name: "Athena_Main_Card_unflip", pan: 0, pitch: 100, volume: 100 });
-	   return
-	}
- 
+    if (this.countFrames == 10) {
+        AudioManager.playSe({ name: "Athena_Deck_Shuffle", pan: 0, pitch: 100, volume: 100 });
+        return
+    }
+    if (this.countFrames == 80) {
+        AudioManager.playSe({ name: "Athena_Main_Card_unflip", pan: 0, pitch: 100, volume: 100 });
+        return
+    }
+
     for (let n = 0; n < 40; n++) {
         if (deck[n].x == 0 && deck[n].y == 0) {
             count++
-	    continue;
+            continue;
         }
         if (deck[n].x < 0) {
             deck[n].x += (0 - deck[n].x) / 20 + 1
@@ -821,7 +828,7 @@ Scene_Kamigami_Deck_Choose.prototype.backDeckChoiceScreen = function () {
 };
 Scene_Kamigami_Deck_Choose.prototype.addNewDeck = function () {
     let deckNames
-    switch ( $dataKamigami.arcMythology) {
+    switch ($dataKamigami.arcMythology) {
         case 0:
             deckNames = ["Hades Basic Deck", "Poseidon Basic Deck", "Zeus Basic Deck"]
             break;
@@ -836,7 +843,7 @@ Scene_Kamigami_Deck_Choose.prototype.addNewDeck = function () {
             break;
     }
     let availableSlot = -1
-    for (n = 0 ; n < 99; n++){
+    for (n = 0; n < 99; n++) {
         if ($dataKamigami.decks[n][1].length == 0) {
             availableSlot = n
             break;
@@ -845,7 +852,7 @@ Scene_Kamigami_Deck_Choose.prototype.addNewDeck = function () {
     if (availableSlot != -1) {
         $dataKamigami.decks[availableSlot] = [deckNames[this.deckChoice], this.deckLists[this.deckChoice]]
     }
-    
+
     for (let n = 0; n < 41; n++) {
         $dataKamigami.allCards[this.deckLists[this.deckChoice][n]]++;
     }
