@@ -212,7 +212,7 @@ Scene_Kamigami_Booster.prototype.createBoosters = function () {
     let n = 0;
     let count = 0;
 
-    for (let m = 0; m < 4; m++) {
+    for (let m = 0; m < 5; m++) {
         for (let boosterOwned = 0; boosterOwned < $dataKamigami.owned_booster_packs[m]; boosterOwned++) {
             this.boosterPacksBack[n] = new Sprite_Card();
             this.boosterPacksBack[n].bitmap = ImageManager.loadIgnisShop("card_packShadow");

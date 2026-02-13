@@ -14,7 +14,7 @@ Scene_Kamigami_Duel.prototype.initialize = function () {
 // Function : createSpecialGodCard
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Duel.prototype.createSpecialGodCard = function () {
-    this._big_card_front = new SpriteGod();
+    this._big_card_front = new SpriteGod(true);
     //this._big_card_front.configureGod("bbr_coaraci", 58);
     //this._big_card_front.x = Graphics.width / 2;
     //this._big_card_front.y = Graphics.height / 2;
@@ -41,7 +41,7 @@ Scene_Kamigami_Duel.prototype.createSpecialCard3d = function () {
 //
 // The sprite for displaying a card in triple triad.
 
-function SpriteGod(godName) {
+function SpriteGod(devotionAnimation) {
     this.initialize.apply(this, arguments);
 }
 SpriteGod.prototype = Object.create(Sprite_Card.prototype);
@@ -50,7 +50,8 @@ SpriteGod.prototype.constructor = SpriteGod;
 //-----------------------------------------------------------------------------
 // Function : SpriteGod
 //-----------------------------------------------------------------------------
-SpriteGod.prototype.initialize = function () {
+SpriteGod.prototype.initialize = function (devotionAnimation = false) {
+    this.devotionAnimation = devotionAnimation
     Sprite_Card.prototype.initialize.call(this);
     this.maskInside = new PIXI.Graphics();
     this.maskInside.beginFill();
@@ -77,7 +78,7 @@ SpriteGod.prototype.initialize = function () {
     this.setWidthHeight()
     this.artist = new Sprite()
     this.createInfo();
-
+    //this.loadDevotionAnimation()
 };
 
 
@@ -92,6 +93,7 @@ SpriteGod.prototype.setWidthHeight = function () {
 // Function : closeAllImages
 //-----------------------------------------------------------------------------
 SpriteGod.prototype.closeAllImages = function () {
+
     this.imageLayerBack.bitmap = ImageManager.loadSpecialCards("");
     this.imageLayerCard.bitmap = ImageManager.loadSpecialCards("");
     this.imageBaseLayer.bitmap = ImageManager.loadSpecialCards("");
@@ -203,24 +205,21 @@ SpriteGod.prototype.configureGod = function (godName, id = -1, noAnimation = fal
         "bbr_coaraci", "bbr_anhanga", "bbr_tupan"]
     this.closeAllImages();
     this.godLayers = []
-    if (id >= 0) {
-        //this.rankText.alpha = 1;
-        let rank = ["rankS", "rankA", "rankB"]
-        //this.rankSprite.bitmap = ImageManager.loadSpecialCards(rank[Math.floor(id / 150)])
-    }
-
     if ((!specialCards.includes(godName) || id >= 150) || noAnimation || this.staticCard) {
         this.reorderCardLayer();
         this.loadGodBasicLayers(godName, id)
         if (id != -1) {
+            this.adjustZDevotionAnimation(id);
             this.loadCardValues(id)
             this.loadCardRealValues(id)
             this.writeCardText(id)
             this.writeArtistName(id)
             this.reloadInfoText()
+
         }
         return;
     }
+
     this.loadCardValues(id)
     this.loadCardRealValues(id)
     if (this.displacementFilterShockBG)
@@ -286,6 +285,7 @@ SpriteGod.prototype.configureGod = function (godName, id = -1, noAnimation = fal
         default:
             break;
     }
+    this.adjustZDevotionAnimation(id);
     for (let n = 0; n < 14; n++) {
         this.removeChild(this.imageValues[n])
         this.addChild(this.imageValues[n])
@@ -296,6 +296,7 @@ SpriteGod.prototype.configureGod = function (godName, id = -1, noAnimation = fal
     this.writeCardText(id)
     this.writeArtistName(id)
     this.reloadInfoText()
+
 };
 //-----------------------------------------------------------------------------
 // Function : loadGodBasicLayers
@@ -1109,7 +1110,7 @@ SpriteGod.prototype.playSpecialHelCard = function () {
     }
     if (this.countFrames == 550 || this.countFrames == 1150) {
         let animation = $dataAnimations[138];
-            //this.godLayers[0].startAnimation(animation, false, 0);
+        //this.godLayers[0].startAnimation(animation, false, 0);
     }
 
     if (this.countFrames > 0 && this.countFrames < 27) {
@@ -1331,6 +1332,46 @@ SpriteGod.prototype.loadCardTemplateLayer = function () {
     this.addChild(this.imageBaseLayer)
     this.imageBaseLayer.anchor.x = this.imageBaseLayer.anchor.y = 0.5;
 }
+SpriteGod.prototype.loadDevotionAnimation = function (isAnimated) {
+    this.devotionSpriteBase = new Sprite();
+    this.devotionSpriteBase.bitmap = new Bitmap(100, 100);
+    this.devotionSpriteBase.convertTo3d();
+    this.addChild(this.devotionSpriteBase);
+    this.devotionEmitter = fx.getParticleEmitter('DevotionMini2');
+    this.devotionEmitter.init(this.devotionSpriteBase, true, 0.5);
+    this.devotionEmitter.y = -255;
+    this.devotionEmitter.x = 180;
+}
+
+SpriteGod.prototype.adjustZDevotionAnimation = function (id) {
+    if (!this.devotionAnimation) {
+        return;
+    }
+    let cardType = Game_Kamigami.convertedCardList[id].cardType
+    console.log(cardType);
+    if (id == -1 || cardType == 2) {
+        return;
+    }
+    if (this.devotionSpriteBase) {
+        this.devotionSpriteBase.opacity = 255
+        this.removeChild(this.devotionSpriteBase);
+        this.addChild(this.devotionSpriteBase);
+    } else {
+        this.devotionSpriteBase = new Sprite();
+        this.devotionSpriteBase.bitmap = new Bitmap(100, 100);
+        this.devotionSpriteBase.convertTo3d();
+        this.addChild(this.devotionSpriteBase);
+    }
+    if (this.devotionEmitter) {
+        this.devotionEmitter.stop();
+    }
+    this.devotionEmitter = fx.getParticleEmitter('DevotionMini2');
+    this.devotionEmitter.init(this.devotionSpriteBase, true, 0.5);
+    this.devotionEmitter.y = -255;
+    this.devotionEmitter.x = 180;
+
+}
+
 
 //-----------------------------------------------------------------------------
 // Function : loadCardLayer

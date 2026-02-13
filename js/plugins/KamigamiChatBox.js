@@ -43,16 +43,19 @@ Scene_Kamigami_Duel.prototype.createGiveUpDialog = function () {
 
     this._messageGiveUpYes.bitmap = new Bitmap(200, 100)
     this._messageGiveUpYes.bitmap.fontSize = 100;
+    this._messageGiveUpYes.bitmap.fontFace = 'Chau Philomene One'
     this._messageGiveUpYes.bitmap.outlineWidth = 0;
     this._messageGiveUpYes.x = -300
     this._messageGiveUpYes.opacity = 140
     this._messageGiveUpYes.bitmap.drawText(text, 0, 0, 200, 100, 'right')
+    
     this._backMessageGiveUp.addChild(this._messageGiveUpYes)
 
     this._messageGiveUpNo = new Sprite_Clickable()
     text = IAVRA.I18N.localize("#{DuelVocab.SkillsDescription.giveupno}")
     this._messageGiveUpNo.bitmap = new Bitmap(200, 100)
     this._messageGiveUpNo.bitmap.fontSize = 100;
+    this._messageGiveUpNo.bitmap.fontFace = 'Chau Philomene One'
     this._messageGiveUpNo.bitmap.outlineWidth = 0;
     this._messageGiveUpNo.opacity = 140
     this._messageGiveUpNo.bitmap.drawText(text, 0, 0, 200, 100, 'right')

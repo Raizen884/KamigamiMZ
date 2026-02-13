@@ -1,16 +1,17 @@
-if (false) {
+if (true) {
     SceneManager.updateScene = function () {
         if (this._scene) {
             if (this._scene.isStarted()) {
                 if (this.isGameActive()) {
                     this._scene.update();
-                    this._scene.update();
+
                 }
                 if (Input.isPressed("space")) {
                     this._scene.update();
                     this._scene.update();
                     this._scene.update();
                     this._scene.update();
+                    this._scene.update();   
                 }
             } else if (this._scene.isReady()) {
                 this.onBeforeSceneStart();
@@ -58,13 +59,13 @@ if (false) {
         this.needsLoading++
         if (this.needsLoading == 10) {
             this.loadAllGameImages();
-            this.backBar.opacity = 255;
+            //this.backBar.opacity = 255;
             SceneManager.goto(Scene_Title)
         }
         if (this.allFiles == this.loadedFiles) {
 
         }
-        this.loadingBar.scale.x = this.loadedFiles / this.allFiles
+        //this.loadingBar.scale.x = this.loadedFiles / this.allFiles
 
     }
     Spriteset_Base.prototype.findTargetSprite = function (target) {
@@ -111,13 +112,14 @@ if (false) {
             $gameParty.gainGold(2000)
             $dataKamigami.booster_packs[0] = true
             $dataKamigami.booster_packs[1] = true
+            $dataKamigami.booster_packs[4] = true
             //this._fakeCenter = new Sprite_Animation_EF();
             //this._fakeCenter.setup([this._logo2, this._logo1], $dataAnimationsEF[this._animationCount], false);
             //this.addChild(this._fakeCenter);
             //this._animationCount++
             //this.addAllTestDecks(); 
             //this.addBrazilTestDecks();
-            $dataKamigami.chosenDeck = 1
+            $dataKamigami.chosenDeck = 3
             $dataKamigami.hasChosenDeck = true
             //let text =  new PIXI.Text(greenworks.getSteamId().steamId, { fontFamily: 'Chau Philomene One', fontSize: 60, fill: 0xc22424, align: 'left', stroke: "#000000", strokeThickness: 3 });
             //this.addChild(text)
@@ -125,14 +127,14 @@ if (false) {
                 $dataKamigami.duelInfo[n].enabled = false
             }
             $dataKamigami.duelInfo[0] = { wins: 0, losses: 0, enabled: true, name: "Nymph" }
-            //loadDeck("Anhanga")
+            loadDeck("Zeus")
             $dataKamigami.arcMythology = 2
             //$dataKamigami.gameOptions.language = "pt"
             //IAVRA.I18N.language = $dataKamigami.gameOptions.language
             //Graphics._switchFullScreen();
             //$dataKamigami.needsRoom = true;
             //SceneManager.goto(Scene_Kamigami_Deck_Build);
-            //SceneManager.goto(Scene_Kamigami_CampaignSelect);
+            //SceneManager.goto(Scene_CampaignMap);
             //SceneManager.goto(Scene_Title);
             //SceneManager.goto(Scene_Kamigami_Select_Player);
             //console.log("Teste")

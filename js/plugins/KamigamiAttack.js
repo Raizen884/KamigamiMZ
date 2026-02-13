@@ -484,7 +484,7 @@ Scene_Kamigami_Duel.prototype.perform_special_flip = function () {
         this._center_sprite.y = 540;
         this.attack_card1_flash.opacity = 0;
         this.mini_cast_card = new Sprite_Card();
-        this.mini_cast_card.bitmap = ImageManager.loadKamigami(this.cardDefinitions.getCardList()[this.extra_animations[0][2]]["Image_Player_" + (this.turn + 1)]);
+        //this.mini_cast_card.bitmap = ImageManager.loadKamigami(this.cardDefinitions.getCardList()[this.extra_animations[0][2]]["Image_Big"]);
         this.camera.addChild(this.mini_cast_card);
         this.mini_cast_card.convertTo3d();
         this.attack_card1_mini_flash.x = this.mini_cast_card.x = (this.board_map[this.extra_animations[0][3] % 4][parseInt(this.extra_animations[0][3] / 4)][0] - 960);

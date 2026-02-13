@@ -289,7 +289,7 @@ Scene_CampaignMap.prototype.updateButtons = function () {
         }
 
     }
-    if (TouchInput.isRightPressed()) {
+    if (TouchInput.isRightPressed() || Input.isTriggered('cancel')) {
         this._mainMap.zoomMap(false)
         this._mouseSprite.swapButtons(0)
     }

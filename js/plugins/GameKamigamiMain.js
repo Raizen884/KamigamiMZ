@@ -35,6 +35,7 @@ function Game_Kamigami() {
     // AI Global Configuration
     this.cardEffectList = [102, 103, 110, 113, 112, 107]
     this.unlockedDuels = [false, false, false, false, false]
+    this.maxCardNum = 150;
     //$gameVariables.setValue(2, 2)
 
 
@@ -64,6 +65,17 @@ Game_Kamigami.prototype.createOptions = function () {
        firstScene: false,
        music: 100,
        se: 100
+    }
+
+}
+Game_Kamigami.prototype.GetRankedCard = function(cardId) {
+    if (cardId <= this.maxCardNum) {
+        return 3
+    }
+    else if (cardId <= this.maxCardNum * 2) {
+        return 2
+    } else {
+        return 1
     }
 
 }

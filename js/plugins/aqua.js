@@ -814,6 +814,7 @@ Scene_Base.prototype.terminate = function() {
                 if (settings == null)
                     throw new Error("Settings not defined for '" + componentId + "'");
                 var sprite = new Sprite_1.Sprite(componentId, settings.texture, settings.anchorX, settings.anchorY);
+                sprite.convertTo3d();
                 sprite.__fx = this;
                 return sprite;
             }

@@ -4,7 +4,7 @@
 
 
 
-Scene_Boot.prototype.start = function() {
+Scene_Boot.prototype.start = function () {
     Scene_Base.prototype.start.call(this);
     SoundManager.preloadImportantSounds();
     if (DataManager.isBattleTest()) {
@@ -24,7 +24,7 @@ Scene_Boot.prototype.start = function() {
     this.updateDocumentTitle();
 };
 
-Scene_Boot.prototype.startNormalGame = function() {
+Scene_Boot.prototype.startNormalGame = function () {
     this.checkPlayerLocation();
     DataManager.setupNewGame();
     SceneManager.goto(Scene_Loading);
@@ -45,37 +45,38 @@ Scene_Loading.prototype.constructor = Scene_Loading;
 Scene_Loading.prototype.update = function () {
     Scene_Base.prototype.update.call(this);
     this.needsLoading++
+    this.updateLoadingImage();
     if (this.needsLoading == 10) {
         this.loadAllGameImages();
-        this.backBar.opacity = 255;
+        //this.backBar.opacity = 255;
     }
     if (this.allFiles == this.loadedFiles) {
         Graphics._switchFullScreen();
-       SceneManager.goto(Scene_Title)
+        SceneManager.goto(Scene_Title)
     }
-    this.loadingBar.scale.x = this.loadedFiles / this.allFiles
+    //this.loadingBar.scale.x = this.loadedFiles / this.allFiles
 
 }
-Scene_Loading.prototype.onLoadFailure = function () { 
+Scene_Loading.prototype.onLoadFailure = function () {
 }
 
-Scene_Loading.prototype.onLoadSuccess = function () { 
+Scene_Loading.prototype.onLoadSuccess = function () {
 }
 //-----------------------------------------------------------------------------
 // Function : create
 //-----------------------------------------------------------------------------
 Scene_Loading.prototype.initialize = function () {
     Scene_Base.prototype.initialize.call(this);
-    
+
     this.createAllImages();
 
     DataManager.loadGame(1)
-    .then(() => this.onLoadSuccess())
-    .catch(() => this.onLoadFailure());
+        .then(() => this.onLoadSuccess())
+        .catch(() => this.onLoadFailure());
     if (!$dataKamigami.gameOptions.music) { $dataKamigami.gameOptions.music = 100 }
     if (!$dataKamigami.gameOptions.se) { $dataKamigami.gameOptions.se = 100 }
     IAVRA.I18N.language = $dataKamigami.gameOptions.language
-    
+
     this.createParticleEffects();
     this._text = new PIXI.Text("", { fontFamily: 'GameFont', fontSize: 30, fill: 0xffffff, align: 'right', bold: true });
     this.addChild(this._text)
@@ -87,10 +88,31 @@ Scene_Loading.prototype.initialize = function () {
 }
 
 Scene_Loading.prototype.createAllImages = function () {
-    this.createLogoImage();
-    this.createChibiImage();
-    this.createLoadingBar();
+    this.createLoadingImage();
+    //this.createChibiImage();
+    //this.createLoadingBar();
 }
+Scene_Loading.prototype.createLoadingImage = function () {
+    this.loadingCards = new Sprite();
+    this.loadingCards.bitmap = ImageManager.loadTitle1("icon_loading")
+    this.loadingCards.x = 1792;
+    this.loadingCards.y = 966;
+    this.addChild(this.loadingCards)
+    this.loadingIndex = 0;
+    this.updateLoadingImage();
+}
+Scene_Loading.prototype.updateLoadingImage = function () {
+    const pw = 64;
+    const ph = 50;
+    const sx = (this.loadingIndex % 10) * pw;
+    const sy = Math.floor(this.loadingIndex / 10) * ph;
+    this.loadingCards.setFrame(sx, sy, pw, ph)
+    this.loadingIndex++;
+    if (this.loadingIndex >= 30) {
+        this.loadingIndex = 0;
+    }
+}
+
 
 Scene_Loading.prototype.createLogoImage = function () {
     this.logoDS = new Sprite();
@@ -140,10 +162,10 @@ Scene_Loading.prototype.loadAllGameImages = function () {
                 continue;
             }
             let fileName = filesImg[m].replace(".png", "").replace(".rpgmvp", "");
-            
+
             ImageManager.loadBitmap('img/' + files[n] + "/", fileName, false, true).addLoadListener(() => {
                 this.loadedFiles++;
-                this._text.text = `Loading file: ${fileName}`;
+                //this._text.text = `Loading file: ${fileName}`;
             });
             this.allFiles++;
         }
