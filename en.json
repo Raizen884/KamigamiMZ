@@ -457,7 +457,9 @@
 			"mulliganHeader": "MULLIGAN OR KEEP THIS HAND?",
 			"mulliganText": "If you keep, this will be your starting hand. If you choose to mulligan, your hand will be separated into another pile and you will draw a new hand with one less card than the previous hand. When you decide to keep, all cards separated will be put on the bottom of the deck",
 			"mulliganText2": "You will play first, your opponent will gain extra devotion",
-			"mulliganText3": "You will play second, you will gain extra devotion"
+			"mulliganText3": "You will play second, you will gain extra devotion",
+			"mulliganButton": "MULLIGAN",
+			"keepButton": "KEEP"
 		},
 		"TutorialDescription": {
 			"how": "How to play:",
@@ -501,10 +503,10 @@
 			"prologue05": "Where am I?",
 			"prologue06": "Sorry to say, but you just got hit by a truck...",
 			"prologue07": "I'm... Dead? I can't believe I died in such a dumb way! \nIs this some type of purgatory?",
-			"prologue08": "You aren't dead, yet. I am keeping you alive for I am Coaraci \nthe sun goddess and I need your help.",
+			"prologue08": "You aren't dead, yet. I am keeping you alive for I am Anhanga \nthe sun goddess and I need your help.",
 			"prologue09": "You see, the gods are being controlled by an evil force. \nThe only way to free them is by beating them in a duel! \nYou are the best player we have.",
 			"prologue10": "And if I don't help, you just let me die?",
-			"prologue11": "See! You are smart also. No time to lose! Choose your \ndeck and your mission will start now!",
+			"prologue11": "Basically. No time to lose! Choose your \ndeck and your mission will start now!",
 			"prologue12": "That is a cliche way to start an Isekai, but I don't think I have any choice.",
 			"prologue13": "Nice choice! Now you will have access to the god's realm, a place only the sacred can enter! \nYou will face many difficulties, but I believe you will be able to overcome them!",
 			"prologue14": "Would you like to play the tutorial? \nIt will be accessible at all times in the main menu options.",

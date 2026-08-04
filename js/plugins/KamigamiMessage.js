@@ -290,6 +290,7 @@ Window_Message.prototype.update = function () {
             this.startInput();
             return;
         }
+        
     }
 };
 
@@ -306,7 +307,6 @@ Window_Message.prototype.canStart = function () {
 };
 Window_Message.prototype.wordWrapWindowMessage = function (text) {
     let pixiText = new PIXI.Text(text, { fontFamily: 'GameFont', fontSize: 28, fill: 0x000000, align: 'left', wordWrap: true, wordWrapWidth: 500 });
-    console.log(pixiText.text)
     this.addChild(pixiText)
     return text;
 }
@@ -345,7 +345,6 @@ Window_Message.prototype.create_name_window = function () {
         this.current_name = $dataKamigami.playerName
     //this.current_name = greenworks.getSteamId().screenName
     }
-    console.log(this.current_name)
     let name = this.current_name;
     this._oldName = name;
     this._name_text.bitmap.drawText(name, 0, 0, 400, 60, 'center');
@@ -388,6 +387,7 @@ Window_Message.prototype.updateWait = function () {
         return false;
     }
 };
+
 
 Window_Message.prototype.updateLoading = function () {
     if (this._faceBitmap) {
@@ -841,7 +841,6 @@ VividXP.WordWrap.WordWrapStyle = "break-word";
         this._textState = textState;
 
         this.contents.outlineWidth = 0;
-
         this.newPage(this._textState);
         this.updatePlacement();
         this.updateBackground();
@@ -856,6 +855,7 @@ VividXP.WordWrap.WordWrapStyle = "break-word";
             this.create_name_window();
 
         }
+        
     };
     Window_Message.prototype.newPage = function (textState) {
         this.contents.clear();

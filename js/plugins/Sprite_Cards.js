@@ -50,7 +50,7 @@ Sprite_Animation.prototype.setupMV = function (target, animation, mirror, delay,
         this.createSprites();
     }
 };
-Sprite_Animation.prototype.setup = function(
+Sprite_Animation.prototype.setup = function (
     targets, animation, mirror, delay, previous
 ) {
     this._targets = targets;
@@ -185,7 +185,7 @@ Sprite_Card.prototype.isBeingTouchedOffset = function (offsetX = 0, offsetY = 0)
 
 Sprite_Card.prototype.isPixelTouched = function () {
     const touchPos = new Point(TouchInput.x, TouchInput.y);
-        const localPos = this.worldTransform.applyInverse(touchPos);
+    const localPos = this.worldTransform.applyInverse(touchPos);
     return this.bitmap.getAlphaPixel(localPos.x, localPos.y) != 0
 }
 
@@ -493,7 +493,7 @@ Sprite_AttackCard.prototype.rotateImage = function (imgPos) {
 
 
 
-SceneManager.changeScene = function() {
+SceneManager.changeScene = function () {
     if (this.isSceneChanging() && !this.isCurrentSceneBusy()) {
         if (this._scene) {
             this._scene.terminate();
@@ -675,7 +675,7 @@ Sprite_Kami_ButtonLight.prototype.createTexts = function (position, jsonText, sp
     this.mainTextSub.y += 120 + mainFontSize - 78
 }
 
-Sprite_Kami_ButtonLight.prototype.changeColor = function(newColor) {
+Sprite_Kami_ButtonLight.prototype.changeColor = function (newColor) {
     this.mainText.style.fill = newColor
     this.mainText.style.dropShadowColor = newColor
     this.mainTextSub.style.fill = newColor
@@ -725,7 +725,7 @@ Graphics._onKeyDown = function (event) {
     }
 };
 
-TouchInput._onRightButtonDown = function(event) {
+TouchInput._onRightButtonDown = function (event) {
     var x = Graphics.pageToCanvasX(event.pageX);
     var y = Graphics.pageToCanvasY(event.pageY);
     if (Graphics.isInsideCanvas(x, y)) {
@@ -741,7 +741,7 @@ TouchInput._onRightButtonDown = function(event) {
  * @method isRightPressed
  * @return {Boolean} True if the mouse button or touchscreen is pressed
  */
- TouchInput.isRightPressed = function() {
+TouchInput.isRightPressed = function () {
     return this._rightMousePressed;
 };
 
@@ -751,7 +751,7 @@ TouchInput._onRightButtonDown = function(event) {
  * @param {MouseEvent} event
  * @private
  */
- TouchInput._onMouseUp = function(event) {
+TouchInput._onMouseUp = function (event) {
     if (event.button === 0) {
         var x = Graphics.pageToCanvasX(event.pageX);
         var y = Graphics.pageToCanvasY(event.pageY);
@@ -759,5 +759,55 @@ TouchInput._onRightButtonDown = function(event) {
         this._onRelease(x, y);
     } else if (event.button === 2) {
         this._rightMousePressed = false;
+    }
+};
+
+
+//-----------------------------------------------------------------------------
+// Sprite_Cards
+//
+// The sprite for displaying a card in triple triad.
+
+function Sprite_Kami_UI_Button(text, baseSprite) {
+    this.initialize.apply(this, arguments);
+}
+
+Sprite_Kami_UI_Button.prototype = Object.create(Sprite_Card.prototype);
+Sprite_Kami_UI_Button.prototype.constructor = Sprite_Kami_UI_Button;
+
+Sprite_Kami_UI_Button.prototype.initialize = function (text, baseSprite = "BaseBtn") {
+    Sprite_Card.prototype.initialize.call(this);
+    this.bitmap = new Bitmap(214, 84);
+    this.createBaseButton(baseSprite);
+    this.createBaseButtonHover(baseSprite);
+    console.log(text);
+    this.createButtonText(text);
+};
+
+Sprite_Kami_UI_Button.prototype.createBaseButton = function (baseSprite) {
+    this.baseSprite = new Sprite();
+    this.baseSprite.bitmap = ImageManager.loadExtrasKamigami(baseSprite);
+    this.addChild(this.baseSprite);
+    this.baseSprite.anchor.x = this.baseSprite.anchor.y = 0.5
+}
+
+Sprite_Kami_UI_Button.prototype.createBaseButtonHover = function (baseSprite) {
+    this.baseSpriteHover = new Sprite();
+    this.baseSpriteHover.bitmap = ImageManager.loadExtrasKamigami(baseSprite + "Hover");
+    this.addChild(this.baseSpriteHover);
+    this.baseSpriteHover.anchor.x = this.baseSpriteHover.anchor.y = 0.5
+    this.baseSpriteHover.opacity = 0;
+}
+Sprite_Kami_UI_Button.prototype.createButtonText = function (text) {
+    this._buttonText = new PIXI.Text(text, { fontFamily: 'OverPass', fontSize: 20, fill: 0xffffff, align: 'center' });
+    this._buttonText.anchor.x = this._buttonText.anchor.y = 0.5
+    this.addChild(this._buttonText);
+}
+Sprite_Kami_UI_Button.prototype.update = function () {
+    Sprite_Card.prototype.update.call(this);
+    if (this.isMiniButtonTouched()) {
+        this.baseSpriteHover.opacity += 20
+    } else {
+        this.baseSpriteHover.opacity -= 20
     }
 };

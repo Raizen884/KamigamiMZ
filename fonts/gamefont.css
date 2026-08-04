@@ -3,6 +3,10 @@
     src: url("Grenze-SemiBold.ttf");
 }
 @font-face {
+    font-family: OverPassBold;
+    src: url("Overpass_Bold.ttf");
+}
+@font-face {
     font-family: Chau Philomene One;
     src: url("ChauPhilomeneOne.ttf");
 }

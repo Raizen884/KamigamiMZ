@@ -106,7 +106,7 @@ if (true) {
             $dataKamigami.fastEnabled = true;
             $dataKamigami.enemy_tt_cards = new Array(41);
             $dataKamigami.enemy_tt_cards.fill(9)
-            $dataKamigami.enemy_tt_cards[40] = 1;
+            $dataKamigami.enemy_tt_cards[40] = 123;
             $dataKamigami.maxDifficulty = 2;
             $dataKamigami.difficultySetting = 0;
             $gameParty.gainGold(2000)
@@ -119,7 +119,7 @@ if (true) {
             //this._animationCount++
             //this.addAllTestDecks(); 
             //this.addBrazilTestDecks();
-            $dataKamigami.chosenDeck = 3
+            $dataKamigami.chosenDeck = 12
             $dataKamigami.hasChosenDeck = true
             //let text =  new PIXI.Text(greenworks.getSteamId().steamId, { fontFamily: 'Chau Philomene One', fontSize: 60, fill: 0xc22424, align: 'left', stroke: "#000000", strokeThickness: 3 });
             //this.addChild(text)
@@ -127,7 +127,7 @@ if (true) {
                 $dataKamigami.duelInfo[n].enabled = false
             }
             $dataKamigami.duelInfo[0] = { wins: 0, losses: 0, enabled: true, name: "Nymph" }
-            loadDeck("Zeus")
+            //loadDeck("Set")
             $dataKamigami.arcMythology = 2
             //$dataKamigami.gameOptions.language = "pt"
             //IAVRA.I18N.language = $dataKamigami.gameOptions.language
@@ -135,6 +135,7 @@ if (true) {
             //$dataKamigami.needsRoom = true;
             //SceneManager.goto(Scene_Kamigami_Deck_Build);
             //SceneManager.goto(Scene_CampaignMap);
+            SceneManager.goto(Scene_Kamigami_Duel);
             //SceneManager.goto(Scene_Title);
             //SceneManager.goto(Scene_Kamigami_Select_Player);
             //console.log("Teste")

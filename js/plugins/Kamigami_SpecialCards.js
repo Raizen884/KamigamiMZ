@@ -15,7 +15,7 @@ Scene_Kamigami_Duel.prototype.initialize = function () {
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Duel.prototype.createSpecialGodCard = function () {
     this._big_card_front = new SpriteGod(true);
-    //this._big_card_front.configureGod("bbr_coaraci", 58);
+    //this._big_card_front.configureGod("big_zeus", 1);
     //this._big_card_front.x = Graphics.width / 2;
     //this._big_card_front.y = Graphics.height / 2;
     this._big_card_front.anchor.x = this._big_card_front.anchor.y = 0.5;
@@ -202,7 +202,7 @@ SpriteGod.prototype.configureGod = function (godName, id = -1, noAnimation = fal
     specialCards = ["big_set", "big_hades", "big_hel", "big_loki", "big_odin",
         "big_ra", "big_thor", "big_isis", "big_izanami", "big_poseidon", "big_izanagi",
         "big_amaterasu", "big_zeus", "big_tsukiyomi",
-        "bbr_coaraci", "bbr_anhanga", "bbr_tupan"]
+        "bbr_coaraci", "bbr_anhanga", "bbr_tupan", "bbr_jaci"]
     this.closeAllImages();
     this.godLayers = []
     if ((!specialCards.includes(godName) || id >= 150) || noAnimation || this.staticCard) {
@@ -281,6 +281,9 @@ SpriteGod.prototype.configureGod = function (godName, id = -1, noAnimation = fal
             break
         case "bbr_tupan":
             this.tupanCard();
+            break
+        case "bbr_jaci":
+            this.jaciCard();
             break
         default:
             break;
@@ -558,6 +561,40 @@ SpriteGod.prototype.tupanCard = function () {
     this.createParticlesBack(godName);
     this._displacement.bitmap = ImageManager.loadDisplacement("map15");
     this._displacement.scale.set(10);
+    this._displacement.anchor.set(0.5);
+    this.tl.to(this.displacementFilter.scale, 8, { x: -10, y: -250, ease: Expo.easeInOut });
+    this.tl.timeScale(1000)
+    this.tl.gotoAndPlay(0)
+    this.container.filters = [this.displacementFilter];
+};
+
+//-----------------------------------------------------------------------------
+// Function : thorCard
+//-----------------------------------------------------------------------------
+SpriteGod.prototype.jaciCard = function () {
+    let godName = "Jaci"
+    this.frontSprite.opacity = 100;
+    this.backSprite.opacity = 55;
+    this.fallLightning = 0
+    this.imageLayerBack.bitmap = ImageManager.loadSpecialCards(godName + "_layer2")
+    this.imageLayerCard.bitmap = ImageManager.loadKamigami("card_base_goddess_s")
+    this._big_card_front.bitmap = ImageManager.loadSpecialCards(godName + "_god")
+
+    this.loadGodLayerExtras(this.maskInside, "Jaci_layer3")
+    //this.loadGodLayerExtras(this.maskInside, "Tupan_layer4")
+    //this.godLayers[0].opacity = 0
+    //this.godLayers[1].opacity = 0
+    this.removeChild(this.container)
+    this.addChild(this.container)
+    //this.loadGodLayerExtras(this.maskInside, "Jaci_god")
+    this.removeChild(this.frontSprite)
+    this.addChild(this.frontSprite)
+    this.removeChild(this.imageLayerCard)
+    this.addChild(this.imageLayerCard)
+    this.createParticlesFront(godName);
+    this.createParticlesBack(godName);
+    this._displacement.bitmap = ImageManager.loadDisplacement("map15");
+    this._displacement.scale.set(50);
     this._displacement.anchor.set(0.5);
     this.tl.to(this.displacementFilter.scale, 8, { x: -10, y: -250, ease: Expo.easeInOut });
     this.tl.timeScale(1000)
@@ -850,6 +887,12 @@ SpriteGod.prototype.createParticlesFront = function (godName) {
             this.emitter.y = 220;
             this.emitter.x = 0;
             break;
+        case "Jaci":
+            this.emitter = fx.getParticleEmitter('Hades-card2');
+            this.emitter.init(this.frontSprite, true, 2);
+            this.emitter.y = 220;
+            this.emitter.x = 0;
+            break;
         default:
             break;
     }
@@ -945,6 +988,11 @@ SpriteGod.prototype.createParticlesBack = function (godName) {
             this.emitter2.init(this.backSprite, true, 2);
             this.emitter2.y = 120;
             this.emitter2.x = 0;
+            break;
+        case "Jaci":
+            this.emitter2 = fx.getParticleEmitter('side-teleporter-field-loop');
+            this.emitter2.init(this.backSprite, true, 5);
+            this.emitter2.y = -40;
             break;
         default:
             break;
@@ -1059,7 +1107,7 @@ SpriteGod.prototype.updateTupanLightning = function () {
 // Function : updateGodMovement
 //-----------------------------------------------------------------------------
 SpriteGod.prototype.updateGodMovement = function () {
-    let scaleGods = ["big_hades", "big_odin", "big_amaterasu", "big_tsukiyomi", "big_ra", "bbr_anhanga"]
+    let scaleGods = ["big_hades", "big_odin", "big_amaterasu", "big_tsukiyomi", "big_ra", "bbr_anhanga", "bbr_jaci"]
     let scaleGodsBack = ["big_zeus", "big_tsukiyomi", "big_loki", "big_isis", "bbr_coaraci"]
     if (scaleGods.includes(this.godName)) {
         this.moveGodScaleLayer(this._big_card_front);
@@ -1100,6 +1148,9 @@ SpriteGod.prototype.updateGodMovement = function () {
     if (this.godName == "bbr_anhanga") {
         this.playSpecialAnhangaCard();
     }
+        if (this.godName == "bbr_jaci") {
+        this.playSpecialJaciCard();
+    }
 };
 //-----------------------------------------------------------------------------
 // Function : playSpecialHelCard
@@ -1124,6 +1175,20 @@ SpriteGod.prototype.playSpecialHelCard = function () {
     }
 }
 
+
+//-----------------------------------------------------------------------------
+// Function : playSpecialJaciCard
+//-----------------------------------------------------------------------------
+SpriteGod.prototype.playSpecialJaciCard = function () {
+    if (!this.godLayers[0]) {
+        return;
+    }
+    if (this.countFrames % 40 < 20) {
+        this.godLayers[0].opacity -= 2
+    } else {
+        this.godLayers[0].opacity += 2
+    }
+}
 //-----------------------------------------------------------------------------
 // Function : playSpecialIsisCard
 //-----------------------------------------------------------------------------

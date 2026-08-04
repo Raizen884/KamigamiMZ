@@ -765,7 +765,7 @@ Scene_Kamigami_Deck_Choose.prototype.closeSceneConfirm = function () {
         this.addNewDeck();
         $dataKamigami.gameOptions.deck = true;
         DataManager.saveGame(1);
-        SceneManager.goto(Scene_Kamigami_CampaignSelect)
+        SceneManager.pop()
         this.phase = 5;
     }
 };

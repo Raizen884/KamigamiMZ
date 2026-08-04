@@ -11,15 +11,12 @@ Scene_Kamigami_Duel.prototype.proceedMulligan = function () {
 // Function : playMulliganAnimation
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Duel.prototype.playMulliganPlayer = function () {
-    if (this.mullText.opacity < 255) {
-        this.mullText.opacity += 10
-        if (this.mullTextContent.alpha < 1) {
-            this.mullTextContent.alpha += 0.05
-            this.mullTextHeader.alpha += 0.05
-            this.mullTextTurn.alpha += 0.05
-        }
-
+    if (this.mullTextContent.alpha < 1) {
+        this.mullTextContent.alpha += 0.05
+        this.mullTextTurn.alpha += 0.05
+        this.mullTextBanner.opacity += 15
     }
+
     if (this.cardFade.opacity == 0) {
         for (let n = 0; n < 40; n++) {
             if (n < this.mulliganHandCount)
@@ -31,13 +28,11 @@ Scene_Kamigami_Duel.prototype.playMulliganPlayer = function () {
     if (this.cardFade.opacity < 255) {
         this.cardFade.opacity += 10
     }
-    this.move_hand_to_play();
-    if (this.mulliganBtn.opacity < 150)
+    this.move_hand_to_play(true);
     this.mulliganBtn.opacity += 10;
-if (this.keepBtn.opacity < 150)
     this.keepBtn.opacity += 10;
     if (this.count_frames > 60) {
-        this.updateMulliganButtons(); 
+        this.updateMulliganButtons();
         return
     }
 
@@ -56,31 +51,21 @@ Scene_Kamigami_Duel.prototype.updateMulliganButtons = function () {
             this.specialCardCamera.y = this._cards_player_1[n].y;
             touchedCard = n
         } else {
-            this._cards_player_1[n].opacity = Math.max(120, this._cards_player_1[n].opacity - 20)
+            //this._cards_player_1[n].opacity = Math.max(120, this._cards_player_1[n].opacity - 20)
         }
 
     }
     if (this.mulliganBtn.isMiniButtonTouched()) {
-        this.mulliganBtn.opacity += 10;
         if (TouchInput.isTriggered()) {
             this.newMulligan();
             this._big_card_front.opacity = 0
         }
     }
-    else {
-        if (this.mulliganBtn.opacity > 150)
-            this.mulliganBtn.opacity -= 10;
-    }
     if (this.keepBtn.isMiniButtonTouched()) {
-        this.keepBtn.opacity += 10;
         if (TouchInput.isTriggered()) {
             this._big_card_front.opacity = 0
             this.closeKeep();
         }
-    }
-    else {
-        if (this.keepBtn.opacity > 150)
-            this.keepBtn.opacity -= 10;
     }
 }
 
@@ -102,11 +87,10 @@ Scene_Kamigami_Duel.prototype.closeKeep = function () {
     this.keepBtn.bitmap = ""
     this.mulliganBtn.bitmap = ""
     this.cardFade.opacity = 0
-    this.mullText.destroy()
     this.keepBtn.destroy()
     this.mullTextContent.destroy()
-    this.mullTextHeader.destroy()
     this.mulliganBtn.destroy()
+    this.mullTextBanner.destroy()
     this.mullTextTurn.destroy()
     rotateArrayReverse(this._cards_player_1_all, this.player1_graveyard.length)
     this.extra_animations.shift()
@@ -205,8 +189,6 @@ Scene_Kamigami_Duel.prototype.sendCardBackDeck = function (card, deckCard, turn)
             card.rotation = finalRotation;
         }
     }
-    if (this.count_frames >= 40)
-        card.opacity -= 0;
 }
 //-----------------------------------------------------------------------------
 // Function : newMulligan
@@ -215,9 +197,8 @@ Scene_Kamigami_Duel.prototype.newMulligan = function () {
     AudioManager.playSe({ name: "Decision", pan: 0, pitch: 100, volume: 100 });
     this.extra_animations.shift()
     this.extra_animations.unshift(['MulliganPlayerConfirm'])
-    this.mullText.opacity = 0
     this.mullTextContent.alpha = 0
-    this.mullTextHeader.alpha = 0
+    this.mullTextBanner.opacity = 0
     this.keepBtn.opacity = 0;
     this.mulliganBtn.opacity = 0;
     this.mullTextTurn.alpha = 0;
@@ -309,53 +290,48 @@ Scene_Kamigami_Duel.prototype.createMulliganButtons = function () {
     this.cardFade.opacity = 0;
     this.cardContainer.sortChildren()
 
-    this.mulliganBtn = new Sprite_Card();
-    this.mulliganBtn.bitmap = ImageManager.loadExtrasKamigami("MulliganBtn")
+    let text = IAVRA.I18N.localize("#{DuelVocab.SkillsDescription.mulliganButton}")
+    this.mulliganBtn = new Sprite_Kami_UI_Button(text);
+    //this.mulliganBtn.bitmap = ImageManager.loadExtrasKamigami("MulliganBtn")
     this.addChild(this.mulliganBtn)
     this.mulliganBtn.anchor.x = this.mulliganBtn.anchor.y = 0.5
     this.mulliganBtn.x = Graphics.width / 2 + 210
-    this.mulliganBtn.y = 120;
+    this.mulliganBtn.y = 880;
     this.mulliganBtn.opacity = 0
 
-    this.keepBtn = new Sprite_Card();
-    this.keepBtn.bitmap = ImageManager.loadExtrasKamigami("KeepBtn")
+    text = IAVRA.I18N.localize("#{DuelVocab.SkillsDescription.keepButton}")
+    this.keepBtn = new Sprite_Kami_UI_Button(text);
+    //this.keepBtn.bitmap = ImageManager.loadExtrasKamigami("MulliganBtn")
     this.addChild(this.keepBtn)
     this.keepBtn.anchor.x = this.keepBtn.anchor.y = 0.5
     this.keepBtn.x = Graphics.width / 2 - 210
-    this.keepBtn.y = 120;
+    this.keepBtn.y = 880;
     this.keepBtn.opacity = 0
 
-
-    this.mullText = new Sprite();
-    this.mullText.bitmap = ImageManager.loadExtrasKamigami("MulliganText")
-    this.addChild(this.mullText)
-    this.mullText.opacity = 0
-    this.mullText.y = 900
-
-    let text = ""
-    text = IAVRA.I18N.localize("#{DuelVocab.SkillsDescription.mulliganHeader}")
-    this.mullTextHeader = new PIXI.Text(text, { fontFamily: 'Chau Philomene One', fontSize: 48, fill: 0xFFFFFF, align: 'center', dropShadow: true, dropShadowBlur: 3 });
-    this.addChild(this.mullTextHeader)
-    this.mullTextHeader.x = Graphics.width / 2 - this.mullTextHeader.width / 2
-    this.mullTextHeader.y = 850
-    this.mullTextHeader.alpha = 0
+    this.mullTextBanner = new Sprite();
+    this.mullTextBanner.bitmap = ImageManager.loadExtrasKamigami("messageback1");
+    this.addChild(this.mullTextBanner);
+    this.mullTextBanner.anchor.x = this.mullTextBanner.anchor.y = 0.5
+    this.mullTextBanner.x = Graphics.width / 2
+    this.mullTextBanner.y = 70;
+    this.mullTextBanner.opacity = 0
 
     text = IAVRA.I18N.localize("#{DuelVocab.SkillsDescription.mulliganText}")
-    this.mullTextContent = new PIXI.Text(text, { fontFamily: 'Chau Philomene One', fontSize: 36, fill: 0xFFFFFF, align: 'center', dropShadow: true, dropShadowBlur: 3, wordWrap: true, wordWrapWidth: 1600 });
+    this.mullTextContent = new PIXI.Text(text, { fontFamily: 'OverPass', fontSize: 30, fill: 0xFFFFFF, align: 'center', dropShadow: false, dropShadowBlur: 3, wordWrap: true, wordWrapWidth: 1600 });
     this.addChild(this.mullTextContent)
     this.mullTextContent.x = Graphics.width / 2 - this.mullTextContent.width / 2
     this.mullTextContent.y = 920
-    this.mullTextContent.alpha = 0 
- 
-    if (this.turn == 0) 
+    this.mullTextContent.alpha = 0
+
+    if (this.turn == 0)
         text = IAVRA.I18N.localize("#{DuelVocab.SkillsDescription.mulliganText2}")
     else
         text = IAVRA.I18N.localize("#{DuelVocab.SkillsDescription.mulliganText3}")
-    this.mullTextTurn = new PIXI.Text(text, { fontFamily: 'Chau Philomene One', fontSize: 36, fill: 0xFFFFFF, align: 'center', dropShadow: true, dropShadowBlur: 3, wordWrap: true, wordWrapWidth: 1600 });
+    this.mullTextTurn = new PIXI.Text(text, { fontFamily: 'OverPass', fontSize: 30, fill: 0xFFFFFF, align: 'center', dropShadow: false, dropShadowBlur: 3, wordWrap: true, wordWrapWidth: 1600 });
     this.addChild(this.mullTextTurn)
     this.mullTextTurn.x = Graphics.width / 2 - this.mullTextTurn.width / 2
-    this.mullTextTurn.y = 40
-    this.mullTextTurn.alpha = 0 
+    this.mullTextTurn.y = 50
+    this.mullTextTurn.alpha = 0
 };
 
 const rotateArrayReverse = function (nums, k) {

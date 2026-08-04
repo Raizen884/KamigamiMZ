@@ -228,7 +228,7 @@ Scene_Kamigami_Duel.prototype.createChatUnreadBtn = function () {
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Duel.prototype.createChatHideBtn = function () {
     if (!$dataKamigami.chatHidden) {
-        $dataKamigami.chatHidden = false
+        $dataKamigami.chatHidden = true
     }
     this.chatHidden = $dataKamigami.chatHidden
     this.chatHide = new Sprite_Card()

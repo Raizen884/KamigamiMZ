@@ -811,19 +811,30 @@ Scene_Kamigami_Duel.prototype.hand_player_moving = function () {
 
     if (this.phase == 5)
         return false;
-    if (TouchInput.y > this._cards_player_1[this.index].y - 220 && this.count_frames > 1)
+    if (this.count_frames > 1 && this._cards_player_1[this.index].isMiniButtonTouched())
         return this.move_hand_to_play();
-    else if (this.lock_move_cards && TouchInput.y > 150)
+    else if ((this.lock_move_cards || this.extra_animations.length == 0) && TouchInput.y > 920)
         this.move_hand_to_play()
-    else
+    else {
         return this.move_hide_hand();
+    }
+
 };
 //-----------------------------------------------------------------------------
 // Function : move_hand_to_play
 //-----------------------------------------------------------------------------
-Scene_Kamigami_Duel.prototype.move_hand_to_play = function () {
-    for (var n = 0; n < this._cards_player_1.length; n++)
-        this.set_final_card_hand_position_play(this._cards_player_1[n], n);
+Scene_Kamigami_Duel.prototype.move_hand_to_play = function (allCards = false) {
+    for (var n = 0; n < this._cards_player_1.length; n++) {
+        if (allCards) {
+            this.set_final_card_hand_position_play_mulligan(this._cards_player_1[n], n);
+        } else if (n == this.index) {
+            this.set_final_card_hand_position_play(this._cards_player_1[n], n);
+        } else {
+            this.set_final_card_hand_position(this._cards_player_1[n], n, 0)
+        }
+
+    }
+
     this.lock_move_cards = true;
     this.count_frames > 60 ? this.open_play_choices = true : this.open_play_choices = false;
     return true;
@@ -913,12 +924,8 @@ Scene_Kamigami_Duel.prototype.check_hand_card_trigger = function () {
     this.specialCardCamera.x = this._cards_player_1[this.index].x;
     this.specialCardCamera.y = this._cards_player_1[this.index].y;
     this._big_card_front.rotation = this._cards_player_1[this.index].rotation;
-    this._big_card_front.scale.x = 1
-    this._big_card_front.scale.y = 1
-    for (var n = 0; n < this._cards_player_1.length; n++) {
-        if (this._cards_player_1[n].opacity > 100)
-            this._cards_player_1[n].opacity -= 10;
-    }
+    this._big_card_front.scale.x = 0.8
+    this._big_card_front.scale.y = 0.8
     this._cards_player_1[this.index].opacity += 20;
     if (TouchInput.isTriggered()) {
         this.extra_animations.length > 0 ? this.discard_card(i) : this.decision_card(i)
@@ -971,12 +978,30 @@ Scene_Kamigami_Duel.prototype.get_board_touch = function () {
 // Function : get_card_touch - Gets the card by cursor
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Duel.prototype.get_card_touch = function () {
-    for (var i = this.player_hand.length - 1; i >= 0; i--)
-        if (this._cards_player_1[i].isMiniButtonTouched())
-            return i;
-    return -1;
+    let cardIndex = this.getHandCardTouch();
+    if (cardIndex == -1 && this._cards_player_1[this.index].isMiniButtonTouched())
+        return this.index;
+    return cardIndex;
 };
 
+
+//-----------------------------------------------------------------------------
+// Function : get_card_touch - Gets the card by cursor
+//-----------------------------------------------------------------------------
+Scene_Kamigami_Duel.prototype.getHandCardTouch = function () {
+    if (this.player_hand.length > 0) {
+        let leftTouch = this._cards_player_1[0].x
+        let rightTouch = this._cards_player_1[this.player_hand.length - 1].x
+        let length = rightTouch - leftTouch;
+        let cardWidth = length / this.player_hand.length;
+        for (let i = 0; i < this.player_hand.length; i++) {
+            if (TouchInput.y > 900 && TouchInput.x > leftTouch + cardWidth * i && TouchInput.x < leftTouch + cardWidth * (i + 1)) {
+                return i;
+            }
+        }
+    }
+    return -1;
+}
 //////////////////////////// PHASE 5 //////////////////////////////////////
 //-----------------------------------------------------------------------------
 // Function : update_opacity - updates initial opacity
@@ -1413,7 +1438,7 @@ Scene_Kamigami_Duel.prototype.set_final_card_hand_position = function (card, car
 //-----------------------------------------------------------------------------
 // Function : set_final_card_hand_position
 //-----------------------------------------------------------------------------
-Scene_Kamigami_Duel.prototype.set_final_card_hand_position_play = function (card, card_num, hand_size = this._cards_player_1.length, limit = 960) {
+Scene_Kamigami_Duel.prototype.set_final_card_hand_position_play_mulligan = function (card, card_num, hand_size = this._cards_player_1.length, limit = 960) {
     if (!card) { return }
     var final_angle = this.get_final_position_play(card_num, hand_size, limit)[2] - card.rotation;
     var final_x = this.get_final_position_play(card_num, hand_size, limit)[0] - card.x;
@@ -1426,6 +1451,39 @@ Scene_Kamigami_Duel.prototype.set_final_card_hand_position_play = function (card
     if (Math.abs(card_acceleration_x) < 0.05 && Math.abs(card_acceleration_y) < 0.05) {
         card.x = this.get_final_position_play(card_num, hand_size, limit)[0];
         card.y = this.get_final_position_play(card_num, hand_size, limit)[1];
+        return true;
+    }
+    if (card.scale.x < 0.8) {
+        card.scale.x += 0.05;
+        card.scale.y += 0.05;
+        if (card.scale.y > 0.8)
+            card.scale.y = card.scale.x = 0.8;
+    }
+    if (card.scale.y > 0.8) {
+        card.scale.x -= 0.05;
+        card.scale.y -= 0.05;
+        if (card.scale.y < 0.8)
+            card.scale.y = card.scale.x = 0.8;
+    }
+
+    return false;
+};
+//-----------------------------------------------------------------------------
+// Function : set_final_card_hand_position
+//-----------------------------------------------------------------------------
+Scene_Kamigami_Duel.prototype.set_final_card_hand_position_play = function (card, card_num, hand_size = this._cards_player_1.length, limit = 960) {
+    if (!card) { return }
+    var final_angle = this.get_final_position_play_new(card_num, hand_size, limit)[2] - card.rotation;
+    var final_x = this.get_final_position_play_new(card_num, hand_size, limit)[0] - card.x;
+    var card_acceleration_x = final_x / 20;
+    var final_y = this.get_final_position_play_new(card_num, hand_size, limit)[1] - card.y;
+    var card_acceleration_y = final_y / 20;
+    card.x += card_acceleration_x;
+    card.y += card_acceleration_y;
+    //card.rotation += final_angle / 20;
+    if (Math.abs(card_acceleration_x) < 0.05 && Math.abs(card_acceleration_y) < 0.05) {
+        card.x = this.get_final_position_play_new(card_num, hand_size, limit)[0];
+        card.y = this.get_final_position_play_new(card_num, hand_size, limit)[1];
         return true;
     }
     if (card.scale.x < 0.8) {
@@ -1479,8 +1537,23 @@ Scene_Kamigami_Duel.prototype.get_final_position_play = function (card_num, hand
         var mid = parseInt((hand_size) / 2);
     else
         var mid = hand_size / 2 - 0.5;
-    var right_x = (card_num - mid) * parseInt((limit * 2 - 320) / hand_size) + limit;
+    var right_x = (card_num - mid) * parseInt((limit * 2 - 120) / hand_size) + limit;
+
     var right_y = 500;
+    var right_angle = 0;
+    return [right_x, right_y, right_angle]
+};
+//-----------------------------------------------------------------------------
+// Function : get_right_position
+//-----------------------------------------------------------------------------
+Scene_Kamigami_Duel.prototype.get_final_position_play_new = function (card_num, hand_size, limit = 960) {
+    if (hand_size % 2 == 1)
+        var mid = parseInt((hand_size) / 2);
+    else
+        var mid = hand_size / 2 - 0.5;
+    var right_x = (card_num - mid) * parseInt((limit * 2 - 120) / hand_size) + limit;
+    right_x = (card_num - mid) * parseInt(600 / hand_size) + 960;
+    var right_y = 810;
     var right_angle = 0;
     return [right_x, right_y, right_angle]
 };
