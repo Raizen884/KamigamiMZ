@@ -50,23 +50,6 @@ Sprite_Animation.prototype.setupMV = function (target, animation, mirror, delay,
         this.createSprites();
     }
 };
-Sprite_Animation.prototype.setup = function (
-    targets, animation, mirror, delay, previous
-) {
-    this._targets = targets;
-    this._animation = animation;
-    this._mirror = mirror;
-    this._delay = delay;
-    this._previous = previous;
-    this._effect = EffectManager.load(animation.effectName);
-    this._playing = true;
-    const timings = animation.soundTimings.concat(animation.flashTimings);
-    for (const timing of timings) {
-        if (timing.frame > this._maxTimingFrames) {
-            this._maxTimingFrames = timing.frame;
-        }
-    }
-};
 
 Sprite_Card.prototype.startAnimation3d = function (animation, mirror, delay, rate = 2) {
     var sprite = new Sprite_Animation();

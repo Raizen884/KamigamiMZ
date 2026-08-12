@@ -101,7 +101,7 @@ if (true) {
             $dataEnemyId = 1
             this.addAllCards();
             this.addAllTestDecks();
-            //$boardChoice = 4
+            $boardChoice = 2
             this.configureTestDecks();
             $dataKamigami.fastEnabled = true;
             $dataKamigami.enemy_tt_cards = new Array(41);
@@ -119,7 +119,7 @@ if (true) {
             //this._animationCount++
             //this.addAllTestDecks(); 
             //this.addBrazilTestDecks();
-            $dataKamigami.chosenDeck = 12
+           // $dataKamigami.chosenDeck = 12
             $dataKamigami.hasChosenDeck = true
             //let text =  new PIXI.Text(greenworks.getSteamId().steamId, { fontFamily: 'Chau Philomene One', fontSize: 60, fill: 0xc22424, align: 'left', stroke: "#000000", strokeThickness: 3 });
             //this.addChild(text)
@@ -170,12 +170,12 @@ if (true) {
         $dataKamigami.chosenDeck = 0;
         $dataKamigami.decks[0] = ["TestDeck", []]
         for (let n = 0; n < 20; n++) {
-            $dataKamigami.decks[0][1].push(130)
+            $dataKamigami.decks[0][1].push(149)
         }
         for (let n = 0; n < 20; n++) {
 
             //$dataKamigami.decks[0][1].push(119)
-            $dataKamigami.decks[0][1].push(131)
+            $dataKamigami.decks[0][1].push(150)
         }
         $dataKamigami.decks[0][1].push(123)
     };

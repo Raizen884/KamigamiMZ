@@ -259,6 +259,7 @@ Scene_Kamigami_Duel.prototype.resetExtraAnimation = function () {
     this.extra_animations.shift();
     this.count_frames = 0;
     this.stopActionAnimation()
+
 }
 //-----------------------------------------------------------------------------
 // Function : play_devotion_animation
@@ -543,7 +544,7 @@ Scene_Kamigami_Duel.prototype.proceed_choose_card_hand_animation = function () {
             return
         }
         for (var n = 0; n < this._cards_player_1.length; n++)
-            this.set_final_card_hand_position_play(this._cards_player_1[n], n);
+            this.set_final_card_hand_position_play(false, this._cards_player_1[n], n);
         this.lock_move_cards = true;
         this.count_frames > 60 ? this.open_play_choices = true : this.open_play_choices = false;
         this.check_hand_card_trigger()
@@ -759,7 +760,6 @@ Scene_Kamigami_Duel.prototype.checkForSkillTargets = function () {
             break
 
     }
-    console.log("Flashing Points", this.flashing_area)
     this.animation_count_frames = 0;
     if (this.flashing_area.length == 0) {
         return 5;
@@ -1061,6 +1061,7 @@ Scene_Kamigami_Duel.prototype.loadActionAnimation = function (type, index = -1) 
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Duel.prototype.stopActionAnimation = function () {
     this.resetInfoValues()
+    this.weatherSpriteChoose.opacity = 0
     for (var n = this.emitterAction.length - 1; n >= 0; n--) {
         this.emitterAction[n].stop()
         this.emitterAction.pop()
@@ -1130,6 +1131,7 @@ Scene_Kamigami_Duel.prototype.directionMoveValue = function (initial, final, onX
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Duel.prototype.resetInfoValues = function () {
     this.infoPositions = []
+
 }
 
 //-----------------------------------------------------------------------------
@@ -2083,6 +2085,101 @@ Scene_Kamigami_Duel.prototype.playCardAnimation = function (effectId, target) {
             this._center_sprite.y = 540
             animation = $dataAnimations[63];
             this._center_sprite.startAnimation(animation, false, 0);
+            break
+        case 228: // Atmospheric Form
+            this._center_sprite.x = 960
+            this._center_sprite.y = 540
+            switch (this.board_place) {
+                case 5: // day
+                    animation = $dataAnimationsMZ[97];
+                    break;
+                case 6: // night
+                    animation = $dataAnimationsMZ[101];
+                    break;
+                default: // storm
+                    animation = $dataAnimationsMZ[84];
+                    break;
+            }
+
+            this._effectSprite.setup(
+                [this._center_sprite],
+                animation,
+                false,
+                0,
+                null
+            );
+            break
+        case 229: // Rage of the Gods
+            this._center_sprite.x = 960
+            this._center_sprite.y = 540
+            animation = $dataAnimationsMZ[109];
+            this._effectSprite.setup(
+                [this._center_sprite],
+                animation,
+                false,
+                0,
+                null
+            );
+
+            break
+        case 230: // Soul Exchange
+            this._center_sprite.x = 960
+            this._center_sprite.y = 540
+            animation = $dataAnimationsMZ[119];
+            this._effectSprite.setup(
+                [this._center_sprite],
+                animation,
+                false,
+                0,
+                null
+            );
+
+            break
+        case 231: // Hunting Spirits
+            animation = $dataAnimationsMZ[53];
+            this._effectSprite.setup(
+                [this.board_light_slots[target]],
+                animation,
+                false,
+                0,
+                null
+            );
+
+            break
+        case 232: // Invoke the Spirits
+            this._center_sprite.x = 960
+            this._center_sprite.y = 540
+            animation = $dataAnimationsMZ[47];
+            this._effectSprite.setup(
+                [this._center_sprite],
+                animation,
+                false,
+                0,
+                null
+            );
+            break
+        case 233: // Firestorm
+            this._center_sprite.x = 960
+            this._center_sprite.y = 540
+            animation = $dataAnimationsMZ[68];
+            this._effectSprite.setup(
+                [this._center_sprite],
+                animation,
+                false,
+                0,
+                null
+            );
+            break
+        case 234: // Hunting Spear
+            animation = $dataAnimationsMZ[11];
+            this._effectSprite.setup(
+                [this.board_light_slots[target]],
+                animation,
+                false,
+                0,
+                null
+            );
+
             break
     }
 }

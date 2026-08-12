@@ -1243,6 +1243,7 @@ Sprite_Animation.prototype.setup = function(
     this._previous = previous;
     this._effect = EffectManager.load(animation.effectName);
     this._playing = true;
+    console.log(animation)
     const timings = animation.soundTimings.concat(animation.flashTimings);
     for (const timing of timings) {
         if (timing.frame > this._maxTimingFrames) {
@@ -1250,6 +1251,7 @@ Sprite_Animation.prototype.setup = function(
         }
     }
 };
+
 
 Sprite_Animation.prototype.update = function() {
     Sprite.prototype.update.call(this);

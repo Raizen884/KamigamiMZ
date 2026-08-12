@@ -124,7 +124,7 @@ Scene_Kamigami_Duel.prototype.startAllMethods = function () {
 
     this.create_board_map();
     this.create_background();
-
+    this.startWeather();
     this.createTurnImage()
 
     this.create_layers();
@@ -135,9 +135,12 @@ Scene_Kamigami_Duel.prototype.startAllMethods = function () {
     this.createWindowLayerDuel();
     this.create_hp_window();
     this.create_devotion();
+
     this.create_graveyard() //Temporary!
+    
     this.createBoardEffects();
     this.create_fade();
+    this.createWeatherChooseSprite()
     this.create_big_cards();
     this.create_attack_pics();
     this._hpWindow.write_hp(this.board_cards);
@@ -160,11 +163,31 @@ Scene_Kamigami_Duel.prototype.startAllMethods = function () {
     this.createDevotionContainer();
     this.createSpritebase();
     this.fixBoardPositions();
+    this.createEffekSprite();
 };
+Scene_Kamigami_Duel.prototype.createWeatherChooseSprite = function () {
+    this.weatherSpriteChoose = new Sprite();
+    this.weatherSpriteChoose.bitmap = ImageManager.loadExtrasKamigami("weatherChoose")
+    this.addChild(this.weatherSpriteChoose);
+    this.weatherSpriteChoose.x = 700
+    this.weatherSpriteChoose.y = 280
+    this.weatherSpriteChoose.opacity = 0
+}
+
+//-----------------------------------------------------------------------------
+// Function : fixBoardPositions
+//-----------------------------------------------------------------------------
+Scene_Kamigami_Duel.prototype.createEffekSprite = function () {
+    this._effectSprite = new Sprite_Animation();
+    this.addChild(this._effectSprite);
+}
 //-----------------------------------------------------------------------------
 // Function : fixBoardPositions
 //-----------------------------------------------------------------------------
 Scene_Kamigami_Duel.prototype.fixBoardPositions = function () {
+
+
+
     if ($boardChoice == 5) {
         this._devotion_player1.y += 50;
         this._devotion_player1.x += 15;
@@ -173,6 +196,8 @@ Scene_Kamigami_Duel.prototype.fixBoardPositions = function () {
     }
 
 };
+
+
 //-----------------------------------------------------------------------------
 // Function : load_parameters
 //-----------------------------------------------------------------------------
@@ -813,7 +838,7 @@ Scene_Kamigami_Duel.prototype.hand_player_moving = function () {
         return false;
     if (this.count_frames > 1 && this._cards_player_1[this.index].isMiniButtonTouched())
         return this.move_hand_to_play();
-    else if ((this.lock_move_cards || this.extra_animations.length == 0) && TouchInput.y > 920)
+    else if ((this.lock_move_cards || this.extra_animations.length == 0) && TouchInput.y > 920 && TouchInput.x > 300 && TouchInput.x < 1620)
         this.move_hand_to_play()
     else {
         return this.move_hide_hand();
@@ -828,7 +853,7 @@ Scene_Kamigami_Duel.prototype.move_hand_to_play = function (allCards = false) {
         if (allCards) {
             this.set_final_card_hand_position_play_mulligan(this._cards_player_1[n], n);
         } else if (n == this.index) {
-            this.set_final_card_hand_position_play(this._cards_player_1[n], n);
+            this.set_final_card_hand_position_play(false, this._cards_player_1[n], n);
         } else {
             this.set_final_card_hand_position(this._cards_player_1[n], n, 0)
         }
@@ -995,7 +1020,7 @@ Scene_Kamigami_Duel.prototype.getHandCardTouch = function () {
         let length = rightTouch - leftTouch;
         let cardWidth = length / this.player_hand.length;
         for (let i = 0; i < this.player_hand.length; i++) {
-            if (TouchInput.y > 900 && TouchInput.x > leftTouch + cardWidth * i && TouchInput.x < leftTouch + cardWidth * (i + 1)) {
+            if (TouchInput.y > 600 && TouchInput.x > leftTouch + cardWidth * i && TouchInput.x < leftTouch + cardWidth * (i + 1)) {
                 return i;
             }
         }
@@ -1471,7 +1496,7 @@ Scene_Kamigami_Duel.prototype.set_final_card_hand_position_play_mulligan = funct
 //-----------------------------------------------------------------------------
 // Function : set_final_card_hand_position
 //-----------------------------------------------------------------------------
-Scene_Kamigami_Duel.prototype.set_final_card_hand_position_play = function (card, card_num, hand_size = this._cards_player_1.length, limit = 960) {
+Scene_Kamigami_Duel.prototype.set_final_card_hand_position_play = function (fixAngle, card, card_num, hand_size = this._cards_player_1.length, limit = 960) {
     if (!card) { return }
     var final_angle = this.get_final_position_play_new(card_num, hand_size, limit)[2] - card.rotation;
     var final_x = this.get_final_position_play_new(card_num, hand_size, limit)[0] - card.x;
@@ -1480,7 +1505,8 @@ Scene_Kamigami_Duel.prototype.set_final_card_hand_position_play = function (card
     var card_acceleration_y = final_y / 20;
     card.x += card_acceleration_x;
     card.y += card_acceleration_y;
-    //card.rotation += final_angle / 20;
+    if (fixAngle)
+        card.rotation += final_angle / 20;
     if (Math.abs(card_acceleration_x) < 0.05 && Math.abs(card_acceleration_y) < 0.05) {
         card.x = this.get_final_position_play_new(card_num, hand_size, limit)[0];
         card.y = this.get_final_position_play_new(card_num, hand_size, limit)[1];
@@ -1795,7 +1821,7 @@ Scene_Kamigami_Duel.prototype.update_graveyard = function () {
         return
     }
     for (var n = 0; n < this.player1_graveyard_show.length; n++) {
-        this.set_final_card_hand_position_play(this.player1_graveyard_show[n][1], n, this.player1_graveyard_show.length, this.graveyardLimit);
+        this.set_final_card_hand_position_play(true, this.player1_graveyard_show[n][1], n, this.player1_graveyard_show.length, this.graveyardLimit);
     }
     if (this.count_frames < 15) {
         for (var n = 0; n < this.player1_graveyard_show.length; n++)

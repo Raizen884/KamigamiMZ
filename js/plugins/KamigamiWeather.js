@@ -2,16 +2,10 @@
 //-----------------------------------------------------------------------------
 // Function : initialize - initiates the graphics
 //-----------------------------------------------------------------------------
-const _scene_Weather_Initialize = Scene_Kamigami_Duel.prototype.initialize
-Scene_Kamigami_Duel.prototype.initialize = function () {
-    _scene_Weather_Initialize.call(this);
-    this.startWeather();
-};
-
 Scene_Kamigami_Duel.prototype.startWeather = function () {
     this._weatherSprite = new Sprite_Kami_Weather();
-    this._weatherSprite.x = 1500;
-    this._weatherSprite.y = 800;
+    this._weatherSprite.x = 200;
+    this._weatherSprite.y = 600;
     this.addChild(this._weatherSprite)
 }
 
@@ -29,12 +23,20 @@ Sprite_Kami_Weather.prototype.constructor = Sprite_Kami_Weather;
 
 Sprite_Kami_Weather.prototype.initialize = function () {
     Sprite.prototype.initialize.call(this);
+    this.createBaseWeatherSprite();
     this._weatherTurns = 0;
     this._weatherType = 0;
     this._baseSprite = new Sprite();
     this._baseSprite.bitmap = ImageManager.loadExtrasKamigami("");
     this.addChild(this._baseSprite);
     this.createWeatherText();
+}
+
+Sprite_Kami_Weather.prototype.createBaseWeatherSprite = function () {
+    this._baseWeatherSprite = new Sprite();
+    this._baseWeatherSprite.bitmap = ImageManager.loadExtrasKamigami("weatherBase");
+    this.addChild(this._baseWeatherSprite)
+
 }
 
 Sprite_Kami_Weather.prototype.changeWeather = function (weather) {
@@ -96,7 +98,7 @@ Sprite_Kami_Weather.prototype.createWeatherText = function () {
     this._weatherTurnsText = new PIXI.Text(text, { fontFamily: 'Chau Philomene One', fontSize: 24, fill: 0xFFFFFF, align: 'left', stroke: "#00019F", strokeThickness: 2 });
     this.addChild(this._weatherTurnsText)
     this._weatherTurnsText.y = 0
-    this._weatherTurnsText.x = 0
+    this._weatherTurnsText.x = 55
     this._weatherTurnsText.text = text;
 
 }

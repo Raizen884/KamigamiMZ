@@ -462,6 +462,13 @@ Scene_Kamigami_Duel.prototype.callCardDefinition = function (cardId, AI, turn = 
             this.cardDefinitions.forceStaticRagnarok = true
             this.cardDefinitions.addNewStaticEffect([3, -1, 226, this.turn])
             break
+        case 228: // Atmospheric Form
+            this.applyAtmosphericForm(this.board_place)
+            break
+        case 229: // Rage of the Gods
+            this.applyRageOfTheGods();
+
+            break
         case 232: // Invoke the Spirits
             this.applyInvokeTheSpirits(turn)
             break;
@@ -490,6 +497,32 @@ Scene_Kamigami_Duel.prototype.resetHelStatus = function () {
     }
     this._hpWindow.write_hp(this.board_cards)
 }
+Scene_Kamigami_Duel.prototype.applyAtmosphericForm = function (spot) {
+
+
+    switch (spot) {
+        case 5:
+            this._weatherSprite.changeWeather("day")
+            break;
+        case 6:
+            this._weatherSprite.changeWeather("night")
+            break;
+        case 7:
+            this._weatherSprite.changeWeather("storm")
+            break;
+    }
+}
+Scene_Kamigami_Duel.prototype.applyRageOfTheGods = function () {
+    this.changeHpAllNotMain(-999)
+    this.set_devotion(0, -1000, true)
+    this.set_devotion(1, -1000, true)
+    let handSize = turn == 0 ? this.player_hand.length : this.npc_hand.length
+    for (let index = 4; index < this.player_hand.length; index++) {
+        this.extra_animations.push(['DiscardRandom', 1, turn, -1]);
+    }
+    this.resetHelStatus();
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -1396,9 +1429,24 @@ Scene_Kamigami_Duel.prototype.flashingAreaConfirm = function (index, npc_hand, b
         case 11:
             this.flashingAreaUnitEnemy(boardState)
             break
+        case 12:
+            this.flashingAreaWeather();
+            break;
     }
     this.loadActionAnimation("cast")
+    if (effectArea == 12) {
+        this.weatherSpriteChoose.opacity = 255
+    }
 }
+//-----------------------------------------------------------------------------
+// Function : flashingAreaWeather
+//-----------------------------------------------------------------------------
+Scene_Kamigami_Duel.prototype.flashingAreaWeather = function () {
+    this.flashing_area.push(5);
+    this.flashing_area.push(6);
+    this.flashing_area.push(7);
+
+};
 //-----------------------------------------------------------------------------
 // Function : flashingArea0
 //-----------------------------------------------------------------------------
